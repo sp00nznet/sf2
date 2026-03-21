@@ -111,7 +111,7 @@ class M68KAnalyzer:
         self.labels = {}
         self.jump_tables = {}
 
-    def analyze(self):
+    def analyze(self, extra_entries=None):
         """Run full analysis."""
         entry_points = set()
         entry_points.add(self.rom.initial_pc)
@@ -119,6 +119,11 @@ class M68KAnalyzer:
             entry_points.add(addr)
             self.labels[addr] = f"vec_{name}"
         self.labels[self.rom.initial_pc] = "entry_point"
+
+        # Add any extra entry points from file
+        if extra_entries:
+            entry_points.update(extra_entries)
+            print(f"Added {len(extra_entries)} extra entry points")
 
         # Scan for jump tables
         jt_targets = self._scan_jump_tables()
@@ -165,10 +170,98 @@ class M68KAnalyzer:
                                 all_func_entries.add(target)
                 work = new_work
 
+        # Pass 3: Scan for functions after RTS/RTE and LINK/MOVEM prologues
+        post_rts = self._scan_post_rts_entries()
+        prologue_entries = self._scan_prologues()
+        extra = (post_rts | prologue_entries) - self.visited
+        if extra:
+            print(f"  Found {len(extra)} entries from post-RTS + prologue scan")
+            all_func_entries.update(extra)
+            work = list(extra)
+            while work:
+                new_work = []
+                for addr in work:
+                    if addr in self.visited or addr >= self.rom.size or addr < 0x200 or (addr & 1):
+                        continue
+                    new_targets = self._disassemble_block(addr)
+                    for target, is_call in new_targets:
+                        if target not in self.visited and 0x200 <= target < self.rom.size and not (target & 1):
+                            new_work.append(target)
+                            if is_call:
+                                all_func_entries.add(target)
+                work = new_work
+
+        # Pass 4: Look for call targets that weren't in any discovered function
+        call_targets = set()
+        for func_entry in list(all_func_entries):
+            for call_addr in self.call_graph.get(func_entry, set()):
+                if call_addr not in self.visited and 0x200 <= call_addr < self.rom.size and not (call_addr & 1):
+                    call_targets.add(call_addr)
+        if call_targets:
+            print(f"  Found {len(call_targets)} unreached call targets")
+            all_func_entries.update(call_targets)
+            work = list(call_targets)
+            while work:
+                new_work = []
+                for addr in work:
+                    if addr in self.visited or addr >= self.rom.size or addr < 0x200 or (addr & 1):
+                        continue
+                    new_targets = self._disassemble_block(addr)
+                    for target, is_call in new_targets:
+                        if target not in self.visited and 0x200 <= target < self.rom.size and not (target & 1):
+                            new_work.append(target)
+                            if is_call:
+                                all_func_entries.add(target)
+                work = new_work
+
         self._build_functions(all_func_entries)
 
         print(f"Disassembled {len(self.instructions)} instructions")
         print(f"Found {len(self.functions)} functions")
+
+    def _scan_post_rts_entries(self):
+        """Scan for functions that start immediately after RTS/RTE instructions."""
+        entries = set()
+        for addr in sorted(self.instructions.keys()):
+            mnemonic = self.instructions[addr][0]
+            size = self.instructions[addr][2]
+            if mnemonic in ('rts', 'rte', 'rtr'):
+                next_addr = addr + size
+                # Align to word boundary
+                if next_addr & 1:
+                    next_addr += 1
+                if next_addr not in self.visited and next_addr < self.rom.size:
+                    # Validate: try to disassemble a few instructions
+                    code = bytes(self.rom.data[next_addr:min(next_addr + 20, self.rom.size)])
+                    insns = list(self.cs.disasm(code, next_addr, count=3))
+                    if len(insns) >= 2:
+                        entries.add(next_addr)
+                        if next_addr not in self.labels:
+                            self.labels[next_addr] = f"sub_{next_addr:06X}"
+        return entries
+
+    def _scan_prologues(self):
+        """Scan uncovered ROM regions for common M68K function prologues."""
+        entries = set()
+        i = 0x200
+        while i < self.rom.size - 4:
+            if i in self.visited:
+                i += 2
+                continue
+            word = struct.unpack('>H', self.rom.data[i:i+2])[0]
+            # LINK A6, #imm16 = $4E56
+            # LINK A5, #imm16 = $4E55
+            # MOVEM.L reglist, -(A7) = $48E7
+            if word in (0x4E56, 0x4E55, 0x48E7):
+                # Validate with disassembly
+                code = bytes(self.rom.data[i:min(i + 20, self.rom.size)])
+                insns = list(self.cs.disasm(code, i, count=3))
+                if len(insns) >= 2:
+                    entries.add(i)
+                    if i not in self.labels:
+                        self.labels[i] = f"sub_{i:06X}"
+            i += 2
+        return entries
 
     def _scan_jump_tables(self):
         """Scan ROM for potential jump/address tables."""
@@ -453,6 +546,7 @@ def main():
     parser.add_argument('--disasm', '-d', action='store_true', help='Print full disassembly')
     parser.add_argument('--disasm-func', type=str, help='Disassemble specific function (hex addr)')
     parser.add_argument('--stats', action='store_true', help='Print statistics')
+    parser.add_argument('--extra-entries', type=str, help='File with extra entry points (hex, one per line)')
     args = parser.parse_args()
 
     print("=== CPS1 SF2 ROM Analyzer ===\n")
@@ -460,8 +554,16 @@ def main():
     rom = CPS1ROM(args.rom)
     rom.print_info()
 
+    extra = set()
+    if args.extra_entries and os.path.exists(args.extra_entries):
+        with open(args.extra_entries) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    extra.add(int(line, 16))
+
     analyzer = M68KAnalyzer(rom)
-    analyzer.analyze()
+    analyzer.analyze(extra_entries=extra if extra else None)
 
     if args.stats:
         print("\n=== Top 20 Largest Functions ===")
