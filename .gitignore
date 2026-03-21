@@ -5,3 +5,5 @@ build/
 functions.json
 src/recomp/recomp_*.c
 src/recomp/recomp_funcs.h
+__pycache__/
+.claude/
