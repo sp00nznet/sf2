@@ -170,15 +170,15 @@ cmake --build build --config Release
 
 | Phase | Component | Status |
 |-------|-----------|--------|
-| **0** | Project skeleton + build system | In Progress |
-| **1** | ROM loader + CPS1 memory bus | Planned |
-| **2** | M68K disassembler + lifter tools | Planned |
-| **3** | Scroll layers + palette renderer | Planned |
-| **4** | Sprite engine | Planned |
-| **5** | Platform layer + input + first boot | Planned |
-| **6** | Z80 sound CPU | Planned |
-| **7** | YM2151 FM audio (via ymfm) | Planned |
-| **8** | OKI MSM6295 ADPCM | Planned |
+| **0** | Project skeleton + build system | Done |
+| **1** | ROM loader + CPS1 memory bus | Done |
+| **2** | M68K disassembler + lifter tools | Done |
+| **3** | Scroll layers + palette renderer | Done |
+| **4** | Sprite engine | Done |
+| **5** | Platform layer + input + first boot | Done |
+| **6** | Z80 sound CPU | Stub |
+| **7** | YM2151 FM audio (via ymfm) | Stub |
+| **8** | OKI MSM6295 ADPCM | Stub |
 | **9** | Polish + verification vs MAME | Planned |
 
 ## Standing on Giants
