@@ -1,0 +1,7 @@
+build/
+*.zip
+*.bin
+*.rom
+functions.json
+src/recomp/recomp_*.c
+src/recomp/recomp_funcs.h
