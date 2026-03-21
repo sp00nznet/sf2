@@ -742,7 +742,24 @@ class CodeGenerator:
                 line = line.replace(f'goto {m.group(1)};', f'{{ func_table_call(0x{addr_val:06X}); return; }}')
             fixed.append(line)
 
-        return fixed
+        # Fix labels at end of function: C requires a statement after a label
+        # If a label line is followed by a comment or closing brace, add a no-op
+        final = []
+        for i, line in enumerate(fixed):
+            final.append(line)
+            stripped = line.strip()
+            if stripped.endswith(':') and not stripped.startswith('/*') and not stripped.startswith('//'):
+                # Check if next non-empty line is } or comment
+                next_real = ''
+                for j in range(i + 1, len(fixed)):
+                    ns = fixed[j].strip()
+                    if ns:
+                        next_real = ns
+                        break
+                if next_real.startswith('/*') or next_real.startswith('}') or next_real == '':
+                    final.append('    ; /* empty statement after label */')
+
+        return final
 
     def _generate_registration(self, functions):
         lines = [

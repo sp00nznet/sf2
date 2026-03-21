@@ -10,13 +10,13 @@ find_package(SDL2 REQUIRED)
 # cps1recomp library (sibling directory)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../cps1recomp ${CMAKE_BINARY_DIR}/cps1recomp)
 
+# Gather all generated recompiled source files
+file(GLOB RECOMP_SOURCES "src/recomp/recomp_*.c")
+
 # --- sf2 executable ---
 add_executable(sf2
     src/main.c
-    # Generated recompiled code files will be added here:
-    # src/recomp/recomp_000000_00FFFF.c
-    # src/recomp/recomp_010000_01FFFF.c
-    # ...
+    ${RECOMP_SOURCES}
 )
 
 target_link_libraries(sf2
@@ -29,7 +29,8 @@ target_include_directories(sf2
 )
 
 if(MSVC)
-    target_compile_options(sf2 PRIVATE /W4)
+    # Disable some noisy warnings in generated code
+    target_compile_options(sf2 PRIVATE /W3 /wd4244 /wd4267 /wd4018 /wd4146)
 else()
-    target_compile_options(sf2 PRIVATE -Wall -Wextra)
+    target_compile_options(sf2 PRIVATE -Wall -Wno-unused-label -Wno-unused-variable)
 endif()
