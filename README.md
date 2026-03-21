@@ -176,10 +176,10 @@ cmake --build build --config Release
 | **3** | Scroll layers + palette renderer | Done |
 | **4** | Sprite engine | Done |
 | **5** | Platform layer + input + first boot | Done |
-| **6** | Z80 sound CPU | Stub |
-| **7** | YM2151 FM audio (via ymfm) | Stub |
-| **8** | OKI MSM6295 ADPCM | Stub |
-| **9** | Polish + verification vs MAME | Planned |
+| **6** | Z80 sound CPU | Done |
+| **7** | YM2151 FM audio (via ymfm) | Done |
+| **8** | OKI MSM6295 ADPCM | Done |
+| **9** | Polish + verification vs MAME | In Progress |
 
 ## Standing on Giants
 
