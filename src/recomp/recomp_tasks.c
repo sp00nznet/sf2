@@ -114,11 +114,7 @@ void sub_0014F2(void) {
         func_table_call(0x000CEC);
 
         /* $153E: After yield — check vblank flag */
-        { uint8_t vf = bus_read8(g_m68k.a[5] + (-0x7df2));
-          static int vc = 0; if (vc < 5) {
-            printf("[14F2] after yield: vblank_flag=%u\n", vf);
-            fflush(stdout); vc++; }
-          M68K_TST8(vf); }
+        M68K_TST8(bus_read8(g_m68k.a[5] + (-0x7df2)));
         if (M68K_CC_NE) continue;   /* vblank set → loop */
 
         /* $1544: Check free slot count */
@@ -133,15 +129,7 @@ void sub_0014F2(void) {
         g_m68k.d[0] = bus_read32(g_m68k.a[0] + 0
                      + (int16_t)(uint16_t)g_m68k.d[2]);
         M68K_TST32((uint32_t)g_m68k.d[0]);
-        { static int qc = 0; if (qc < 5) {
-            printf("[14F2] queue check: idx=%u entry=$%08X free=%u vbl=%u\n",
-                   (uint16_t)g_m68k.d[2], g_m68k.d[0],
-                   bus_read16(g_m68k.a[5] + (-0x7df4)),
-                   bus_read8(g_m68k.a[5] + (-0x7df2)));
-            fflush(stdout); qc++; } }
         if (M68K_CC_PL) {
-            printf("[14F2] INSTALLING from queue: entry=$%08X\n", g_m68k.d[0]);
-            fflush(stdout);
             func_table_call(0x0014CC);
         }
         /* $155A: BRA $14F2 — loop */

@@ -717,9 +717,6 @@ void sub_000B20(void) {
     bus_write32(task_base + slot_off + 0x04, g_m68k.a[0]);  /* code address */
     bus_write16(task_base + slot_off + 0x10, (uint16_t)g_m68k.d[1]); /* param */
     bus_write16(task_base + slot_off + 0x12, (uint16_t)g_m68k.d[2]); /* param */
-    printf("[task] TRAP#0: installed task $%06X at slot offset 0x%X\n",
-           g_m68k.a[0], (unsigned)slot_off);
-    fflush(stdout);
 }
 
 /* $000B24-$000B28  (1 instructions, 4 bytes) */
