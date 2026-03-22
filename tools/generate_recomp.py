@@ -277,10 +277,19 @@ class M68KTranslator:
             return f'bus_read{size}({disp} + {idx})'
 
         m = re.match(r'^\(\$([0-9A-Fa-f]+)\)\.(w|l)$', op, re.I)
-        if m: return f'bus_read{size}(0x{int(m.group(1), 16):06X})'
+        if m:
+            val = int(m.group(1), 16)
+            if m.group(2).lower() == 'w' and val >= 0x8000 and val <= 0xFFFF:
+                val = 0xFF0000 | val
+            return f'bus_read{size}(0x{val & 0xFFFFFF:06X})'
 
         m = re.match(r'^\$([0-9A-Fa-f]+)(?:\.(w|l))?$', op, re.I)
-        if m: return f'bus_read{size}(0x{int(m.group(1), 16):06X})'
+        if m:
+            val = int(m.group(1), 16)
+            sz = (m.group(2) or 'l').lower()
+            if sz == 'w' and val >= 0x8000 and val <= 0xFFFF:
+                val = 0xFF0000 | val
+            return f'bus_read{size}(0x{val & 0xFFFFFF:06X})'
 
         return f'/* UNHANDLED_READ: {op} */ 0'
 
@@ -318,10 +327,19 @@ class M68KTranslator:
             return f'bus_write{size}(g_m68k.a[{m.group(2)}] + {disp} + {idx}, {value_expr});'
 
         m = re.match(r'^\(\$([0-9A-Fa-f]+)\)\.(w|l)$', op, re.I)
-        if m: return f'bus_write{size}(0x{int(m.group(1), 16):06X}, {value_expr});'
+        if m:
+            val = int(m.group(1), 16)
+            if m.group(2).lower() == 'w' and val >= 0x8000 and val <= 0xFFFF:
+                val = 0xFF0000 | val
+            return f'bus_write{size}(0x{val & 0xFFFFFF:06X}, {value_expr});'
 
         m = re.match(r'^\$([0-9A-Fa-f]+)(?:\.(w|l))?$', op, re.I)
-        if m: return f'bus_write{size}(0x{int(m.group(1), 16):06X}, {value_expr});'
+        if m:
+            val = int(m.group(1), 16)
+            sz = (m.group(2) or 'l').lower()
+            if sz == 'w' and val >= 0x8000 and val <= 0xFFFF:
+                val = 0xFF0000 | val
+            return f'bus_write{size}(0x{val & 0xFFFFFF:06X}, {value_expr});'
 
         return f'/* UNHANDLED_WRITE: {op} = {value_expr} */'
 
@@ -360,10 +378,20 @@ class M68KTranslator:
             return f'({disp} + {idx})'
 
         m = re.match(r'^\(\$([0-9A-Fa-f]+)\)\.(w|l)$', op, re.I)
-        if m: return f'0x{int(m.group(1), 16):06X}'
+        if m:
+            val = int(m.group(1), 16)
+            size = m.group(2).lower()
+            if size == 'w' and val >= 0x8000 and val <= 0xFFFF:
+                val = 0xFF0000 | val  # Sign-extend 16-bit to 24-bit
+            return f'0x{val & 0xFFFFFF:06X}'
 
         m = re.match(r'^\$([0-9A-Fa-f]+)(?:\.(w|l))?$', op, re.I)
-        if m: return f'0x{int(m.group(1), 16):06X}'
+        if m:
+            val = int(m.group(1), 16)
+            size = (m.group(2) or 'l').lower()
+            if size == 'w' and val >= 0x8000 and val <= 0xFFFF:
+                val = 0xFF0000 | val  # Sign-extend 16-bit to 24-bit
+            return f'0x{val & 0xFFFFFF:06X}'
 
         return f'/* UNHANDLED_ADDR: {op} */ 0'
 
