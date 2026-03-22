@@ -1,0 +1,10 @@
+^D:\RECOMP\CPS1\CPS1RECOMP\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/recomp/cps1/sf2 -BD:/recomp/cps1/sf2/build_cmake --check-stamp-file D:/recomp/cps1/sf2/build_cmake/cps1recomp/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

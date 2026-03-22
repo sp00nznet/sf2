@@ -799,6 +799,7 @@ def main():
     parser = argparse.ArgumentParser(description='CPS1 SF2 Code Generator')
     parser.add_argument('rom', help='Path to assembled 68K binary (sf2_68k.bin)')
     parser.add_argument('--output-dir', '-o', default='src/recomp', help='Output directory')
+    parser.add_argument('--extra-entries', type=str, help='File with extra entry points (hex, one per line)')
     args = parser.parse_args()
 
     print("=== CPS1 SF2 Code Generator ===\n")
@@ -806,9 +807,17 @@ def main():
     rom = CPS1ROM(args.rom)
     rom.print_info()
 
+    extra = set()
+    if args.extra_entries and os.path.exists(args.extra_entries):
+        with open(args.extra_entries) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    extra.add(int(line, 16))
+
     print("\n--- Phase 1: Analysis ---")
     analyzer = M68KAnalyzer(rom)
-    analyzer.analyze()
+    analyzer.analyze(extra_entries=extra if extra else None)
 
     print("\n--- Phase 2: Code Generation ---")
     translator = M68KTranslator(rom, analyzer.labels)

@@ -1,0 +1,6 @@
+D:/recomp/cps1/sf2/build_cmake/CMakeFiles/sf2.dir
+D:/recomp/cps1/sf2/build_cmake/CMakeFiles/ALL_BUILD.dir
+D:/recomp/cps1/sf2/build_cmake/CMakeFiles/ZERO_CHECK.dir
+D:/recomp/cps1/sf2/build_cmake/cps1recomp/CMakeFiles/ymfm.dir
+D:/recomp/cps1/sf2/build_cmake/cps1recomp/CMakeFiles/cps1recomp.dir
+D:/recomp/cps1/sf2/build_cmake/cps1recomp/CMakeFiles/ALL_BUILD.dir

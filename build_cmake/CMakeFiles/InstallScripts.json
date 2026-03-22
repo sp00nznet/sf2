@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/recomp/cps1/sf2/build_cmake/cmake_install.cmake",
+		"D:/recomp/cps1/sf2/build_cmake/cps1recomp/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

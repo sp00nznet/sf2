@@ -1,0 +1,4274 @@
+Street Fighter II Recompiled
+============================
+ROM path: build
+
+cps1recomp v0.1.0
+[init] bus...ok
+[init] func_table...ok
+[init] m68k...ok
+[init] video...ok
+[init] palette...ok
+[init] io...ok
+[init] timer...ok
+[init] z80...[z80] Initialized (stub — no execution)
+ok
+[init] ym2151...[ym2151] Initialized via ymfm (clock: 3579545 Hz, chip rate: 55930 Hz, output: 44100 Hz)
+ok
+[init] oki6295...[oki6295] Initialized (clock: 1000000 Hz, output: 7575.8 Hz, target: 44100 Hz)
+ok
+[init] loading ROMs...[rom] Loading ROM set 'sf2' from: build
+[rom] 68K program: 768 KB
+[rom] GFX tiles: 6144 KB
+[rom] Z80 program: 64 KB
+[z80] Loaded ROM: 65536 bytes (64 KB)
+[rom] OKI samples: 256 KB
+[rom] ROM loading complete
+ok
+[init] platform (scale=3)...[platform] Window: 1152x672 (scale 3, windowed, vsync)
+ok
+[platform] Audio: 44100 Hz, 2 ch, 1024 samples
+[cps1] ROM SSP: $00000000, A7: $00000000
+[cps1] Entry point: $00040E, SSP: $00FFFFFC
+[init] complete
+[sf2] Registering functions...
+[sf2] Registered 2432 recompiled functions
+[sf2] Entry function at $00040E: FOUND
+[sf2] Entering main loop...
+[cps1] Entering main loop (2432 functions registered)
+[cps1] Running entry point at $00040E...
+[cps1] Entry point returned
+[cps1] VBlank handler: $000A94 (registered)
+[frame 0] calling VBlank $000A94
+[frame 0] VBlank returned
+[frame 0] rendering...
+[frame 0] render done
+[frame 0] present
+[frame 0] poll
+[frame 0] complete
+[frame 1] calling VBlank $000A94
+[frame 1] VBlank returned
+[frame 1] rendering...
+[frame 1] render done
+[frame 1] present
+[frame 1] poll
+[frame 1] complete
+[frame 2] calling VBlank $000A94
+[frame 2] VBlank returned
+[frame 2] rendering...
+[frame 2] render done
+[frame 2] present
+[frame 2] poll
+[frame 2] complete
+[frame 3] calling VBlank $000A94
+[frame 3] VBlank returned
+[frame 3] rendering...
+[frame 3] render done
+[frame 3] present
+[frame 3] poll
+[frame 3] complete
+[frame 4] calling VBlank $000A94
+[frame 4] VBlank returned
+[frame 4] rendering...
+[frame 4] render done
+[frame 4] present
+[frame 4] poll
+[frame 4] complete
+[frame 5] calling VBlank $000A94
+[frame 5] VBlank returned
+[frame 5] rendering...
+[frame 5] render done
+[frame 5] present
+[frame 5] poll
+[frame 5] complete
+[frame 6] calling VBlank $000A94
+[frame 6] VBlank returned
+[frame 6] rendering...
+[frame 6] render done
+[frame 6] present
+[frame 6] poll
+[frame 6] complete
+[frame 7] calling VBlank $000A94
+[frame 7] VBlank returned
+[frame 7] rendering...
+[frame 7] render done
+[frame 7] present
+[frame 7] poll
+[frame 7] complete
+[frame 8] calling VBlank $000A94
+[frame 8] VBlank returned
+[frame 8] rendering...
+[frame 8] render done
+[frame 8] present
+[frame 8] poll
+[frame 8] complete
+[frame 9] calling VBlank $000A94
+[frame 9] VBlank returned
+[frame 9] rendering...
+[frame 9] render done
+[frame 9] present
+[frame 9] poll
+[frame 9] complete
+[frame 10] calling VBlank $000A94
+[frame 10] VBlank returned
+[frame 10] rendering...
+[frame 10] render done
+[frame 10] present
+[frame 10] poll
+[frame 10] complete
+[frame 11] calling VBlank $000A94
+[frame 11] VBlank returned
+[frame 11] rendering...
+[frame 11] render done
+[frame 11] present
+[frame 11] poll
+[frame 11] complete
+[frame 12] calling VBlank $000A94
+[frame 12] VBlank returned
+[frame 12] rendering...
+[frame 12] render done
+[frame 12] present
+[frame 12] poll
+[frame 12] complete
+[frame 13] calling VBlank $000A94
+[frame 13] VBlank returned
+[frame 13] rendering...
+[frame 13] render done
+[frame 13] present
+[frame 13] poll
+[frame 13] complete
+[frame 14] calling VBlank $000A94
+[frame 14] VBlank returned
+[frame 14] rendering...
+[frame 14] render done
+[frame 14] present
+[frame 14] poll
+[frame 14] complete
+[frame 15] calling VBlank $000A94
+[frame 15] VBlank returned
+[frame 15] rendering...
+[frame 15] render done
+[frame 15] present
+[frame 15] poll
+[frame 15] complete
+[frame 16] calling VBlank $000A94
+[frame 16] VBlank returned
+[frame 16] rendering...
+[frame 16] render done
+[frame 16] present
+[frame 16] poll
+[frame 16] complete
+[frame 17] calling VBlank $000A94
+[frame 17] VBlank returned
+[frame 17] rendering...
+[frame 17] render done
+[frame 17] present
+[frame 17] poll
+[frame 17] complete
+[frame 18] calling VBlank $000A94
+[frame 18] VBlank returned
+[frame 18] rendering...
+[frame 18] render done
+[frame 18] present
+[frame 18] poll
+[frame 18] complete
+[frame 19] calling VBlank $000A94
+[frame 19] VBlank returned
+[frame 19] rendering...
+[frame 19] render done
+[frame 19] present
+[frame 19] poll
+[frame 19] complete
+[frame 20] calling VBlank $000A94
+[frame 20] VBlank returned
+[frame 20] rendering...
+[frame 20] render done
+[frame 20] present
+[frame 20] poll
+[frame 20] complete
+[frame 21] calling VBlank $000A94
+[frame 21] VBlank returned
+[frame 21] rendering...
+[frame 21] render done
+[frame 21] present
+[frame 21] poll
+[frame 21] complete
+[frame 22] calling VBlank $000A94
+[frame 22] VBlank returned
+[frame 22] rendering...
+[frame 22] render done
+[frame 22] present
+[frame 22] poll
+[frame 22] complete
+[frame 23] calling VBlank $000A94
+[frame 23] VBlank returned
+[frame 23] rendering...
+[frame 23] render done
+[frame 23] present
+[frame 23] poll
+[frame 23] complete
+[frame 24] calling VBlank $000A94
+[frame 24] VBlank returned
+[frame 24] rendering...
+[frame 24] render done
+[frame 24] present
+[frame 24] poll
+[frame 24] complete
+[frame 25] calling VBlank $000A94
+[frame 25] VBlank returned
+[frame 25] rendering...
+[frame 25] render done
+[frame 25] present
+[frame 25] poll
+[frame 25] complete
+[frame 26] calling VBlank $000A94
+[frame 26] VBlank returned
+[frame 26] rendering...
+[frame 26] render done
+[frame 26] present
+[frame 26] poll
+[frame 26] complete
+[frame 27] calling VBlank $000A94
+[frame 27] VBlank returned
+[frame 27] rendering...
+[frame 27] render done
+[frame 27] present
+[frame 27] poll
+[frame 27] complete
+[frame 28] calling VBlank $000A94
+[frame 28] VBlank returned
+[frame 28] rendering...
+[frame 28] render done
+[frame 28] present
+[frame 28] poll
+[frame 28] complete
+[frame 29] calling VBlank $000A94
+[frame 29] VBlank returned
+[frame 29] rendering...
+[frame 29] render done
+[frame 29] present
+[frame 29] poll
+[frame 29] complete
+[frame 30] calling VBlank $000A94
+[frame 30] VBlank returned
+[frame 30] rendering...
+[frame 30] render done
+[frame 30] present
+[frame 30] poll
+[frame 30] complete
+[frame 31] calling VBlank $000A94
+[frame 31] VBlank returned
+[frame 31] rendering...
+[frame 31] render done
+[frame 31] present
+[frame 31] poll
+[frame 31] complete
+[frame 32] calling VBlank $000A94
+[frame 32] VBlank returned
+[frame 32] rendering...
+[frame 32] render done
+[frame 32] present
+[frame 32] poll
+[frame 32] complete
+[frame 33] calling VBlank $000A94
+[frame 33] VBlank returned
+[frame 33] rendering...
+[frame 33] render done
+[frame 33] present
+[frame 33] poll
+[frame 33] complete
+[frame 34] calling VBlank $000A94
+[frame 34] VBlank returned
+[frame 34] rendering...
+[frame 34] render done
+[frame 34] present
+[frame 34] poll
+[frame 34] complete
+[frame 35] calling VBlank $000A94
+[frame 35] VBlank returned
+[frame 35] rendering...
+[frame 35] render done
+[frame 35] present
+[frame 35] poll
+[frame 35] complete
+[frame 36] calling VBlank $000A94
+[frame 36] VBlank returned
+[frame 36] rendering...
+[frame 36] render done
+[frame 36] present
+[frame 36] poll
+[frame 36] complete
+[frame 37] calling VBlank $000A94
+[frame 37] VBlank returned
+[frame 37] rendering...
+[frame 37] render done
+[frame 37] present
+[frame 37] poll
+[frame 37] complete
+[frame 38] calling VBlank $000A94
+[frame 38] VBlank returned
+[frame 38] rendering...
+[frame 38] render done
+[frame 38] present
+[frame 38] poll
+[frame 38] complete
+[frame 39] calling VBlank $000A94
+[frame 39] VBlank returned
+[frame 39] rendering...
+[frame 39] render done
+[frame 39] present
+[frame 39] poll
+[frame 39] complete
+[frame 40] calling VBlank $000A94
+[frame 40] VBlank returned
+[frame 40] rendering...
+[frame 40] render done
+[frame 40] present
+[frame 40] poll
+[frame 40] complete
+[frame 41] calling VBlank $000A94
+[frame 41] VBlank returned
+[frame 41] rendering...
+[frame 41] render done
+[frame 41] present
+[frame 41] poll
+[frame 41] complete
+[frame 42] calling VBlank $000A94
+[frame 42] VBlank returned
+[frame 42] rendering...
+[frame 42] render done
+[frame 42] present
+[frame 42] poll
+[frame 42] complete
+[frame 43] calling VBlank $000A94
+[frame 43] VBlank returned
+[frame 43] rendering...
+[frame 43] render done
+[frame 43] present
+[frame 43] poll
+[frame 43] complete
+[frame 44] calling VBlank $000A94
+[frame 44] VBlank returned
+[frame 44] rendering...
+[frame 44] render done
+[frame 44] present
+[frame 44] poll
+[frame 44] complete
+[frame 45] calling VBlank $000A94
+[frame 45] VBlank returned
+[frame 45] rendering...
+[frame 45] render done
+[frame 45] present
+[frame 45] poll
+[frame 45] complete
+[frame 46] calling VBlank $000A94
+[frame 46] VBlank returned
+[frame 46] rendering...
+[frame 46] render done
+[frame 46] present
+[frame 46] poll
+[frame 46] complete
+[frame 47] calling VBlank $000A94
+[frame 47] VBlank returned
+[frame 47] rendering...
+[frame 47] render done
+[frame 47] present
+[frame 47] poll
+[frame 47] complete
+[frame 48] calling VBlank $000A94
+[frame 48] VBlank returned
+[frame 48] rendering...
+[frame 48] render done
+[frame 48] present
+[frame 48] poll
+[frame 48] complete
+[frame 49] calling VBlank $000A94
+[frame 49] VBlank returned
+[frame 49] rendering...
+[frame 49] render done
+[frame 49] present
+[frame 49] poll
+[frame 49] complete
+[frame 50] calling VBlank $000A94
+[frame 50] VBlank returned
+[frame 50] rendering...
+[frame 50] render done
+[frame 50] present
+[frame 50] poll
+[frame 50] complete
+[frame 51] calling VBlank $000A94
+[frame 51] VBlank returned
+[frame 51] rendering...
+[frame 51] render done
+[frame 51] present
+[frame 51] poll
+[frame 51] complete
+[frame 52] calling VBlank $000A94
+[frame 52] VBlank returned
+[frame 52] rendering...
+[frame 52] render done
+[frame 52] present
+[frame 52] poll
+[frame 52] complete
+[frame 53] calling VBlank $000A94
+[frame 53] VBlank returned
+[frame 53] rendering...
+[frame 53] render done
+[frame 53] present
+[frame 53] poll
+[frame 53] complete
+[frame 54] calling VBlank $000A94
+[frame 54] VBlank returned
+[frame 54] rendering...
+[frame 54] render done
+[frame 54] present
+[frame 54] poll
+[frame 54] complete
+[frame 55] calling VBlank $000A94
+[frame 55] VBlank returned
+[frame 55] rendering...
+[frame 55] render done
+[frame 55] present
+[frame 55] poll
+[frame 55] complete
+[frame 56] calling VBlank $000A94
+[frame 56] VBlank returned
+[frame 56] rendering...
+[frame 56] render done
+[frame 56] present
+[frame 56] poll
+[frame 56] complete
+[frame 57] calling VBlank $000A94
+[frame 57] VBlank returned
+[frame 57] rendering...
+[frame 57] render done
+[frame 57] present
+[frame 57] poll
+[frame 57] complete
+[frame 58] calling VBlank $000A94
+[frame 58] VBlank returned
+[frame 58] rendering...
+[frame 58] render done
+[frame 58] present
+[frame 58] poll
+[frame 58] complete
+[frame 59] calling VBlank $000A94
+[frame 59] VBlank returned
+[frame 59] rendering...
+[frame 59] render done
+[frame 59] present
+[frame 59] poll
+[frame 59] complete
+[frame 60] calling VBlank $000A94
+[frame 60] VBlank returned
+[frame 60] rendering...
+[frame 60] render done
+[frame 60] present
+[frame 60] poll
+[frame 60] complete
+[frame 61] calling VBlank $000A94
+[frame 61] VBlank returned
+[frame 61] rendering...
+[frame 61] render done
+[frame 61] present
+[frame 61] poll
+[frame 61] complete
+[frame 62] calling VBlank $000A94
+[frame 62] VBlank returned
+[frame 62] rendering...
+[frame 62] render done
+[frame 62] present
+[frame 62] poll
+[frame 62] complete
+[frame 63] calling VBlank $000A94
+[frame 63] VBlank returned
+[frame 63] rendering...
+[frame 63] render done
+[frame 63] present
+[frame 63] poll
+[frame 63] complete
+[frame 64] calling VBlank $000A94
+[frame 64] VBlank returned
+[frame 64] rendering...
+[frame 64] render done
+[frame 64] present
+[frame 64] poll
+[frame 64] complete
+[frame 65] calling VBlank $000A94
+[frame 65] VBlank returned
+[frame 65] rendering...
+[frame 65] render done
+[frame 65] present
+[frame 65] poll
+[frame 65] complete
+[frame 66] calling VBlank $000A94
+[frame 66] VBlank returned
+[frame 66] rendering...
+[frame 66] render done
+[frame 66] present
+[frame 66] poll
+[frame 66] complete
+[frame 67] calling VBlank $000A94
+[frame 67] VBlank returned
+[frame 67] rendering...
+[frame 67] render done
+[frame 67] present
+[frame 67] poll
+[frame 67] complete
+[frame 68] calling VBlank $000A94
+[frame 68] VBlank returned
+[frame 68] rendering...
+[frame 68] render done
+[frame 68] present
+[frame 68] poll
+[frame 68] complete
+[frame 69] calling VBlank $000A94
+[frame 69] VBlank returned
+[frame 69] rendering...
+[frame 69] render done
+[frame 69] present
+[frame 69] poll
+[frame 69] complete
+[frame 70] calling VBlank $000A94
+[frame 70] VBlank returned
+[frame 70] rendering...
+[frame 70] render done
+[frame 70] present
+[frame 70] poll
+[frame 70] complete
+[frame 71] calling VBlank $000A94
+[frame 71] VBlank returned
+[frame 71] rendering...
+[frame 71] render done
+[frame 71] present
+[frame 71] poll
+[frame 71] complete
+[frame 72] calling VBlank $000A94
+[frame 72] VBlank returned
+[frame 72] rendering...
+[frame 72] render done
+[frame 72] present
+[frame 72] poll
+[frame 72] complete
+[frame 73] calling VBlank $000A94
+[frame 73] VBlank returned
+[frame 73] rendering...
+[frame 73] render done
+[frame 73] present
+[frame 73] poll
+[frame 73] complete
+[frame 74] calling VBlank $000A94
+[frame 74] VBlank returned
+[frame 74] rendering...
+[frame 74] render done
+[frame 74] present
+[frame 74] poll
+[frame 74] complete
+[frame 75] calling VBlank $000A94
+[frame 75] VBlank returned
+[frame 75] rendering...
+[frame 75] render done
+[frame 75] present
+[frame 75] poll
+[frame 75] complete
+[frame 76] calling VBlank $000A94
+[frame 76] VBlank returned
+[frame 76] rendering...
+[frame 76] render done
+[frame 76] present
+[frame 76] poll
+[frame 76] complete
+[frame 77] calling VBlank $000A94
+[frame 77] VBlank returned
+[frame 77] rendering...
+[frame 77] render done
+[frame 77] present
+[frame 77] poll
+[frame 77] complete
+[frame 78] calling VBlank $000A94
+[frame 78] VBlank returned
+[frame 78] rendering...
+[frame 78] render done
+[frame 78] present
+[frame 78] poll
+[frame 78] complete
+[frame 79] calling VBlank $000A94
+[frame 79] VBlank returned
+[frame 79] rendering...
+[frame 79] render done
+[frame 79] present
+[frame 79] poll
+[frame 79] complete
+[frame 80] calling VBlank $000A94
+[frame 80] VBlank returned
+[frame 80] rendering...
+[frame 80] render done
+[frame 80] present
+[frame 80] poll
+[frame 80] complete
+[frame 81] calling VBlank $000A94
+[frame 81] VBlank returned
+[frame 81] rendering...
+[frame 81] render done
+[frame 81] present
+[frame 81] poll
+[frame 81] complete
+[frame 82] calling VBlank $000A94
+[frame 82] VBlank returned
+[frame 82] rendering...
+[frame 82] render done
+[frame 82] present
+[frame 82] poll
+[frame 82] complete
+[frame 83] calling VBlank $000A94
+[frame 83] VBlank returned
+[frame 83] rendering...
+[frame 83] render done
+[frame 83] present
+[frame 83] poll
+[frame 83] complete
+[frame 84] calling VBlank $000A94
+[frame 84] VBlank returned
+[frame 84] rendering...
+[frame 84] render done
+[frame 84] present
+[frame 84] poll
+[frame 84] complete
+[frame 85] calling VBlank $000A94
+[frame 85] VBlank returned
+[frame 85] rendering...
+[frame 85] render done
+[frame 85] present
+[frame 85] poll
+[frame 85] complete
+[frame 86] calling VBlank $000A94
+[frame 86] VBlank returned
+[frame 86] rendering...
+[frame 86] render done
+[frame 86] present
+[frame 86] poll
+[frame 86] complete
+[frame 87] calling VBlank $000A94
+[frame 87] VBlank returned
+[frame 87] rendering...
+[frame 87] render done
+[frame 87] present
+[frame 87] poll
+[frame 87] complete
+[frame 88] calling VBlank $000A94
+[frame 88] VBlank returned
+[frame 88] rendering...
+[frame 88] render done
+[frame 88] present
+[frame 88] poll
+[frame 88] complete
+[frame 89] calling VBlank $000A94
+[frame 89] VBlank returned
+[frame 89] rendering...
+[frame 89] render done
+[frame 89] present
+[frame 89] poll
+[frame 89] complete
+[frame 90] calling VBlank $000A94
+[frame 90] VBlank returned
+[frame 90] rendering...
+[frame 90] render done
+[frame 90] present
+[frame 90] poll
+[frame 90] complete
+[frame 91] calling VBlank $000A94
+[frame 91] VBlank returned
+[frame 91] rendering...
+[frame 91] render done
+[frame 91] present
+[frame 91] poll
+[frame 91] complete
+[frame 92] calling VBlank $000A94
+[frame 92] VBlank returned
+[frame 92] rendering...
+[frame 92] render done
+[frame 92] present
+[frame 92] poll
+[frame 92] complete
+[frame 93] calling VBlank $000A94
+[frame 93] VBlank returned
+[frame 93] rendering...
+[frame 93] render done
+[frame 93] present
+[frame 93] poll
+[frame 93] complete
+[frame 94] calling VBlank $000A94
+[frame 94] VBlank returned
+[frame 94] rendering...
+[frame 94] render done
+[frame 94] present
+[frame 94] poll
+[frame 94] complete
+[frame 95] calling VBlank $000A94
+[frame 95] VBlank returned
+[frame 95] rendering...
+[frame 95] render done
+[frame 95] present
+[frame 95] poll
+[frame 95] complete
+[frame 96] calling VBlank $000A94
+[frame 96] VBlank returned
+[frame 96] rendering...
+[frame 96] render done
+[frame 96] present
+[frame 96] poll
+[frame 96] complete
+[frame 97] calling VBlank $000A94
+[frame 97] VBlank returned
+[frame 97] rendering...
+[frame 97] render done
+[frame 97] present
+[frame 97] poll
+[frame 97] complete
+[frame 98] calling VBlank $000A94
+[frame 98] VBlank returned
+[frame 98] rendering...
+[frame 98] render done
+[frame 98] present
+[frame 98] poll
+[frame 98] complete
+[frame 99] calling VBlank $000A94
+[frame 99] VBlank returned
+[frame 99] rendering...
+[frame 99] render done
+[frame 99] present
+[frame 99] poll
+[frame 99] complete
+[frame 100] calling VBlank $000A94
+[frame 100] VBlank returned
+[frame 100] rendering...
+[frame 100] render done
+[frame 100] present
+[frame 100] poll
+[frame 100] complete
+[frame 101] calling VBlank $000A94
+[frame 101] VBlank returned
+[frame 101] rendering...
+[frame 101] render done
+[frame 101] present
+[frame 101] poll
+[frame 101] complete
+[frame 102] calling VBlank $000A94
+[frame 102] VBlank returned
+[frame 102] rendering...
+[frame 102] render done
+[frame 102] present
+[frame 102] poll
+[frame 102] complete
+[frame 103] calling VBlank $000A94
+[frame 103] VBlank returned
+[frame 103] rendering...
+[frame 103] render done
+[frame 103] present
+[frame 103] poll
+[frame 103] complete
+[frame 104] calling VBlank $000A94
+[frame 104] VBlank returned
+[frame 104] rendering...
+[frame 104] render done
+[frame 104] present
+[frame 104] poll
+[frame 104] complete
+[frame 105] calling VBlank $000A94
+[frame 105] VBlank returned
+[frame 105] rendering...
+[frame 105] render done
+[frame 105] present
+[frame 105] poll
+[frame 105] complete
+[frame 106] calling VBlank $000A94
+[frame 106] VBlank returned
+[frame 106] rendering...
+[frame 106] render done
+[frame 106] present
+[frame 106] poll
+[frame 106] complete
+[frame 107] calling VBlank $000A94
+[frame 107] VBlank returned
+[frame 107] rendering...
+[frame 107] render done
+[frame 107] present
+[frame 107] poll
+[frame 107] complete
+[frame 108] calling VBlank $000A94
+[frame 108] VBlank returned
+[frame 108] rendering...
+[frame 108] render done
+[frame 108] present
+[frame 108] poll
+[frame 108] complete
+[frame 109] calling VBlank $000A94
+[frame 109] VBlank returned
+[frame 109] rendering...
+[frame 109] render done
+[frame 109] present
+[frame 109] poll
+[frame 109] complete
+[frame 110] calling VBlank $000A94
+[frame 110] VBlank returned
+[frame 110] rendering...
+[frame 110] render done
+[frame 110] present
+[frame 110] poll
+[frame 110] complete
+[frame 111] calling VBlank $000A94
+[frame 111] VBlank returned
+[frame 111] rendering...
+[frame 111] render done
+[frame 111] present
+[frame 111] poll
+[frame 111] complete
+[frame 112] calling VBlank $000A94
+[frame 112] VBlank returned
+[frame 112] rendering...
+[frame 112] render done
+[frame 112] present
+[frame 112] poll
+[frame 112] complete
+[frame 113] calling VBlank $000A94
+[frame 113] VBlank returned
+[frame 113] rendering...
+[frame 113] render done
+[frame 113] present
+[frame 113] poll
+[frame 113] complete
+[frame 114] calling VBlank $000A94
+[frame 114] VBlank returned
+[frame 114] rendering...
+[frame 114] render done
+[frame 114] present
+[frame 114] poll
+[frame 114] complete
+[frame 115] calling VBlank $000A94
+[frame 115] VBlank returned
+[frame 115] rendering...
+[frame 115] render done
+[frame 115] present
+[frame 115] poll
+[frame 115] complete
+[frame 116] calling VBlank $000A94
+[frame 116] VBlank returned
+[frame 116] rendering...
+[frame 116] render done
+[frame 116] present
+[frame 116] poll
+[frame 116] complete
+[frame 117] calling VBlank $000A94
+[frame 117] VBlank returned
+[frame 117] rendering...
+[frame 117] render done
+[frame 117] present
+[frame 117] poll
+[frame 117] complete
+[frame 118] calling VBlank $000A94
+[frame 118] VBlank returned
+[frame 118] rendering...
+[frame 118] render done
+[frame 118] present
+[frame 118] poll
+[frame 118] complete
+[frame 119] calling VBlank $000A94
+[frame 119] VBlank returned
+[frame 119] rendering...
+[frame 119] render done
+[frame 119] present
+[frame 119] poll
+[frame 119] complete
+[frame 120] calling VBlank $000A94
+[frame 120] VBlank returned
+[frame 120] rendering...
+[frame 120] render done
+[frame 120] present
+[frame 120] poll
+[frame 120] complete
+[frame 121] calling VBlank $000A94
+[frame 121] VBlank returned
+[frame 121] rendering...
+[frame 121] render done
+[frame 121] present
+[frame 121] poll
+[frame 121] complete
+[frame 122] calling VBlank $000A94
+[frame 122] VBlank returned
+[frame 122] rendering...
+[frame 122] render done
+[frame 122] present
+[frame 122] poll
+[frame 122] complete
+[frame 123] calling VBlank $000A94
+[frame 123] VBlank returned
+[frame 123] rendering...
+[frame 123] render done
+[frame 123] present
+[frame 123] poll
+[frame 123] complete
+[frame 124] calling VBlank $000A94
+[frame 124] VBlank returned
+[frame 124] rendering...
+[frame 124] render done
+[frame 124] present
+[frame 124] poll
+[frame 124] complete
+[frame 125] calling VBlank $000A94
+[frame 125] VBlank returned
+[frame 125] rendering...
+[frame 125] render done
+[frame 125] present
+[frame 125] poll
+[frame 125] complete
+[frame 126] calling VBlank $000A94
+[frame 126] VBlank returned
+[frame 126] rendering...
+[frame 126] render done
+[frame 126] present
+[frame 126] poll
+[frame 126] complete
+[frame 127] calling VBlank $000A94
+[frame 127] VBlank returned
+[frame 127] rendering...
+[frame 127] render done
+[frame 127] present
+[frame 127] poll
+[frame 127] complete
+[frame 128] calling VBlank $000A94
+[frame 128] VBlank returned
+[frame 128] rendering...
+[frame 128] render done
+[frame 128] present
+[frame 128] poll
+[frame 128] complete
+[frame 129] calling VBlank $000A94
+[frame 129] VBlank returned
+[frame 129] rendering...
+[frame 129] render done
+[frame 129] present
+[frame 129] poll
+[frame 129] complete
+[frame 130] calling VBlank $000A94
+[frame 130] VBlank returned
+[frame 130] rendering...
+[frame 130] render done
+[frame 130] present
+[frame 130] poll
+[frame 130] complete
+[frame 131] calling VBlank $000A94
+[frame 131] VBlank returned
+[frame 131] rendering...
+[frame 131] render done
+[frame 131] present
+[frame 131] poll
+[frame 131] complete
+[frame 132] calling VBlank $000A94
+[frame 132] VBlank returned
+[frame 132] rendering...
+[frame 132] render done
+[frame 132] present
+[frame 132] poll
+[frame 132] complete
+[frame 133] calling VBlank $000A94
+[frame 133] VBlank returned
+[frame 133] rendering...
+[frame 133] render done
+[frame 133] present
+[frame 133] poll
+[frame 133] complete
+[frame 134] calling VBlank $000A94
+[frame 134] VBlank returned
+[frame 134] rendering...
+[frame 134] render done
+[frame 134] present
+[frame 134] poll
+[frame 134] complete
+[frame 135] calling VBlank $000A94
+[frame 135] VBlank returned
+[frame 135] rendering...
+[frame 135] render done
+[frame 135] present
+[frame 135] poll
+[frame 135] complete
+[frame 136] calling VBlank $000A94
+[frame 136] VBlank returned
+[frame 136] rendering...
+[frame 136] render done
+[frame 136] present
+[frame 136] poll
+[frame 136] complete
+[frame 137] calling VBlank $000A94
+[frame 137] VBlank returned
+[frame 137] rendering...
+[frame 137] render done
+[frame 137] present
+[frame 137] poll
+[frame 137] complete
+[frame 138] calling VBlank $000A94
+[frame 138] VBlank returned
+[frame 138] rendering...
+[frame 138] render done
+[frame 138] present
+[frame 138] poll
+[frame 138] complete
+[frame 139] calling VBlank $000A94
+[frame 139] VBlank returned
+[frame 139] rendering...
+[frame 139] render done
+[frame 139] present
+[frame 139] poll
+[frame 139] complete
+[frame 140] calling VBlank $000A94
+[frame 140] VBlank returned
+[frame 140] rendering...
+[frame 140] render done
+[frame 140] present
+[frame 140] poll
+[frame 140] complete
+[frame 141] calling VBlank $000A94
+[frame 141] VBlank returned
+[frame 141] rendering...
+[frame 141] render done
+[frame 141] present
+[frame 141] poll
+[frame 141] complete
+[frame 142] calling VBlank $000A94
+[frame 142] VBlank returned
+[frame 142] rendering...
+[frame 142] render done
+[frame 142] present
+[frame 142] poll
+[frame 142] complete
+[frame 143] calling VBlank $000A94
+[frame 143] VBlank returned
+[frame 143] rendering...
+[frame 143] render done
+[frame 143] present
+[frame 143] poll
+[frame 143] complete
+[frame 144] calling VBlank $000A94
+[frame 144] VBlank returned
+[frame 144] rendering...
+[frame 144] render done
+[frame 144] present
+[frame 144] poll
+[frame 144] complete
+[frame 145] calling VBlank $000A94
+[frame 145] VBlank returned
+[frame 145] rendering...
+[frame 145] render done
+[frame 145] present
+[frame 145] poll
+[frame 145] complete
+[frame 146] calling VBlank $000A94
+[frame 146] VBlank returned
+[frame 146] rendering...
+[frame 146] render done
+[frame 146] present
+[frame 146] poll
+[frame 146] complete
+[frame 147] calling VBlank $000A94
+[frame 147] VBlank returned
+[frame 147] rendering...
+[frame 147] render done
+[frame 147] present
+[frame 147] poll
+[frame 147] complete
+[frame 148] calling VBlank $000A94
+[frame 148] VBlank returned
+[frame 148] rendering...
+[frame 148] render done
+[frame 148] present
+[frame 148] poll
+[frame 148] complete
+[frame 149] calling VBlank $000A94
+[frame 149] VBlank returned
+[frame 149] rendering...
+[frame 149] render done
+[frame 149] present
+[frame 149] poll
+[frame 149] complete
+[frame 150] calling VBlank $000A94
+[frame 150] VBlank returned
+[frame 150] rendering...
+[frame 150] render done
+[frame 150] present
+[frame 150] poll
+[frame 150] complete
+[frame 151] calling VBlank $000A94
+[frame 151] VBlank returned
+[frame 151] rendering...
+[frame 151] render done
+[frame 151] present
+[frame 151] poll
+[frame 151] complete
+[frame 152] calling VBlank $000A94
+[frame 152] VBlank returned
+[frame 152] rendering...
+[frame 152] render done
+[frame 152] present
+[frame 152] poll
+[frame 152] complete
+[frame 153] calling VBlank $000A94
+[frame 153] VBlank returned
+[frame 153] rendering...
+[frame 153] render done
+[frame 153] present
+[frame 153] poll
+[frame 153] complete
+[frame 154] calling VBlank $000A94
+[frame 154] VBlank returned
+[frame 154] rendering...
+[frame 154] render done
+[frame 154] present
+[frame 154] poll
+[frame 154] complete
+[frame 155] calling VBlank $000A94
+[frame 155] VBlank returned
+[frame 155] rendering...
+[frame 155] render done
+[frame 155] present
+[frame 155] poll
+[frame 155] complete
+[frame 156] calling VBlank $000A94
+[frame 156] VBlank returned
+[frame 156] rendering...
+[frame 156] render done
+[frame 156] present
+[frame 156] poll
+[frame 156] complete
+[frame 157] calling VBlank $000A94
+[frame 157] VBlank returned
+[frame 157] rendering...
+[frame 157] render done
+[frame 157] present
+[frame 157] poll
+[frame 157] complete
+[frame 158] calling VBlank $000A94
+[frame 158] VBlank returned
+[frame 158] rendering...
+[frame 158] render done
+[frame 158] present
+[frame 158] poll
+[frame 158] complete
+[frame 159] calling VBlank $000A94
+[frame 159] VBlank returned
+[frame 159] rendering...
+[frame 159] render done
+[frame 159] present
+[frame 159] poll
+[frame 159] complete
+[frame 160] calling VBlank $000A94
+[frame 160] VBlank returned
+[frame 160] rendering...
+[frame 160] render done
+[frame 160] present
+[frame 160] poll
+[frame 160] complete
+[frame 161] calling VBlank $000A94
+[frame 161] VBlank returned
+[frame 161] rendering...
+[frame 161] render done
+[frame 161] present
+[frame 161] poll
+[frame 161] complete
+[frame 162] calling VBlank $000A94
+[frame 162] VBlank returned
+[frame 162] rendering...
+[frame 162] render done
+[frame 162] present
+[frame 162] poll
+[frame 162] complete
+[frame 163] calling VBlank $000A94
+[frame 163] VBlank returned
+[frame 163] rendering...
+[frame 163] render done
+[frame 163] present
+[frame 163] poll
+[frame 163] complete
+[frame 164] calling VBlank $000A94
+[frame 164] VBlank returned
+[frame 164] rendering...
+[frame 164] render done
+[frame 164] present
+[frame 164] poll
+[frame 164] complete
+[frame 165] calling VBlank $000A94
+[frame 165] VBlank returned
+[frame 165] rendering...
+[frame 165] render done
+[frame 165] present
+[frame 165] poll
+[frame 165] complete
+[frame 166] calling VBlank $000A94
+[frame 166] VBlank returned
+[frame 166] rendering...
+[frame 166] render done
+[frame 166] present
+[frame 166] poll
+[frame 166] complete
+[frame 167] calling VBlank $000A94
+[frame 167] VBlank returned
+[frame 167] rendering...
+[frame 167] render done
+[frame 167] present
+[frame 167] poll
+[frame 167] complete
+[frame 168] calling VBlank $000A94
+[frame 168] VBlank returned
+[frame 168] rendering...
+[frame 168] render done
+[frame 168] present
+[frame 168] poll
+[frame 168] complete
+[frame 169] calling VBlank $000A94
+[frame 169] VBlank returned
+[frame 169] rendering...
+[frame 169] render done
+[frame 169] present
+[frame 169] poll
+[frame 169] complete
+[frame 170] calling VBlank $000A94
+[frame 170] VBlank returned
+[frame 170] rendering...
+[frame 170] render done
+[frame 170] present
+[frame 170] poll
+[frame 170] complete
+[frame 171] calling VBlank $000A94
+[frame 171] VBlank returned
+[frame 171] rendering...
+[frame 171] render done
+[frame 171] present
+[frame 171] poll
+[frame 171] complete
+[frame 172] calling VBlank $000A94
+[frame 172] VBlank returned
+[frame 172] rendering...
+[frame 172] render done
+[frame 172] present
+[frame 172] poll
+[frame 172] complete
+[frame 173] calling VBlank $000A94
+[frame 173] VBlank returned
+[frame 173] rendering...
+[frame 173] render done
+[frame 173] present
+[frame 173] poll
+[frame 173] complete
+[frame 174] calling VBlank $000A94
+[frame 174] VBlank returned
+[frame 174] rendering...
+[frame 174] render done
+[frame 174] present
+[frame 174] poll
+[frame 174] complete
+[frame 175] calling VBlank $000A94
+[frame 175] VBlank returned
+[frame 175] rendering...
+[frame 175] render done
+[frame 175] present
+[frame 175] poll
+[frame 175] complete
+[frame 176] calling VBlank $000A94
+[frame 176] VBlank returned
+[frame 176] rendering...
+[frame 176] render done
+[frame 176] present
+[frame 176] poll
+[frame 176] complete
+[frame 177] calling VBlank $000A94
+[frame 177] VBlank returned
+[frame 177] rendering...
+[frame 177] render done
+[frame 177] present
+[frame 177] poll
+[frame 177] complete
+[frame 178] calling VBlank $000A94
+[frame 178] VBlank returned
+[frame 178] rendering...
+[frame 178] render done
+[frame 178] present
+[frame 178] poll
+[frame 178] complete
+[frame 179] calling VBlank $000A94
+[frame 179] VBlank returned
+[frame 179] rendering...
+[frame 179] render done
+[frame 179] present
+[frame 179] poll
+[frame 179] complete
+[frame 180] calling VBlank $000A94
+[frame 180] VBlank returned
+[frame 180] rendering...
+[frame 180] render done
+[frame 180] present
+[frame 180] poll
+[frame 180] complete
+[frame 181] calling VBlank $000A94
+[frame 181] VBlank returned
+[frame 181] rendering...
+[frame 181] render done
+[frame 181] present
+[frame 181] poll
+[frame 181] complete
+[frame 182] calling VBlank $000A94
+[frame 182] VBlank returned
+[frame 182] rendering...
+[frame 182] render done
+[frame 182] present
+[frame 182] poll
+[frame 182] complete
+[frame 183] calling VBlank $000A94
+[frame 183] VBlank returned
+[frame 183] rendering...
+[frame 183] render done
+[frame 183] present
+[frame 183] poll
+[frame 183] complete
+[frame 184] calling VBlank $000A94
+[frame 184] VBlank returned
+[frame 184] rendering...
+[frame 184] render done
+[frame 184] present
+[frame 184] poll
+[frame 184] complete
+[frame 185] calling VBlank $000A94
+[frame 185] VBlank returned
+[frame 185] rendering...
+[frame 185] render done
+[frame 185] present
+[frame 185] poll
+[frame 185] complete
+[frame 186] calling VBlank $000A94
+[frame 186] VBlank returned
+[frame 186] rendering...
+[frame 186] render done
+[frame 186] present
+[frame 186] poll
+[frame 186] complete
+[frame 187] calling VBlank $000A94
+[frame 187] VBlank returned
+[frame 187] rendering...
+[frame 187] render done
+[frame 187] present
+[frame 187] poll
+[frame 187] complete
+[frame 188] calling VBlank $000A94
+[frame 188] VBlank returned
+[frame 188] rendering...
+[frame 188] render done
+[frame 188] present
+[frame 188] poll
+[frame 188] complete
+[frame 189] calling VBlank $000A94
+[frame 189] VBlank returned
+[frame 189] rendering...
+[frame 189] render done
+[frame 189] present
+[frame 189] poll
+[frame 189] complete
+[frame 190] calling VBlank $000A94
+[frame 190] VBlank returned
+[frame 190] rendering...
+[frame 190] render done
+[frame 190] present
+[frame 190] poll
+[frame 190] complete
+[frame 191] calling VBlank $000A94
+[frame 191] VBlank returned
+[frame 191] rendering...
+[frame 191] render done
+[frame 191] present
+[frame 191] poll
+[frame 191] complete
+[frame 192] calling VBlank $000A94
+[frame 192] VBlank returned
+[frame 192] rendering...
+[frame 192] render done
+[frame 192] present
+[frame 192] poll
+[frame 192] complete
+[frame 193] calling VBlank $000A94
+[frame 193] VBlank returned
+[frame 193] rendering...
+[frame 193] render done
+[frame 193] present
+[frame 193] poll
+[frame 193] complete
+[frame 194] calling VBlank $000A94
+[frame 194] VBlank returned
+[frame 194] rendering...
+[frame 194] render done
+[frame 194] present
+[frame 194] poll
+[frame 194] complete
+[frame 195] calling VBlank $000A94
+[frame 195] VBlank returned
+[frame 195] rendering...
+[frame 195] render done
+[frame 195] present
+[frame 195] poll
+[frame 195] complete
+[frame 196] calling VBlank $000A94
+[frame 196] VBlank returned
+[frame 196] rendering...
+[frame 196] render done
+[frame 196] present
+[frame 196] poll
+[frame 196] complete
+[frame 197] calling VBlank $000A94
+[frame 197] VBlank returned
+[frame 197] rendering...
+[frame 197] render done
+[frame 197] present
+[frame 197] poll
+[frame 197] complete
+[frame 198] calling VBlank $000A94
+[frame 198] VBlank returned
+[frame 198] rendering...
+[frame 198] render done
+[frame 198] present
+[frame 198] poll
+[frame 198] complete
+[frame 199] calling VBlank $000A94
+[frame 199] VBlank returned
+[frame 199] rendering...
+[frame 199] render done
+[frame 199] present
+[frame 199] poll
+[frame 199] complete
+[frame 200] calling VBlank $000A94
+[frame 200] VBlank returned
+[frame 200] rendering...
+[frame 200] render done
+[frame 200] present
+[frame 200] poll
+[frame 200] complete
+[frame 201] calling VBlank $000A94
+[frame 201] VBlank returned
+[frame 201] rendering...
+[frame 201] render done
+[frame 201] present
+[frame 201] poll
+[frame 201] complete
+[frame 202] calling VBlank $000A94
+[frame 202] VBlank returned
+[frame 202] rendering...
+[frame 202] render done
+[frame 202] present
+[frame 202] poll
+[frame 202] complete
+[frame 203] calling VBlank $000A94
+[frame 203] VBlank returned
+[frame 203] rendering...
+[frame 203] render done
+[frame 203] present
+[frame 203] poll
+[frame 203] complete
+[frame 204] calling VBlank $000A94
+[frame 204] VBlank returned
+[frame 204] rendering...
+[frame 204] render done
+[frame 204] present
+[frame 204] poll
+[frame 204] complete
+[frame 205] calling VBlank $000A94
+[frame 205] VBlank returned
+[frame 205] rendering...
+[frame 205] render done
+[frame 205] present
+[frame 205] poll
+[frame 205] complete
+[frame 206] calling VBlank $000A94
+[frame 206] VBlank returned
+[frame 206] rendering...
+[frame 206] render done
+[frame 206] present
+[frame 206] poll
+[frame 206] complete
+[frame 207] calling VBlank $000A94
+[frame 207] VBlank returned
+[frame 207] rendering...
+[frame 207] render done
+[frame 207] present
+[frame 207] poll
+[frame 207] complete
+[frame 208] calling VBlank $000A94
+[frame 208] VBlank returned
+[frame 208] rendering...
+[frame 208] render done
+[frame 208] present
+[frame 208] poll
+[frame 208] complete
+[frame 209] calling VBlank $000A94
+[frame 209] VBlank returned
+[frame 209] rendering...
+[frame 209] render done
+[frame 209] present
+[frame 209] poll
+[frame 209] complete
+[frame 210] calling VBlank $000A94
+[frame 210] VBlank returned
+[frame 210] rendering...
+[frame 210] render done
+[frame 210] present
+[frame 210] poll
+[frame 210] complete
+[frame 211] calling VBlank $000A94
+[frame 211] VBlank returned
+[frame 211] rendering...
+[frame 211] render done
+[frame 211] present
+[frame 211] poll
+[frame 211] complete
+[frame 212] calling VBlank $000A94
+[frame 212] VBlank returned
+[frame 212] rendering...
+[frame 212] render done
+[frame 212] present
+[frame 212] poll
+[frame 212] complete
+[frame 213] calling VBlank $000A94
+[frame 213] VBlank returned
+[frame 213] rendering...
+[frame 213] render done
+[frame 213] present
+[frame 213] poll
+[frame 213] complete
+[frame 214] calling VBlank $000A94
+[frame 214] VBlank returned
+[frame 214] rendering...
+[frame 214] render done
+[frame 214] present
+[frame 214] poll
+[frame 214] complete
+[frame 215] calling VBlank $000A94
+[frame 215] VBlank returned
+[frame 215] rendering...
+[frame 215] render done
+[frame 215] present
+[frame 215] poll
+[frame 215] complete
+[frame 216] calling VBlank $000A94
+[frame 216] VBlank returned
+[frame 216] rendering...
+[frame 216] render done
+[frame 216] present
+[frame 216] poll
+[frame 216] complete
+[frame 217] calling VBlank $000A94
+[frame 217] VBlank returned
+[frame 217] rendering...
+[frame 217] render done
+[frame 217] present
+[frame 217] poll
+[frame 217] complete
+[frame 218] calling VBlank $000A94
+[frame 218] VBlank returned
+[frame 218] rendering...
+[frame 218] render done
+[frame 218] present
+[frame 218] poll
+[frame 218] complete
+[frame 219] calling VBlank $000A94
+[frame 219] VBlank returned
+[frame 219] rendering...
+[frame 219] render done
+[frame 219] present
+[frame 219] poll
+[frame 219] complete
+[frame 220] calling VBlank $000A94
+[frame 220] VBlank returned
+[frame 220] rendering...
+[frame 220] render done
+[frame 220] present
+[frame 220] poll
+[frame 220] complete
+[frame 221] calling VBlank $000A94
+[frame 221] VBlank returned
+[frame 221] rendering...
+[frame 221] render done
+[frame 221] present
+[frame 221] poll
+[frame 221] complete
+[frame 222] calling VBlank $000A94
+[frame 222] VBlank returned
+[frame 222] rendering...
+[frame 222] render done
+[frame 222] present
+[frame 222] poll
+[frame 222] complete
+[frame 223] calling VBlank $000A94
+[frame 223] VBlank returned
+[frame 223] rendering...
+[frame 223] render done
+[frame 223] present
+[frame 223] poll
+[frame 223] complete
+[frame 224] calling VBlank $000A94
+[frame 224] VBlank returned
+[frame 224] rendering...
+[frame 224] render done
+[frame 224] present
+[frame 224] poll
+[frame 224] complete
+[frame 225] calling VBlank $000A94
+[frame 225] VBlank returned
+[frame 225] rendering...
+[frame 225] render done
+[frame 225] present
+[frame 225] poll
+[frame 225] complete
+[frame 226] calling VBlank $000A94
+[frame 226] VBlank returned
+[frame 226] rendering...
+[frame 226] render done
+[frame 226] present
+[frame 226] poll
+[frame 226] complete
+[frame 227] calling VBlank $000A94
+[frame 227] VBlank returned
+[frame 227] rendering...
+[frame 227] render done
+[frame 227] present
+[frame 227] poll
+[frame 227] complete
+[frame 228] calling VBlank $000A94
+[frame 228] VBlank returned
+[frame 228] rendering...
+[frame 228] render done
+[frame 228] present
+[frame 228] poll
+[frame 228] complete
+[frame 229] calling VBlank $000A94
+[frame 229] VBlank returned
+[frame 229] rendering...
+[frame 229] render done
+[frame 229] present
+[frame 229] poll
+[frame 229] complete
+[frame 230] calling VBlank $000A94
+[frame 230] VBlank returned
+[frame 230] rendering...
+[frame 230] render done
+[frame 230] present
+[frame 230] poll
+[frame 230] complete
+[frame 231] calling VBlank $000A94
+[frame 231] VBlank returned
+[frame 231] rendering...
+[frame 231] render done
+[frame 231] present
+[frame 231] poll
+[frame 231] complete
+[frame 232] calling VBlank $000A94
+[frame 232] VBlank returned
+[frame 232] rendering...
+[frame 232] render done
+[frame 232] present
+[frame 232] poll
+[frame 232] complete
+[frame 233] calling VBlank $000A94
+[frame 233] VBlank returned
+[frame 233] rendering...
+[frame 233] render done
+[frame 233] present
+[frame 233] poll
+[frame 233] complete
+[frame 234] calling VBlank $000A94
+[frame 234] VBlank returned
+[frame 234] rendering...
+[frame 234] render done
+[frame 234] present
+[frame 234] poll
+[frame 234] complete
+[frame 235] calling VBlank $000A94
+[frame 235] VBlank returned
+[frame 235] rendering...
+[frame 235] render done
+[frame 235] present
+[frame 235] poll
+[frame 235] complete
+[frame 236] calling VBlank $000A94
+[frame 236] VBlank returned
+[frame 236] rendering...
+[frame 236] render done
+[frame 236] present
+[frame 236] poll
+[frame 236] complete
+[frame 237] calling VBlank $000A94
+[frame 237] VBlank returned
+[frame 237] rendering...
+[frame 237] render done
+[frame 237] present
+[frame 237] poll
+[frame 237] complete
+[frame 238] calling VBlank $000A94
+[frame 238] VBlank returned
+[frame 238] rendering...
+[frame 238] render done
+[frame 238] present
+[frame 238] poll
+[frame 238] complete
+[frame 239] calling VBlank $000A94
+[frame 239] VBlank returned
+[frame 239] rendering...
+[frame 239] render done
+[frame 239] present
+[frame 239] poll
+[frame 239] complete
+[frame 240] calling VBlank $000A94
+[frame 240] VBlank returned
+[frame 240] rendering...
+[frame 240] render done
+[frame 240] present
+[frame 240] poll
+[frame 240] complete
+[frame 241] calling VBlank $000A94
+[frame 241] VBlank returned
+[frame 241] rendering...
+[frame 241] render done
+[frame 241] present
+[frame 241] poll
+[frame 241] complete
+[frame 242] calling VBlank $000A94
+[frame 242] VBlank returned
+[frame 242] rendering...
+[frame 242] render done
+[frame 242] present
+[frame 242] poll
+[frame 242] complete
+[frame 243] calling VBlank $000A94
+[frame 243] VBlank returned
+[frame 243] rendering...
+[frame 243] render done
+[frame 243] present
+[frame 243] poll
+[frame 243] complete
+[frame 244] calling VBlank $000A94
+[frame 244] VBlank returned
+[frame 244] rendering...
+[frame 244] render done
+[frame 244] present
+[frame 244] poll
+[frame 244] complete
+[frame 245] calling VBlank $000A94
+[frame 245] VBlank returned
+[frame 245] rendering...
+[frame 245] render done
+[frame 245] present
+[frame 245] poll
+[frame 245] complete
+[frame 246] calling VBlank $000A94
+[frame 246] VBlank returned
+[frame 246] rendering...
+[frame 246] render done
+[frame 246] present
+[frame 246] poll
+[frame 246] complete
+[frame 247] calling VBlank $000A94
+[frame 247] VBlank returned
+[frame 247] rendering...
+[frame 247] render done
+[frame 247] present
+[frame 247] poll
+[frame 247] complete
+[frame 248] calling VBlank $000A94
+[frame 248] VBlank returned
+[frame 248] rendering...
+[frame 248] render done
+[frame 248] present
+[frame 248] poll
+[frame 248] complete
+[frame 249] calling VBlank $000A94
+[frame 249] VBlank returned
+[frame 249] rendering...
+[frame 249] render done
+[frame 249] present
+[frame 249] poll
+[frame 249] complete
+[frame 250] calling VBlank $000A94
+[frame 250] VBlank returned
+[frame 250] rendering...
+[frame 250] render done
+[frame 250] present
+[frame 250] poll
+[frame 250] complete
+[frame 251] calling VBlank $000A94
+[frame 251] VBlank returned
+[frame 251] rendering...
+[frame 251] render done
+[frame 251] present
+[frame 251] poll
+[frame 251] complete
+[frame 252] calling VBlank $000A94
+[frame 252] VBlank returned
+[frame 252] rendering...
+[frame 252] render done
+[frame 252] present
+[frame 252] poll
+[frame 252] complete
+[frame 253] calling VBlank $000A94
+[frame 253] VBlank returned
+[frame 253] rendering...
+[frame 253] render done
+[frame 253] present
+[frame 253] poll
+[frame 253] complete
+[frame 254] calling VBlank $000A94
+[frame 254] VBlank returned
+[frame 254] rendering...
+[frame 254] render done
+[frame 254] present
+[frame 254] poll
+[frame 254] complete
+[frame 255] calling VBlank $000A94
+[frame 255] VBlank returned
+[frame 255] rendering...
+[frame 255] render done
+[frame 255] present
+[frame 255] poll
+[frame 255] complete
+[frame 256] calling VBlank $000A94
+[frame 256] VBlank returned
+[frame 256] rendering...
+[frame 256] render done
+[frame 256] present
+[frame 256] poll
+[frame 256] complete
+[frame 257] calling VBlank $000A94
+[frame 257] VBlank returned
+[frame 257] rendering...
+[frame 257] render done
+[frame 257] present
+[frame 257] poll
+[frame 257] complete
+[frame 258] calling VBlank $000A94
+[frame 258] VBlank returned
+[frame 258] rendering...
+[frame 258] render done
+[frame 258] present
+[frame 258] poll
+[frame 258] complete
+[frame 259] calling VBlank $000A94
+[frame 259] VBlank returned
+[frame 259] rendering...
+[frame 259] render done
+[frame 259] present
+[frame 259] poll
+[frame 259] complete
+[frame 260] calling VBlank $000A94
+[frame 260] VBlank returned
+[frame 260] rendering...
+[frame 260] render done
+[frame 260] present
+[frame 260] poll
+[frame 260] complete
+[frame 261] calling VBlank $000A94
+[frame 261] VBlank returned
+[frame 261] rendering...
+[frame 261] render done
+[frame 261] present
+[frame 261] poll
+[frame 261] complete
+[frame 262] calling VBlank $000A94
+[frame 262] VBlank returned
+[frame 262] rendering...
+[frame 262] render done
+[frame 262] present
+[frame 262] poll
+[frame 262] complete
+[frame 263] calling VBlank $000A94
+[frame 263] VBlank returned
+[frame 263] rendering...
+[frame 263] render done
+[frame 263] present
+[frame 263] poll
+[frame 263] complete
+[frame 264] calling VBlank $000A94
+[frame 264] VBlank returned
+[frame 264] rendering...
+[frame 264] render done
+[frame 264] present
+[frame 264] poll
+[frame 264] complete
+[frame 265] calling VBlank $000A94
+[frame 265] VBlank returned
+[frame 265] rendering...
+[frame 265] render done
+[frame 265] present
+[frame 265] poll
+[frame 265] complete
+[frame 266] calling VBlank $000A94
+[frame 266] VBlank returned
+[frame 266] rendering...
+[frame 266] render done
+[frame 266] present
+[frame 266] poll
+[frame 266] complete
+[frame 267] calling VBlank $000A94
+[frame 267] VBlank returned
+[frame 267] rendering...
+[frame 267] render done
+[frame 267] present
+[frame 267] poll
+[frame 267] complete
+[frame 268] calling VBlank $000A94
+[frame 268] VBlank returned
+[frame 268] rendering...
+[frame 268] render done
+[frame 268] present
+[frame 268] poll
+[frame 268] complete
+[frame 269] calling VBlank $000A94
+[frame 269] VBlank returned
+[frame 269] rendering...
+[frame 269] render done
+[frame 269] present
+[frame 269] poll
+[frame 269] complete
+[frame 270] calling VBlank $000A94
+[frame 270] VBlank returned
+[frame 270] rendering...
+[frame 270] render done
+[frame 270] present
+[frame 270] poll
+[frame 270] complete
+[frame 271] calling VBlank $000A94
+[frame 271] VBlank returned
+[frame 271] rendering...
+[frame 271] render done
+[frame 271] present
+[frame 271] poll
+[frame 271] complete
+[frame 272] calling VBlank $000A94
+[frame 272] VBlank returned
+[frame 272] rendering...
+[frame 272] render done
+[frame 272] present
+[frame 272] poll
+[frame 272] complete
+[frame 273] calling VBlank $000A94
+[frame 273] VBlank returned
+[frame 273] rendering...
+[frame 273] render done
+[frame 273] present
+[frame 273] poll
+[frame 273] complete
+[frame 274] calling VBlank $000A94
+[frame 274] VBlank returned
+[frame 274] rendering...
+[frame 274] render done
+[frame 274] present
+[frame 274] poll
+[frame 274] complete
+[frame 275] calling VBlank $000A94
+[frame 275] VBlank returned
+[frame 275] rendering...
+[frame 275] render done
+[frame 275] present
+[frame 275] poll
+[frame 275] complete
+[frame 276] calling VBlank $000A94
+[frame 276] VBlank returned
+[frame 276] rendering...
+[frame 276] render done
+[frame 276] present
+[frame 276] poll
+[frame 276] complete
+[frame 277] calling VBlank $000A94
+[frame 277] VBlank returned
+[frame 277] rendering...
+[frame 277] render done
+[frame 277] present
+[frame 277] poll
+[frame 277] complete
+[frame 278] calling VBlank $000A94
+[frame 278] VBlank returned
+[frame 278] rendering...
+[frame 278] render done
+[frame 278] present
+[frame 278] poll
+[frame 278] complete
+[frame 279] calling VBlank $000A94
+[frame 279] VBlank returned
+[frame 279] rendering...
+[frame 279] render done
+[frame 279] present
+[frame 279] poll
+[frame 279] complete
+[frame 280] calling VBlank $000A94
+[frame 280] VBlank returned
+[frame 280] rendering...
+[frame 280] render done
+[frame 280] present
+[frame 280] poll
+[frame 280] complete
+[frame 281] calling VBlank $000A94
+[frame 281] VBlank returned
+[frame 281] rendering...
+[frame 281] render done
+[frame 281] present
+[frame 281] poll
+[frame 281] complete
+[frame 282] calling VBlank $000A94
+[frame 282] VBlank returned
+[frame 282] rendering...
+[frame 282] render done
+[frame 282] present
+[frame 282] poll
+[frame 282] complete
+[frame 283] calling VBlank $000A94
+[frame 283] VBlank returned
+[frame 283] rendering...
+[frame 283] render done
+[frame 283] present
+[frame 283] poll
+[frame 283] complete
+[frame 284] calling VBlank $000A94
+[frame 284] VBlank returned
+[frame 284] rendering...
+[frame 284] render done
+[frame 284] present
+[frame 284] poll
+[frame 284] complete
+[frame 285] calling VBlank $000A94
+[frame 285] VBlank returned
+[frame 285] rendering...
+[frame 285] render done
+[frame 285] present
+[frame 285] poll
+[frame 285] complete
+[frame 286] calling VBlank $000A94
+[frame 286] VBlank returned
+[frame 286] rendering...
+[frame 286] render done
+[frame 286] present
+[frame 286] poll
+[frame 286] complete
+[frame 287] calling VBlank $000A94
+[frame 287] VBlank returned
+[frame 287] rendering...
+[frame 287] render done
+[frame 287] present
+[frame 287] poll
+[frame 287] complete
+[frame 288] calling VBlank $000A94
+[frame 288] VBlank returned
+[frame 288] rendering...
+[frame 288] render done
+[frame 288] present
+[frame 288] poll
+[frame 288] complete
+[frame 289] calling VBlank $000A94
+[frame 289] VBlank returned
+[frame 289] rendering...
+[frame 289] render done
+[frame 289] present
+[frame 289] poll
+[frame 289] complete
+[frame 290] calling VBlank $000A94
+[frame 290] VBlank returned
+[frame 290] rendering...
+[frame 290] render done
+[frame 290] present
+[frame 290] poll
+[frame 290] complete
+[frame 291] calling VBlank $000A94
+[frame 291] VBlank returned
+[frame 291] rendering...
+[frame 291] render done
+[frame 291] present
+[frame 291] poll
+[frame 291] complete
+[frame 292] calling VBlank $000A94
+[frame 292] VBlank returned
+[frame 292] rendering...
+[frame 292] render done
+[frame 292] present
+[frame 292] poll
+[frame 292] complete
+[frame 293] calling VBlank $000A94
+[frame 293] VBlank returned
+[frame 293] rendering...
+[frame 293] render done
+[frame 293] present
+[frame 293] poll
+[frame 293] complete
+[frame 294] calling VBlank $000A94
+[frame 294] VBlank returned
+[frame 294] rendering...
+[frame 294] render done
+[frame 294] present
+[frame 294] poll
+[frame 294] complete
+[frame 295] calling VBlank $000A94
+[frame 295] VBlank returned
+[frame 295] rendering...
+[frame 295] render done
+[frame 295] present
+[frame 295] poll
+[frame 295] complete
+[frame 296] calling VBlank $000A94
+[frame 296] VBlank returned
+[frame 296] rendering...
+[frame 296] render done
+[frame 296] present
+[frame 296] poll
+[frame 296] complete
+[frame 297] calling VBlank $000A94
+[frame 297] VBlank returned
+[frame 297] rendering...
+[frame 297] render done
+[frame 297] present
+[frame 297] poll
+[frame 297] complete
+[frame 298] calling VBlank $000A94
+[frame 298] VBlank returned
+[frame 298] rendering...
+[frame 298] render done
+[frame 298] present
+[frame 298] poll
+[frame 298] complete
+[frame 299] calling VBlank $000A94
+[frame 299] VBlank returned
+[frame 299] rendering...
+[frame 299] render done
+[frame 299] present
+[frame 299] poll
+[frame 299] complete
+[frame 300] calling VBlank $000A94
+[frame 300] VBlank returned
+[frame 300] rendering...
+[frame 300] render done
+[frame 300] present
+[frame 300] poll
+[frame 300] complete
+[frame 301] calling VBlank $000A94
+[frame 301] VBlank returned
+[frame 301] rendering...
+[frame 301] render done
+[frame 301] present
+[frame 301] poll
+[frame 301] complete
+[frame 302] calling VBlank $000A94
+[frame 302] VBlank returned
+[frame 302] rendering...
+[frame 302] render done
+[frame 302] present
+[frame 302] poll
+[frame 302] complete
+[frame 303] calling VBlank $000A94
+[frame 303] VBlank returned
+[frame 303] rendering...
+[frame 303] render done
+[frame 303] present
+[frame 303] poll
+[frame 303] complete
+[frame 304] calling VBlank $000A94
+[frame 304] VBlank returned
+[frame 304] rendering...
+[frame 304] render done
+[frame 304] present
+[frame 304] poll
+[frame 304] complete
+[frame 305] calling VBlank $000A94
+[frame 305] VBlank returned
+[frame 305] rendering...
+[frame 305] render done
+[frame 305] present
+[frame 305] poll
+[frame 305] complete
+[frame 306] calling VBlank $000A94
+[frame 306] VBlank returned
+[frame 306] rendering...
+[frame 306] render done
+[frame 306] present
+[frame 306] poll
+[frame 306] complete
+[frame 307] calling VBlank $000A94
+[frame 307] VBlank returned
+[frame 307] rendering...
+[frame 307] render done
+[frame 307] present
+[frame 307] poll
+[frame 307] complete
+[frame 308] calling VBlank $000A94
+[frame 308] VBlank returned
+[frame 308] rendering...
+[frame 308] render done
+[frame 308] present
+[frame 308] poll
+[frame 308] complete
+[frame 309] calling VBlank $000A94
+[frame 309] VBlank returned
+[frame 309] rendering...
+[frame 309] render done
+[frame 309] present
+[frame 309] poll
+[frame 309] complete
+[frame 310] calling VBlank $000A94
+[frame 310] VBlank returned
+[frame 310] rendering...
+[frame 310] render done
+[frame 310] present
+[frame 310] poll
+[frame 310] complete
+[frame 311] calling VBlank $000A94
+[frame 311] VBlank returned
+[frame 311] rendering...
+[frame 311] render done
+[frame 311] present
+[frame 311] poll
+[frame 311] complete
+[frame 312] calling VBlank $000A94
+[frame 312] VBlank returned
+[frame 312] rendering...
+[frame 312] render done
+[frame 312] present
+[frame 312] poll
+[frame 312] complete
+[frame 313] calling VBlank $000A94
+[frame 313] VBlank returned
+[frame 313] rendering...
+[frame 313] render done
+[frame 313] present
+[frame 313] poll
+[frame 313] complete
+[frame 314] calling VBlank $000A94
+[frame 314] VBlank returned
+[frame 314] rendering...
+[frame 314] render done
+[frame 314] present
+[frame 314] poll
+[frame 314] complete
+[frame 315] calling VBlank $000A94
+[frame 315] VBlank returned
+[frame 315] rendering...
+[frame 315] render done
+[frame 315] present
+[frame 315] poll
+[frame 315] complete
+[frame 316] calling VBlank $000A94
+[frame 316] VBlank returned
+[frame 316] rendering...
+[frame 316] render done
+[frame 316] present
+[frame 316] poll
+[frame 316] complete
+[frame 317] calling VBlank $000A94
+[frame 317] VBlank returned
+[frame 317] rendering...
+[frame 317] render done
+[frame 317] present
+[frame 317] poll
+[frame 317] complete
+[frame 318] calling VBlank $000A94
+[frame 318] VBlank returned
+[frame 318] rendering...
+[frame 318] render done
+[frame 318] present
+[frame 318] poll
+[frame 318] complete
+[frame 319] calling VBlank $000A94
+[frame 319] VBlank returned
+[frame 319] rendering...
+[frame 319] render done
+[frame 319] present
+[frame 319] poll
+[frame 319] complete
+[frame 320] calling VBlank $000A94
+[frame 320] VBlank returned
+[frame 320] rendering...
+[frame 320] render done
+[frame 320] present
+[frame 320] poll
+[frame 320] complete
+[frame 321] calling VBlank $000A94
+[frame 321] VBlank returned
+[frame 321] rendering...
+[frame 321] render done
+[frame 321] present
+[frame 321] poll
+[frame 321] complete
+[frame 322] calling VBlank $000A94
+[frame 322] VBlank returned
+[frame 322] rendering...
+[frame 322] render done
+[frame 322] present
+[frame 322] poll
+[frame 322] complete
+[frame 323] calling VBlank $000A94
+[frame 323] VBlank returned
+[frame 323] rendering...
+[frame 323] render done
+[frame 323] present
+[frame 323] poll
+[frame 323] complete
+[frame 324] calling VBlank $000A94
+[frame 324] VBlank returned
+[frame 324] rendering...
+[frame 324] render done
+[frame 324] present
+[frame 324] poll
+[frame 324] complete
+[frame 325] calling VBlank $000A94
+[frame 325] VBlank returned
+[frame 325] rendering...
+[frame 325] render done
+[frame 325] present
+[frame 325] poll
+[frame 325] complete
+[frame 326] calling VBlank $000A94
+[frame 326] VBlank returned
+[frame 326] rendering...
+[frame 326] render done
+[frame 326] present
+[frame 326] poll
+[frame 326] complete
+[frame 327] calling VBlank $000A94
+[frame 327] VBlank returned
+[frame 327] rendering...
+[frame 327] render done
+[frame 327] present
+[frame 327] poll
+[frame 327] complete
+[frame 328] calling VBlank $000A94
+[frame 328] VBlank returned
+[frame 328] rendering...
+[frame 328] render done
+[frame 328] present
+[frame 328] poll
+[frame 328] complete
+[frame 329] calling VBlank $000A94
+[frame 329] VBlank returned
+[frame 329] rendering...
+[frame 329] render done
+[frame 329] present
+[frame 329] poll
+[frame 329] complete
+[frame 330] calling VBlank $000A94
+[frame 330] VBlank returned
+[frame 330] rendering...
+[frame 330] render done
+[frame 330] present
+[frame 330] poll
+[frame 330] complete
+[frame 331] calling VBlank $000A94
+[frame 331] VBlank returned
+[frame 331] rendering...
+[frame 331] render done
+[frame 331] present
+[frame 331] poll
+[frame 331] complete
+[frame 332] calling VBlank $000A94
+[frame 332] VBlank returned
+[frame 332] rendering...
+[frame 332] render done
+[frame 332] present
+[frame 332] poll
+[frame 332] complete
+[frame 333] calling VBlank $000A94
+[frame 333] VBlank returned
+[frame 333] rendering...
+[frame 333] render done
+[frame 333] present
+[frame 333] poll
+[frame 333] complete
+[frame 334] calling VBlank $000A94
+[frame 334] VBlank returned
+[frame 334] rendering...
+[frame 334] render done
+[frame 334] present
+[frame 334] poll
+[frame 334] complete
+[frame 335] calling VBlank $000A94
+[frame 335] VBlank returned
+[frame 335] rendering...
+[frame 335] render done
+[frame 335] present
+[frame 335] poll
+[frame 335] complete
+[frame 336] calling VBlank $000A94
+[frame 336] VBlank returned
+[frame 336] rendering...
+[frame 336] render done
+[frame 336] present
+[frame 336] poll
+[frame 336] complete
+[frame 337] calling VBlank $000A94
+[frame 337] VBlank returned
+[frame 337] rendering...
+[frame 337] render done
+[frame 337] present
+[frame 337] poll
+[frame 337] complete
+[frame 338] calling VBlank $000A94
+[frame 338] VBlank returned
+[frame 338] rendering...
+[frame 338] render done
+[frame 338] present
+[frame 338] poll
+[frame 338] complete
+[frame 339] calling VBlank $000A94
+[frame 339] VBlank returned
+[frame 339] rendering...
+[frame 339] render done
+[frame 339] present
+[frame 339] poll
+[frame 339] complete
+[frame 340] calling VBlank $000A94
+[frame 340] VBlank returned
+[frame 340] rendering...
+[frame 340] render done
+[frame 340] present
+[frame 340] poll
+[frame 340] complete
+[frame 341] calling VBlank $000A94
+[frame 341] VBlank returned
+[frame 341] rendering...
+[frame 341] render done
+[frame 341] present
+[frame 341] poll
+[frame 341] complete
+[frame 342] calling VBlank $000A94
+[frame 342] VBlank returned
+[frame 342] rendering...
+[frame 342] render done
+[frame 342] present
+[frame 342] poll
+[frame 342] complete
+[frame 343] calling VBlank $000A94
+[frame 343] VBlank returned
+[frame 343] rendering...
+[frame 343] render done
+[frame 343] present
+[frame 343] poll
+[frame 343] complete
+[frame 344] calling VBlank $000A94
+[frame 344] VBlank returned
+[frame 344] rendering...
+[frame 344] render done
+[frame 344] present
+[frame 344] poll
+[frame 344] complete
+[frame 345] calling VBlank $000A94
+[frame 345] VBlank returned
+[frame 345] rendering...
+[frame 345] render done
+[frame 345] present
+[frame 345] poll
+[frame 345] complete
+[frame 346] calling VBlank $000A94
+[frame 346] VBlank returned
+[frame 346] rendering...
+[frame 346] render done
+[frame 346] present
+[frame 346] poll
+[frame 346] complete
+[frame 347] calling VBlank $000A94
+[frame 347] VBlank returned
+[frame 347] rendering...
+[frame 347] render done
+[frame 347] present
+[frame 347] poll
+[frame 347] complete
+[frame 348] calling VBlank $000A94
+[frame 348] VBlank returned
+[frame 348] rendering...
+[frame 348] render done
+[frame 348] present
+[frame 348] poll
+[frame 348] complete
+[frame 349] calling VBlank $000A94
+[frame 349] VBlank returned
+[frame 349] rendering...
+[frame 349] render done
+[frame 349] present
+[frame 349] poll
+[frame 349] complete
+[frame 350] calling VBlank $000A94
+[frame 350] VBlank returned
+[frame 350] rendering...
+[frame 350] render done
+[frame 350] present
+[frame 350] poll
+[frame 350] complete
+[frame 351] calling VBlank $000A94
+[frame 351] VBlank returned
+[frame 351] rendering...
+[frame 351] render done
+[frame 351] present
+[frame 351] poll
+[frame 351] complete
+[frame 352] calling VBlank $000A94
+[frame 352] VBlank returned
+[frame 352] rendering...
+[frame 352] render done
+[frame 352] present
+[frame 352] poll
+[frame 352] complete
+[frame 353] calling VBlank $000A94
+[frame 353] VBlank returned
+[frame 353] rendering...
+[frame 353] render done
+[frame 353] present
+[frame 353] poll
+[frame 353] complete
+[frame 354] calling VBlank $000A94
+[frame 354] VBlank returned
+[frame 354] rendering...
+[frame 354] render done
+[frame 354] present
+[frame 354] poll
+[frame 354] complete
+[frame 355] calling VBlank $000A94
+[frame 355] VBlank returned
+[frame 355] rendering...
+[frame 355] render done
+[frame 355] present
+[frame 355] poll
+[frame 355] complete
+[frame 356] calling VBlank $000A94
+[frame 356] VBlank returned
+[frame 356] rendering...
+[frame 356] render done
+[frame 356] present
+[frame 356] poll
+[frame 356] complete
+[frame 357] calling VBlank $000A94
+[frame 357] VBlank returned
+[frame 357] rendering...
+[frame 357] render done
+[frame 357] present
+[frame 357] poll
+[frame 357] complete
+[frame 358] calling VBlank $000A94
+[frame 358] VBlank returned
+[frame 358] rendering...
+[frame 358] render done
+[frame 358] present
+[frame 358] poll
+[frame 358] complete
+[frame 359] calling VBlank $000A94
+[frame 359] VBlank returned
+[frame 359] rendering...
+[frame 359] render done
+[frame 359] present
+[frame 359] poll
+[frame 359] complete
+[frame 360] calling VBlank $000A94
+[frame 360] VBlank returned
+[frame 360] rendering...
+[frame 360] render done
+[frame 360] present
+[frame 360] poll
+[frame 360] complete
+[frame 361] calling VBlank $000A94
+[frame 361] VBlank returned
+[frame 361] rendering...
+[frame 361] render done
+[frame 361] present
+[frame 361] poll
+[frame 361] complete
+[frame 362] calling VBlank $000A94
+[frame 362] VBlank returned
+[frame 362] rendering...
+[frame 362] render done
+[frame 362] present
+[frame 362] poll
+[frame 362] complete
+[frame 363] calling VBlank $000A94
+[frame 363] VBlank returned
+[frame 363] rendering...
+[frame 363] render done
+[frame 363] present
+[frame 363] poll
+[frame 363] complete
+[frame 364] calling VBlank $000A94
+[frame 364] VBlank returned
+[frame 364] rendering...
+[frame 364] render done
+[frame 364] present
+[frame 364] poll
+[frame 364] complete
+[frame 365] calling VBlank $000A94
+[frame 365] VBlank returned
+[frame 365] rendering...
+[frame 365] render done
+[frame 365] present
+[frame 365] poll
+[frame 365] complete
+[frame 366] calling VBlank $000A94
+[frame 366] VBlank returned
+[frame 366] rendering...
+[frame 366] render done
+[frame 366] present
+[frame 366] poll
+[frame 366] complete
+[frame 367] calling VBlank $000A94
+[frame 367] VBlank returned
+[frame 367] rendering...
+[frame 367] render done
+[frame 367] present
+[frame 367] poll
+[frame 367] complete
+[frame 368] calling VBlank $000A94
+[frame 368] VBlank returned
+[frame 368] rendering...
+[frame 368] render done
+[frame 368] present
+[frame 368] poll
+[frame 368] complete
+[frame 369] calling VBlank $000A94
+[frame 369] VBlank returned
+[frame 369] rendering...
+[frame 369] render done
+[frame 369] present
+[frame 369] poll
+[frame 369] complete
+[frame 370] calling VBlank $000A94
+[frame 370] VBlank returned
+[frame 370] rendering...
+[frame 370] render done
+[frame 370] present
+[frame 370] poll
+[frame 370] complete
+[frame 371] calling VBlank $000A94
+[frame 371] VBlank returned
+[frame 371] rendering...
+[frame 371] render done
+[frame 371] present
+[frame 371] poll
+[frame 371] complete
+[frame 372] calling VBlank $000A94
+[frame 372] VBlank returned
+[frame 372] rendering...
+[frame 372] render done
+[frame 372] present
+[frame 372] poll
+[frame 372] complete
+[frame 373] calling VBlank $000A94
+[frame 373] VBlank returned
+[frame 373] rendering...
+[frame 373] render done
+[frame 373] present
+[frame 373] poll
+[frame 373] complete
+[frame 374] calling VBlank $000A94
+[frame 374] VBlank returned
+[frame 374] rendering...
+[frame 374] render done
+[frame 374] present
+[frame 374] poll
+[frame 374] complete
+[frame 375] calling VBlank $000A94
+[frame 375] VBlank returned
+[frame 375] rendering...
+[frame 375] render done
+[frame 375] present
+[frame 375] poll
+[frame 375] complete
+[frame 376] calling VBlank $000A94
+[frame 376] VBlank returned
+[frame 376] rendering...
+[frame 376] render done
+[frame 376] present
+[frame 376] poll
+[frame 376] complete
+[frame 377] calling VBlank $000A94
+[frame 377] VBlank returned
+[frame 377] rendering...
+[frame 377] render done
+[frame 377] present
+[frame 377] poll
+[frame 377] complete
+[frame 378] calling VBlank $000A94
+[frame 378] VBlank returned
+[frame 378] rendering...
+[frame 378] render done
+[frame 378] present
+[frame 378] poll
+[frame 378] complete
+[frame 379] calling VBlank $000A94
+[frame 379] VBlank returned
+[frame 379] rendering...
+[frame 379] render done
+[frame 379] present
+[frame 379] poll
+[frame 379] complete
+[frame 380] calling VBlank $000A94
+[frame 380] VBlank returned
+[frame 380] rendering...
+[frame 380] render done
+[frame 380] present
+[frame 380] poll
+[frame 380] complete
+[frame 381] calling VBlank $000A94
+[frame 381] VBlank returned
+[frame 381] rendering...
+[frame 381] render done
+[frame 381] present
+[frame 381] poll
+[frame 381] complete
+[frame 382] calling VBlank $000A94
+[frame 382] VBlank returned
+[frame 382] rendering...
+[frame 382] render done
+[frame 382] present
+[frame 382] poll
+[frame 382] complete
+[frame 383] calling VBlank $000A94
+[frame 383] VBlank returned
+[frame 383] rendering...
+[frame 383] render done
+[frame 383] present
+[frame 383] poll
+[frame 383] complete
+[frame 384] calling VBlank $000A94
+[frame 384] VBlank returned
+[frame 384] rendering...
+[frame 384] render done
+[frame 384] present
+[frame 384] poll
+[frame 384] complete
+[frame 385] calling VBlank $000A94
+[frame 385] VBlank returned
+[frame 385] rendering...
+[frame 385] render done
+[frame 385] present
+[frame 385] poll
+[frame 385] complete
+[frame 386] calling VBlank $000A94
+[frame 386] VBlank returned
+[frame 386] rendering...
+[frame 386] render done
+[frame 386] present
+[frame 386] poll
+[frame 386] complete
+[frame 387] calling VBlank $000A94
+[frame 387] VBlank returned
+[frame 387] rendering...
+[frame 387] render done
+[frame 387] present
+[frame 387] poll
+[frame 387] complete
+[frame 388] calling VBlank $000A94
+[frame 388] VBlank returned
+[frame 388] rendering...
+[frame 388] render done
+[frame 388] present
+[frame 388] poll
+[frame 388] complete
+[frame 389] calling VBlank $000A94
+[frame 389] VBlank returned
+[frame 389] rendering...
+[frame 389] render done
+[frame 389] present
+[frame 389] poll
+[frame 389] complete
+[frame 390] calling VBlank $000A94
+[frame 390] VBlank returned
+[frame 390] rendering...
+[frame 390] render done
+[frame 390] present
+[frame 390] poll
+[frame 390] complete
+[frame 391] calling VBlank $000A94
+[frame 391] VBlank returned
+[frame 391] rendering...
+[frame 391] render done
+[frame 391] present
+[frame 391] poll
+[frame 391] complete
+[frame 392] calling VBlank $000A94
+[frame 392] VBlank returned
+[frame 392] rendering...
+[frame 392] render done
+[frame 392] present
+[frame 392] poll
+[frame 392] complete
+[frame 393] calling VBlank $000A94
+[frame 393] VBlank returned
+[frame 393] rendering...
+[frame 393] render done
+[frame 393] present
+[frame 393] poll
+[frame 393] complete
+[frame 394] calling VBlank $000A94
+[frame 394] VBlank returned
+[frame 394] rendering...
+[frame 394] render done
+[frame 394] present
+[frame 394] poll
+[frame 394] complete
+[frame 395] calling VBlank $000A94
+[frame 395] VBlank returned
+[frame 395] rendering...
+[frame 395] render done
+[frame 395] present
+[frame 395] poll
+[frame 395] complete
+[frame 396] calling VBlank $000A94
+[frame 396] VBlank returned
+[frame 396] rendering...
+[frame 396] render done
+[frame 396] present
+[frame 396] poll
+[frame 396] complete
+[frame 397] calling VBlank $000A94
+[frame 397] VBlank returned
+[frame 397] rendering...
+[frame 397] render done
+[frame 397] present
+[frame 397] poll
+[frame 397] complete
+[frame 398] calling VBlank $000A94
+[frame 398] VBlank returned
+[frame 398] rendering...
+[frame 398] render done
+[frame 398] present
+[frame 398] poll
+[frame 398] complete
+[frame 399] calling VBlank $000A94
+[frame 399] VBlank returned
+[frame 399] rendering...
+[frame 399] render done
+[frame 399] present
+[frame 399] poll
+[frame 399] complete
+[frame 400] calling VBlank $000A94
+[frame 400] VBlank returned
+[frame 400] rendering...
+[frame 400] render done
+[frame 400] present
+[frame 400] poll
+[frame 400] complete
+[frame 401] calling VBlank $000A94
+[frame 401] VBlank returned
+[frame 401] rendering...
+[frame 401] render done
+[frame 401] present
+[frame 401] poll
+[frame 401] complete
+[frame 402] calling VBlank $000A94
+[frame 402] VBlank returned
+[frame 402] rendering...
+[frame 402] render done
+[frame 402] present
+[frame 402] poll
+[frame 402] complete
+[frame 403] calling VBlank $000A94
+[frame 403] VBlank returned
+[frame 403] rendering...
+[frame 403] render done
+[frame 403] present
+[frame 403] poll
+[frame 403] complete
+[frame 404] calling VBlank $000A94
+[frame 404] VBlank returned
+[frame 404] rendering...
+[frame 404] render done
+[frame 404] present
+[frame 404] poll
+[frame 404] complete
+[frame 405] calling VBlank $000A94
+[frame 405] VBlank returned
+[frame 405] rendering...
+[frame 405] render done
+[frame 405] present
+[frame 405] poll
+[frame 405] complete
+[frame 406] calling VBlank $000A94
+[frame 406] VBlank returned
+[frame 406] rendering...
+[frame 406] render done
+[frame 406] present
+[frame 406] poll
+[frame 406] complete
+[frame 407] calling VBlank $000A94
+[frame 407] VBlank returned
+[frame 407] rendering...
+[frame 407] render done
+[frame 407] present
+[frame 407] poll
+[frame 407] complete
+[frame 408] calling VBlank $000A94
+[frame 408] VBlank returned
+[frame 408] rendering...
+[frame 408] render done
+[frame 408] present
+[frame 408] poll
+[frame 408] complete
+[frame 409] calling VBlank $000A94
+[frame 409] VBlank returned
+[frame 409] rendering...
+[frame 409] render done
+[frame 409] present
+[frame 409] poll
+[frame 409] complete
+[frame 410] calling VBlank $000A94
+[frame 410] VBlank returned
+[frame 410] rendering...
+[frame 410] render done
+[frame 410] present
+[frame 410] poll
+[frame 410] complete
+[frame 411] calling VBlank $000A94
+[frame 411] VBlank returned
+[frame 411] rendering...
+[frame 411] render done
+[frame 411] present
+[frame 411] poll
+[frame 411] complete
+[frame 412] calling VBlank $000A94
+[frame 412] VBlank returned
+[frame 412] rendering...
+[frame 412] render done
+[frame 412] present
+[frame 412] poll
+[frame 412] complete
+[frame 413] calling VBlank $000A94
+[frame 413] VBlank returned
+[frame 413] rendering...
+[frame 413] render done
+[frame 413] present
+[frame 413] poll
+[frame 413] complete
+[frame 414] calling VBlank $000A94
+[frame 414] VBlank returned
+[frame 414] rendering...
+[frame 414] render done
+[frame 414] present
+[frame 414] poll
+[frame 414] complete
+[frame 415] calling VBlank $000A94
+[frame 415] VBlank returned
+[frame 415] rendering...
+[frame 415] render done
+[frame 415] present
+[frame 415] poll
+[frame 415] complete
+[frame 416] calling VBlank $000A94
+[frame 416] VBlank returned
+[frame 416] rendering...
+[frame 416] render done
+[frame 416] present
+[frame 416] poll
+[frame 416] complete
+[frame 417] calling VBlank $000A94
+[frame 417] VBlank returned
+[frame 417] rendering...
+[frame 417] render done
+[frame 417] present
+[frame 417] poll
+[frame 417] complete
+[frame 418] calling VBlank $000A94
+[frame 418] VBlank returned
+[frame 418] rendering...
+[frame 418] render done
+[frame 418] present
+[frame 418] poll
+[frame 418] complete
+[frame 419] calling VBlank $000A94
+[frame 419] VBlank returned
+[frame 419] rendering...
+[frame 419] render done
+[frame 419] present
+[frame 419] poll
+[frame 419] complete
+[frame 420] calling VBlank $000A94
+[frame 420] VBlank returned
+[frame 420] rendering...
+[frame 420] render done
+[frame 420] present
+[frame 420] poll
+[frame 420] complete
+[frame 421] calling VBlank $000A94
+[frame 421] VBlank returned
+[frame 421] rendering...
+[frame 421] render done
+[frame 421] present
+[frame 421] poll
+[frame 421] complete
+[frame 422] calling VBlank $000A94
+[frame 422] VBlank returned
+[frame 422] rendering...
+[frame 422] render done
+[frame 422] present
+[frame 422] poll
+[frame 422] complete
+[frame 423] calling VBlank $000A94
+[frame 423] VBlank returned
+[frame 423] rendering...
+[frame 423] render done
+[frame 423] present
+[frame 423] poll
+[frame 423] complete
+[frame 424] calling VBlank $000A94
+[frame 424] VBlank returned
+[frame 424] rendering...
+[frame 424] render done
+[frame 424] present
+[frame 424] poll
+[frame 424] complete
+[frame 425] calling VBlank $000A94
+[frame 425] VBlank returned
+[frame 425] rendering...
+[frame 425] render done
+[frame 425] present
+[frame 425] poll
+[frame 425] complete
+[frame 426] calling VBlank $000A94
+[frame 426] VBlank returned
+[frame 426] rendering...
+[frame 426] render done
+[frame 426] present
+[frame 426] poll
+[frame 426] complete
+[frame 427] calling VBlank $000A94
+[frame 427] VBlank returned
+[frame 427] rendering...
+[frame 427] render done
+[frame 427] present
+[frame 427] poll
+[frame 427] complete
+[frame 428] calling VBlank $000A94
+[frame 428] VBlank returned
+[frame 428] rendering...
+[frame 428] render done
+[frame 428] present
+[frame 428] poll
+[frame 428] complete
+[frame 429] calling VBlank $000A94
+[frame 429] VBlank returned
+[frame 429] rendering...
+[frame 429] render done
+[frame 429] present
+[frame 429] poll
+[frame 429] complete
+[frame 430] calling VBlank $000A94
+[frame 430] VBlank returned
+[frame 430] rendering...
+[frame 430] render done
+[frame 430] present
+[frame 430] poll
+[frame 430] complete
+[frame 431] calling VBlank $000A94
+[frame 431] VBlank returned
+[frame 431] rendering...
+[frame 431] render done
+[frame 431] present
+[frame 431] poll
+[frame 431] complete
+[frame 432] calling VBlank $000A94
+[frame 432] VBlank returned
+[frame 432] rendering...
+[frame 432] render done
+[frame 432] present
+[frame 432] poll
+[frame 432] complete
+[frame 433] calling VBlank $000A94
+[frame 433] VBlank returned
+[frame 433] rendering...
+[frame 433] render done
+[frame 433] present
+[frame 433] poll
+[frame 433] complete
+[frame 434] calling VBlank $000A94
+[frame 434] VBlank returned
+[frame 434] rendering...
+[frame 434] render done
+[frame 434] present
+[frame 434] poll
+[frame 434] complete
+[frame 435] calling VBlank $000A94
+[frame 435] VBlank returned
+[frame 435] rendering...
+[frame 435] render done
+[frame 435] present
+[frame 435] poll
+[frame 435] complete
+[frame 436] calling VBlank $000A94
+[frame 436] VBlank returned
+[frame 436] rendering...
+[frame 436] render done
+[frame 436] present
+[frame 436] poll
+[frame 436] complete
+[frame 437] calling VBlank $000A94
+[frame 437] VBlank returned
+[frame 437] rendering...
+[frame 437] render done
+[frame 437] present
+[frame 437] poll
+[frame 437] complete
+[frame 438] calling VBlank $000A94
+[frame 438] VBlank returned
+[frame 438] rendering...
+[frame 438] render done
+[frame 438] present
+[frame 438] poll
+[frame 438] complete
+[frame 439] calling VBlank $000A94
+[frame 439] VBlank returned
+[frame 439] rendering...
+[frame 439] render done
+[frame 439] present
+[frame 439] poll
+[frame 439] complete
+[frame 440] calling VBlank $000A94
+[frame 440] VBlank returned
+[frame 440] rendering...
+[frame 440] render done
+[frame 440] present
+[frame 440] poll
+[frame 440] complete
+[frame 441] calling VBlank $000A94
+[frame 441] VBlank returned
+[frame 441] rendering...
+[frame 441] render done
+[frame 441] present
+[frame 441] poll
+[frame 441] complete
+[frame 442] calling VBlank $000A94
+[frame 442] VBlank returned
+[frame 442] rendering...
+[frame 442] render done
+[frame 442] present
+[frame 442] poll
+[frame 442] complete
+[frame 443] calling VBlank $000A94
+[frame 443] VBlank returned
+[frame 443] rendering...
+[frame 443] render done
+[frame 443] present
+[frame 443] poll
+[frame 443] complete
+[frame 444] calling VBlank $000A94
+[frame 444] VBlank returned
+[frame 444] rendering...
+[frame 444] render done
+[frame 444] present
+[frame 444] poll
+[frame 444] complete
+[frame 445] calling VBlank $000A94
+[frame 445] VBlank returned
+[frame 445] rendering...
+[frame 445] render done
+[frame 445] present
+[frame 445] poll
+[frame 445] complete
+[frame 446] calling VBlank $000A94
+[frame 446] VBlank returned
+[frame 446] rendering...
+[frame 446] render done
+[frame 446] present
+[frame 446] poll
+[frame 446] complete
+[frame 447] calling VBlank $000A94
+[frame 447] VBlank returned
+[frame 447] rendering...
+[frame 447] render done
+[frame 447] present
+[frame 447] poll
+[frame 447] complete
+[frame 448] calling VBlank $000A94
+[frame 448] VBlank returned
+[frame 448] rendering...
+[frame 448] render done
+[frame 448] present
+[frame 448] poll
+[frame 448] complete
+[frame 449] calling VBlank $000A94
+[frame 449] VBlank returned
+[frame 449] rendering...
+[frame 449] render done
+[frame 449] present
+[frame 449] poll
+[frame 449] complete
+[frame 450] calling VBlank $000A94
+[frame 450] VBlank returned
+[frame 450] rendering...
+[frame 450] render done
+[frame 450] present
+[frame 450] poll
+[frame 450] complete
+[frame 451] calling VBlank $000A94
+[frame 451] VBlank returned
+[frame 451] rendering...
+[frame 451] render done
+[frame 451] present
+[frame 451] poll
+[frame 451] complete
+[frame 452] calling VBlank $000A94
+[frame 452] VBlank returned
+[frame 452] rendering...
+[frame 452] render done
+[frame 452] present
+[frame 452] poll
+[frame 452] complete
+[frame 453] calling VBlank $000A94
+[frame 453] VBlank returned
+[frame 453] rendering...
+[frame 453] render done
+[frame 453] present
+[frame 453] poll
+[frame 453] complete
+[frame 454] calling VBlank $000A94
+[frame 454] VBlank returned
+[frame 454] rendering...
+[frame 454] render done
+[frame 454] present
+[frame 454] poll
+[frame 454] complete
+[frame 455] calling VBlank $000A94
+[frame 455] VBlank returned
+[frame 455] rendering...
+[frame 455] render done
+[frame 455] present
+[frame 455] poll
+[frame 455] complete
+[frame 456] calling VBlank $000A94
+[frame 456] VBlank returned
+[frame 456] rendering...
+[frame 456] render done
+[frame 456] present
+[frame 456] poll
+[frame 456] complete
+[frame 457] calling VBlank $000A94
+[frame 457] VBlank returned
+[frame 457] rendering...
+[frame 457] render done
+[frame 457] present
+[frame 457] poll
+[frame 457] complete
+[frame 458] calling VBlank $000A94
+[frame 458] VBlank returned
+[frame 458] rendering...
+[frame 458] render done
+[frame 458] present
+[frame 458] poll
+[frame 458] complete
+[frame 459] calling VBlank $000A94
+[frame 459] VBlank returned
+[frame 459] rendering...
+[frame 459] render done
+[frame 459] present
+[frame 459] poll
+[frame 459] complete
+[frame 460] calling VBlank $000A94
+[frame 460] VBlank returned
+[frame 460] rendering...
+[frame 460] render done
+[frame 460] present
+[frame 460] poll
+[frame 460] complete
+[frame 461] calling VBlank $000A94
+[frame 461] VBlank returned
+[frame 461] rendering...
+[frame 461] render done
+[frame 461] present
+[frame 461] poll
+[frame 461] complete
+[frame 462] calling VBlank $000A94
+[frame 462] VBlank returned
+[frame 462] rendering...
+[frame 462] render done
+[frame 462] present
+[frame 462] poll
+[frame 462] complete
+[frame 463] calling VBlank $000A94
+[frame 463] VBlank returned
+[frame 463] rendering...
+[frame 463] render done
+[frame 463] present
+[frame 463] poll
+[frame 463] complete
+[frame 464] calling VBlank $000A94
+[frame 464] VBlank returned
+[frame 464] rendering...
+[frame 464] render done
+[frame 464] present
+[frame 464] poll
+[frame 464] complete
+[frame 465] calling VBlank $000A94
+[frame 465] VBlank returned
+[frame 465] rendering...
+[frame 465] render done
+[frame 465] present
+[frame 465] poll
+[frame 465] complete
+[frame 466] calling VBlank $000A94
+[frame 466] VBlank returned
+[frame 466] rendering...
+[frame 466] render done
+[frame 466] present
+[frame 466] poll
+[frame 466] complete
+[frame 467] calling VBlank $000A94
+[frame 467] VBlank returned
+[frame 467] rendering...
+[frame 467] render done
+[frame 467] present
+[frame 467] poll
+[frame 467] complete
+[frame 468] calling VBlank $000A94
+[frame 468] VBlank returned
+[frame 468] rendering...
+[frame 468] render done
+[frame 468] present
+[frame 468] poll
+[frame 468] complete
+[frame 469] calling VBlank $000A94
+[frame 469] VBlank returned
+[frame 469] rendering...
+[frame 469] render done
+[frame 469] present
+[frame 469] poll
+[frame 469] complete
+[frame 470] calling VBlank $000A94
+[frame 470] VBlank returned
+[frame 470] rendering...
+[frame 470] render done
+[frame 470] present
+[frame 470] poll
+[frame 470] complete
+[frame 471] calling VBlank $000A94
+[frame 471] VBlank returned
+[frame 471] rendering...
+[frame 471] render done
+[frame 471] present
+[frame 471] poll
+[frame 471] complete
+[frame 472] calling VBlank $000A94
+[frame 472] VBlank returned
+[frame 472] rendering...
+[frame 472] render done
+[frame 472] present
+[frame 472] poll
+[frame 472] complete
+[frame 473] calling VBlank $000A94
+[frame 473] VBlank returned
+[frame 473] rendering...
+[frame 473] render done
+[frame 473] present
+[frame 473] poll
+[frame 473] complete
+[frame 474] calling VBlank $000A94
+[frame 474] VBlank returned
+[frame 474] rendering...
+[frame 474] render done
+[frame 474] present
+[frame 474] poll
+[frame 474] complete
+[frame 475] calling VBlank $000A94
+[frame 475] VBlank returned
+[frame 475] rendering...
+[frame 475] render done
+[frame 475] present
+[frame 475] poll
+[frame 475] complete
+[frame 476] calling VBlank $000A94
+[frame 476] VBlank returned
+[frame 476] rendering...
+[frame 476] render done
+[frame 476] present
+[frame 476] poll
+[frame 476] complete
+[frame 477] calling VBlank $000A94
+[frame 477] VBlank returned
+[frame 477] rendering...
+[frame 477] render done
+[frame 477] present
+[frame 477] poll
+[frame 477] complete
+[frame 478] calling VBlank $000A94
+[frame 478] VBlank returned
+[frame 478] rendering...
+[frame 478] render done
+[frame 478] present
+[frame 478] poll
+[frame 478] complete
+[frame 479] calling VBlank $000A94
+[frame 479] VBlank returned
+[frame 479] rendering...
+[frame 479] render done
+[frame 479] present
+[frame 479] poll
+[frame 479] complete
+[frame 480] calling VBlank $000A94
+[frame 480] VBlank returned
+[frame 480] rendering...
+[frame 480] render done
+[frame 480] present
+[frame 480] poll
+[frame 480] complete
+[frame 481] calling VBlank $000A94
+[frame 481] VBlank returned
+[frame 481] rendering...
+[frame 481] render done
+[frame 481] present
+[frame 481] poll
+[frame 481] complete
+[frame 482] calling VBlank $000A94
+[frame 482] VBlank returned
+[frame 482] rendering...
+[frame 482] render done
+[frame 482] present
+[frame 482] poll
+[frame 482] complete
+[frame 483] calling VBlank $000A94
+[frame 483] VBlank returned
+[frame 483] rendering...
+[frame 483] render done
+[frame 483] present
+[frame 483] poll
+[frame 483] complete
+[frame 484] calling VBlank $000A94
+[frame 484] VBlank returned
+[frame 484] rendering...
+[frame 484] render done
+[frame 484] present
+[frame 484] poll
+[frame 484] complete
+[frame 485] calling VBlank $000A94
+[frame 485] VBlank returned
+[frame 485] rendering...
+[frame 485] render done
+[frame 485] present
+[frame 485] poll
+[frame 485] complete
+[frame 486] calling VBlank $000A94
+[frame 486] VBlank returned
+[frame 486] rendering...
+[frame 486] render done
+[frame 486] present
+[frame 486] poll
+[frame 486] complete
+[frame 487] calling VBlank $000A94
+[frame 487] VBlank returned
+[frame 487] rendering...
+[frame 487] render done
+[frame 487] present
+[frame 487] poll
+[frame 487] complete
+[frame 488] calling VBlank $000A94
+[frame 488] VBlank returned
+[frame 488] rendering...
+[frame 488] render done
+[frame 488] present
+[frame 488] poll
+[frame 488] complete
+[frame 489] calling VBlank $000A94
+[frame 489] VBlank returned
+[frame 489] rendering...
+[frame 489] render done
+[frame 489] present
+[frame 489] poll
+[frame 489] complete
+[frame 490] calling VBlank $000A94
+[frame 490] VBlank returned
+[frame 490] rendering...
+[frame 490] render done
+[frame 490] present
+[frame 490] poll
+[frame 490] complete
+[frame 491] calling VBlank $000A94
+[frame 491] VBlank returned
+[frame 491] rendering...
+[frame 491] render done
+[frame 491] present
+[frame 491] poll
+[frame 491] complete
+[frame 492] calling VBlank $000A94
+[frame 492] VBlank returned
+[frame 492] rendering...
+[frame 492] render done
+[frame 492] present
+[frame 492] poll
+[frame 492] complete
+[frame 493] calling VBlank $000A94
+[frame 493] VBlank returned
+[frame 493] rendering...
+[frame 493] render done
+[frame 493] present
+[frame 493] poll
+[frame 493] complete
+[frame 494] calling VBlank $000A94
+[frame 494] VBlank returned
+[frame 494] rendering...
+[frame 494] render done
+[frame 494] present
+[frame 494] poll
+[frame 494] complete
+[frame 495] calling VBlank $000A94
+[frame 495] VBlank returned
+[frame 495] rendering...
+[frame 495] render done
+[frame 495] present
+[frame 495] poll
+[frame 495] complete
+[frame 496] calling VBlank $000A94
+[frame 496] VBlank returned
+[frame 496] rendering...
+[frame 496] render done
+[frame 496] present
+[frame 496] poll
+[frame 496] complete
+[frame 497] calling VBlank $000A94
+[frame 497] VBlank returned
+[frame 497] rendering...
+[frame 497] render done
+[frame 497] present
+[frame 497] poll
+[frame 497] complete
+[frame 498] calling VBlank $000A94
+[frame 498] VBlank returned
+[frame 498] rendering...
+[frame 498] render done
+[frame 498] present
+[frame 498] poll
+[frame 498] complete
+[frame 499] calling VBlank $000A94
+[frame 499] VBlank returned
+[frame 499] rendering...
+[frame 499] render done
+[frame 499] present
+[frame 499] poll
+[frame 499] complete
+[frame 500] calling VBlank $000A94
+[frame 500] VBlank returned
+[frame 500] rendering...
+[frame 500] render done
+[frame 500] present
+[frame 500] poll
+[frame 500] complete
+[frame 501] calling VBlank $000A94
+[frame 501] VBlank returned
+[frame 501] rendering...
+[frame 501] render done
+[frame 501] present
+[frame 501] poll
+[frame 501] complete
+[frame 502] calling VBlank $000A94
+[frame 502] VBlank returned
+[frame 502] rendering...
+[frame 502] render done
+[frame 502] present
+[frame 502] poll
+[frame 502] complete
+[frame 503] calling VBlank $000A94
+[frame 503] VBlank returned
+[frame 503] rendering...
+[frame 503] render done
+[frame 503] present
+[frame 503] poll
+[frame 503] complete
+[frame 504] calling VBlank $000A94
+[frame 504] VBlank returned
+[frame 504] rendering...
+[frame 504] render done
+[frame 504] present
+[frame 504] poll
+[frame 504] complete
+[frame 505] calling VBlank $000A94
+[frame 505] VBlank returned
+[frame 505] rendering...
+[frame 505] render done
+[frame 505] present
+[frame 505] poll
+[frame 505] complete
+[frame 506] calling VBlank $000A94
+[frame 506] VBlank returned
+[frame 506] rendering...
+[frame 506] render done
+[frame 506] present
+[frame 506] poll
+[frame 506] complete
+[frame 507] calling VBlank $000A94
+[frame 507] VBlank returned
+[frame 507] rendering...
+[frame 507] render done
+[frame 507] present
+[frame 507] poll
+[frame 507] complete
+[frame 508] calling VBlank $000A94
+[frame 508] VBlank returned
+[frame 508] rendering...
+[frame 508] render done
+[frame 508] present
+[frame 508] poll
+[frame 508] complete
+[frame 509] calling VBlank $000A94
+[frame 509] VBlank returned
+[frame 509] rendering...
+[frame 509] render done
+[frame 509] present
+[frame 509] poll
+[frame 509] complete
+[frame 510] calling VBlank $000A94
+[frame 510] VBlank returned
+[frame 510] rendering...
+[frame 510] render done
+[frame 510] present
+[frame 510] poll
+[frame 510] complete
+[frame 511] calling VBlank $000A94
+[frame 511] VBlank returned
+[frame 511] rendering...
+[frame 511] render done
+[frame 511] present
+[frame 511] poll
+[frame 511] complete
+[frame 512] calling VBlank $000A94
+[frame 512] VBlank returned
+[frame 512] rendering...
+[frame 512] render done
+[frame 512] present
+[frame 512] poll
+[frame 512] complete
+[frame 513] calling VBlank $000A94
+[frame 513] VBlank returned
+[frame 513] rendering...
+[frame 513] render done
+[frame 513] present
+[frame 513] poll
+[frame 513] complete
+[frame 514] calling VBlank $000A94
+[frame 514] VBlank returned
+[frame 514] rendering...
+[frame 514] render done
+[frame 514] present
+[frame 514] poll
+[frame 514] complete
+[frame 515] calling VBlank $000A94
+[frame 515] VBlank returned
+[frame 515] rendering...
+[frame 515] render done
+[frame 515] present
+[frame 515] poll
+[frame 515] complete
+[frame 516] calling VBlank $000A94
+[frame 516] VBlank returned
+[frame 516] rendering...
+[frame 516] render done
+[frame 516] present
+[frame 516] poll
+[frame 516] complete
+[frame 517] calling VBlank $000A94
+[frame 517] VBlank returned
+[frame 517] rendering...
+[frame 517] render done
+[frame 517] present
+[frame 517] poll
+[frame 517] complete
+[frame 518] calling VBlank $000A94
+[frame 518] VBlank returned
+[frame 518] rendering...
+[frame 518] render done
+[frame 518] present
+[frame 518] poll
+[frame 518] complete
+[frame 519] calling VBlank $000A94
+[frame 519] VBlank returned
+[frame 519] rendering...
+[frame 519] render done
+[frame 519] present
+[frame 519] poll
+[frame 519] complete
+[frame 520] calling VBlank $000A94
+[frame 520] VBlank returned
+[frame 520] rendering...
+[frame 520] render done
+[frame 520] present
+[frame 520] poll
+[frame 520] complete
+[frame 521] calling VBlank $000A94
+[frame 521] VBlank returned
+[frame 521] rendering...
+[frame 521] render done
+[frame 521] present
+[frame 521] poll
+[frame 521] complete
+[frame 522] calling VBlank $000A94
+[frame 522] VBlank returned
+[frame 522] rendering...
+[frame 522] render done
+[frame 522] present
+[frame 522] poll
+[frame 522] complete
+[frame 523] calling VBlank $000A94
+[frame 523] VBlank returned
+[frame 523] rendering...
+[frame 523] render done
+[frame 523] present
+[frame 523] poll
+[frame 523] complete
+[frame 524] calling VBlank $000A94
+[frame 524] VBlank returned
+[frame 524] rendering...
+[frame 524] render done
+[frame 524] present
+[frame 524] poll
+[frame 524] complete
+[frame 525] calling VBlank $000A94
+[frame 525] VBlank returned
+[frame 525] rendering...
+[frame 525] render done
+[frame 525] present
+[frame 525] poll
+[frame 525] complete
+[frame 526] calling VBlank $000A94
+[frame 526] VBlank returned
+[frame 526] rendering...
+[frame 526] render done
+[frame 526] present
+[frame 526] poll
+[frame 526] complete
+[frame 527] calling VBlank $000A94
+[frame 527] VBlank returned
+[frame 527] rendering...
+[frame 527] render done
+[frame 527] present
+[frame 527] poll
+[frame 527] complete
+[frame 528] calling VBlank $000A94
+[frame 528] VBlank returned
+[frame 528] rendering...
+[frame 528] render done
+[frame 528] present
+[frame 528] poll
+[frame 528] complete
+[frame 529] calling VBlank $000A94
+[frame 529] VBlank returned
+[frame 529] rendering...
+[frame 529] render done
+[frame 529] present
+[frame 529] poll
+[frame 529] complete
+[frame 530] calling VBlank $000A94
+[frame 530] VBlank returned
+[frame 530] rendering...
+[frame 530] render done
+[frame 530] present
+[frame 530] poll
+[frame 530] complete
+[frame 531] calling VBlank $000A94
+[frame 531] VBlank returned
+[frame 531] rendering...
+[frame 531] render done
+[frame 531] present
+[frame 531] poll
+[frame 531] complete
+[frame 532] calling VBlank $000A94
+[frame 532] VBlank returned
+[frame 532] rendering...
+[frame 532] render done
+[frame 532] present
+[frame 532] poll
+[frame 532] complete
+[frame 533] calling VBlank $000A94
+[frame 533] VBlank returned
+[frame 533] rendering...
+[frame 533] render done
+[frame 533] present
+[frame 533] poll
+[frame 533] complete
+[frame 534] calling VBlank $000A94
+[frame 534] VBlank returned
+[frame 534] rendering...
+[frame 534] render done
+[frame 534] present
+[frame 534] poll
+[frame 534] complete
+[frame 535] calling VBlank $000A94
+[frame 535] VBlank returned
+[frame 535] rendering...
+[frame 535] render done
+[frame 535] present
+[frame 535] poll
+[frame 535] complete
+[frame 536] calling VBlank $000A94
+[frame 536] VBlank returned
+[frame 536] rendering...
+[frame 536] render done
+[frame 536] present
+[frame 536] poll
+[frame 536] complete
+[frame 537] calling VBlank $000A94
+[frame 537] VBlank returned
+[frame 537] rendering...
+[frame 537] render done
+[frame 537] present
+[frame 537] poll
+[frame 537] complete
+[frame 538] calling VBlank $000A94
+[frame 538] VBlank returned
+[frame 538] rendering...
+[frame 538] render done
+[frame 538] present
+[frame 538] poll
+[frame 538] complete
+[frame 539] calling VBlank $000A94
+[frame 539] VBlank returned
+[frame 539] rendering...
+[frame 539] render done
+[frame 539] present
+[frame 539] poll
+[frame 539] complete
+[frame 540] calling VBlank $000A94
+[frame 540] VBlank returned
+[frame 540] rendering...
+[frame 540] render done
+[frame 540] present
+[frame 540] poll
+[frame 540] complete
+[frame 541] calling VBlank $000A94
+[frame 541] VBlank returned
+[frame 541] rendering...
+[frame 541] render done
+[frame 541] present
+[frame 541] poll
+[frame 541] complete
+[frame 542] calling VBlank $000A94
+[frame 542] VBlank returned
+[frame 542] rendering...
+[frame 542] render done
+[frame 542] present
+[frame 542] poll
+[frame 542] complete
+[frame 543] calling VBlank $000A94
+[frame 543] VBlank returned
+[frame 543] rendering...
+[frame 543] render done
+[frame 543] present
+[frame 543] poll
+[frame 543] complete
+[frame 544] calling VBlank $000A94
+[frame 544] VBlank returned
+[frame 544] rendering...
+[frame 544] render done
+[frame 544] present
+[frame 544] poll
+[frame 544] complete
+[frame 545] calling VBlank $000A94
+[frame 545] VBlank returned
+[frame 545] rendering...
+[frame 545] render done
+[frame 545] present
+[frame 545] poll
+[frame 545] complete
+[frame 546] calling VBlank $000A94
+[frame 546] VBlank returned
+[frame 546] rendering...
+[frame 546] render done
+[frame 546] present
+[frame 546] poll
+[frame 546] complete
+[frame 547] calling VBlank $000A94
+[frame 547] VBlank returned
+[frame 547] rendering...
+[frame 547] render done
+[frame 547] present
+[frame 547] poll
+[frame 547] complete
+[frame 548] calling VBlank $000A94
+[frame 548] VBlank returned
+[frame 548] rendering...
+[frame 548] render done
+[frame 548] present
+[frame 548] poll
+[frame 548] complete
+[frame 549] calling VBlank $000A94
+[frame 549] VBlank returned
+[frame 549] rendering...
+[frame 549] render done
+[frame 549] present
+[frame 549] poll
+[frame 549] complete
+[frame 550] calling VBlank $000A94
+[frame 550] VBlank returned
+[frame 550] rendering...
+[frame 550] render done
+[frame 550] present
+[frame 550] poll
+[frame 550] complete
+[frame 551] calling VBlank $000A94
+[frame 551] VBlank returned
+[frame 551] rendering...
+[frame 551] render done
+[frame 551] present
+[frame 551] poll
+[frame 551] complete
+[frame 552] calling VBlank $000A94
+[frame 552] VBlank returned
+[frame 552] rendering...
+[frame 552] render done
+[frame 552] present
+[frame 552] poll
+[frame 552] complete
+[frame 553] calling VBlank $000A94
+[frame 553] VBlank returned
+[frame 553] rendering...
+[frame 553] render done
+[frame 553] present
+[frame 553] poll
+[frame 553] complete
+[frame 554] calling VBlank $000A94
+[frame 554] VBlank returned
+[frame 554] rendering...
+[frame 554] render done
+[frame 554] present
+[frame 554] poll
+[frame 554] complete
+[frame 555] calling VBlank $000A94
+[frame 555] VBlank returned
+[frame 555] rendering...
+[frame 555] render done
+[frame 555] present
+[frame 555] poll
+[frame 555] complete
+[frame 556] calling VBlank $000A94
+[frame 556] VBlank returned
+[frame 556] rendering...
+[frame 556] render done
+[frame 556] present
+[frame 556] poll
+[frame 556] complete
+[frame 557] calling VBlank $000A94
+[frame 557] VBlank returned
+[frame 557] rendering...
+[frame 557] render done
+[frame 557] present
+[frame 557] poll
+[frame 557] complete
+[frame 558] calling VBlank $000A94
+[frame 558] VBlank returned
+[frame 558] rendering...
+[frame 558] render done
+[frame 558] present
+[frame 558] poll
+[frame 558] complete
+[frame 559] calling VBlank $000A94
+[frame 559] VBlank returned
+[frame 559] rendering...
+[frame 559] render done
+[frame 559] present
+[frame 559] poll
+[frame 559] complete
+[frame 560] calling VBlank $000A94
+[frame 560] VBlank returned
+[frame 560] rendering...
+[frame 560] render done
+[frame 560] present
+[frame 560] poll
+[frame 560] complete
+[frame 561] calling VBlank $000A94
+[frame 561] VBlank returned
+[frame 561] rendering...
+[frame 561] render done
+[frame 561] present
+[frame 561] poll
+[frame 561] complete
+[frame 562] calling VBlank $000A94
+[frame 562] VBlank returned
+[frame 562] rendering...
+[frame 562] render done
+[frame 562] present
+[frame 562] poll
+[frame 562] complete
+[frame 563] calling VBlank $000A94
+[frame 563] VBlank returned
+[frame 563] rendering...
+[frame 563] render done
+[frame 563] present
+[frame 563] poll
+[frame 563] complete
+[frame 564] calling VBlank $000A94
+[frame 564] VBlank returned
+[frame 564] rendering...
+[frame 564] render done
+[frame 564] present
+[frame 564] poll
+[frame 564] complete
+[frame 565] calling VBlank $000A94
+[frame 565] VBlank returned
+[frame 565] rendering...
+[frame 565] render done
+[frame 565] present
+[frame 565] poll
+[frame 565] complete
+[frame 566] calling VBlank $000A94
+[frame 566] VBlank returned
+[frame 566] rendering...
+[frame 566] render done
+[frame 566] present
+[frame 566] poll
+[frame 566] complete
+[frame 567] calling VBlank $000A94
+[frame 567] VBlank returned
+[frame 567] rendering...
+[frame 567] render done
+[frame 567] present
+[frame 567] poll
+[frame 567] complete
+[frame 568] calling VBlank $000A94
+[frame 568] VBlank returned
+[frame 568] rendering...
+[frame 568] render done
+[frame 568] present
+[frame 568] poll
+[frame 568] complete
+[frame 569] calling VBlank $000A94
+[frame 569] VBlank returned
+[frame 569] rendering...
+[frame 569] render done
+[frame 569] present
+[frame 569] poll
+[frame 569] complete
+[frame 570] calling VBlank $000A94
+[frame 570] VBlank returned
+[frame 570] rendering...
+[frame 570] render done
+[frame 570] present
+[frame 570] poll
+[frame 570] complete
+[frame 571] calling VBlank $000A94
+[frame 571] VBlank returned
+[frame 571] rendering...
+[frame 571] render done
+[frame 571] present
+[frame 571] poll
+[frame 571] complete
+[frame 572] calling VBlank $000A94
+[frame 572] VBlank returned
+[frame 572] rendering...
+[frame 572] render done
+[frame 572] present
+[frame 572] poll
+[frame 572] complete
+[frame 573] calling VBlank $000A94
+[frame 573] VBlank returned
+[frame 573] rendering...
+[frame 573] render done
+[frame 573] present
+[frame 573] poll
+[frame 573] complete
+[frame 574] calling VBlank $000A94
+[frame 574] VBlank returned
+[frame 574] rendering...
+[frame 574] render done
+[frame 574] present
+[frame 574] poll
+[frame 574] complete
+[frame 575] calling VBlank $000A94
+[frame 575] VBlank returned
+[frame 575] rendering...
+[frame 575] render done
+[frame 575] present
+[frame 575] poll
+[frame 575] complete
+[frame 576] calling VBlank $000A94
+[frame 576] VBlank returned
+[frame 576] rendering...
+[frame 576] render done
+[frame 576] present
+[frame 576] poll
+[frame 576] complete
+[frame 577] calling VBlank $000A94
+[frame 577] VBlank returned
+[frame 577] rendering...
+[frame 577] render done
+[frame 577] present
+[frame 577] poll
+[frame 577] complete
+[frame 578] calling VBlank $000A94
+[frame 578] VBlank returned
+[frame 578] rendering...
+[frame 578] render done
+[frame 578] present
+[frame 578] poll
+[frame 578] complete
+[frame 579] calling VBlank $000A94
+[frame 579] VBlank returned
+[frame 579] rendering...
+[frame 579] render done
+[frame 579] present
+[frame 579] poll
+[frame 579] complete
+[frame 580] calling VBlank $000A94
+[frame 580] VBlank returned
+[frame 580] rendering...
+[frame 580] render done
+[frame 580] present
+[frame 580] poll
+[frame 580] complete
+[frame 581] calling VBlank $000A94
+[frame 581] VBlank returned
+[frame 581] rendering...
+[frame 581] render done
+[frame 581] present
+[frame 581] poll
+[frame 581] complete
+[frame 582] calling VBlank $000A94
+[frame 582] VBlank returned
+[frame 582] rendering...
+[frame 582] render done
+[frame 582] present
+[frame 582] poll
+[frame 582] complete
+[frame 583] calling VBlank $000A94
+[frame 583] VBlank returned
+[frame 583] rendering...
+[frame 583] render done
+[frame 583] present
+[frame 583] poll
+[frame 583] complete
+[frame 584] calling VBlank $000A94
+[frame 584] VBlank returned
+[frame 584] rendering...
+[frame 584] render done
+[frame 584] present
+[frame 584] poll
+[frame 584] complete
+[frame 585] calling VBlank $000A94
+[frame 585] VBlank returned
+[frame 585] rendering...
+[frame 585] render done
+[frame 585] present
+[frame 585] poll
+[frame 585] complete
+[frame 586] calling VBlank $000A94
+[frame 586] VBlank returned
+[frame 586] rendering...
+[frame 586] render done
+[frame 586] present
+[frame 586] poll
+[frame 586] complete
+[frame 587] calling VBlank $000A94
+[frame 587] VBlank returned
+[frame 587] rendering...
+[frame 587] render done
+[frame 587] present
+[frame 587] poll
+[frame 587] complete
+[frame 588] calling VBlank $000A94
+[frame 588] VBlank returned
+[frame 588] rendering...
+[frame 588] render done
+[frame 588] present
+[frame 588] poll
+[frame 588] complete
+[frame 589] calling VBlank $000A94
+[frame 589] VBlank returned
+[frame 589] rendering...
+[frame 589] render done
+[frame 589] present
+[frame 589] poll
+[frame 589] complete
+[frame 590] calling VBlank $000A94
+[frame 590] VBlank returned
+[frame 590] rendering...
+[frame 590] render done
+[frame 590] present
+[frame 590] poll
+[frame 590] complete
+[frame 591] calling VBlank $000A94
+[frame 591] VBlank returned
+[frame 591] rendering...
+[frame 591] render done
+[frame 591] present
+[frame 591] poll
+[frame 591] complete
+[frame 592] calling VBlank $000A94
+[frame 592] VBlank returned
+[frame 592] rendering...
+[frame 592] render done
+[frame 592] present
+[frame 592] poll
+[frame 592] complete
+[frame 593] calling VBlank $000A94
+[frame 593] VBlank returned
+[frame 593] rendering...
+[frame 593] render done
+[frame 593] present
+[frame 593] poll
+[frame 593] complete
+[frame 594] calling VBlank $000A94
+[frame 594] VBlank returned
+[frame 594] rendering...
+[frame 594] render done
+[frame 594] present
+[frame 594] poll
+[frame 594] complete
+[frame 595] calling VBlank $000A94
+[frame 595] VBlank returned
+[frame 595] rendering...
+[frame 595] render done
+[frame 595] present
+[frame 595] poll
+[frame 595] complete
+[frame 596] calling VBlank $000A94
+[frame 596] VBlank returned
+[frame 596] rendering...
+[frame 596] render done
+[frame 596] present
+[frame 596] poll
+[frame 596] complete
+[frame 597] calling VBlank $000A94
+[frame 597] VBlank returned
+[frame 597] rendering...
+[frame 597] render done
+[frame 597] present
+[frame 597] poll
+[frame 597] complete
+[frame 598] calling VBlank $000A94
+[frame 598] VBlank returned
+[frame 598] rendering...
+[frame 598] render done
+[frame 598] present
+[frame 598] poll
+[frame 598] complete
+[frame 599] calling VBlank $000A94
+[frame 599] VBlank returned
+[frame 599] rendering...
+[frame 599] render done
+[frame 599] present
+[frame 599] poll
+[frame 599] complete
+[frame 600] calling VBlank $000A94
+[frame 600] VBlank returned
+[frame 600] rendering...
+[frame 600] render done
+[frame 600] present
+[frame 600] poll
+[frame 600] complete
+[frame 601] calling VBlank $000A94
+[frame 601] VBlank returned
+[frame 601] rendering...
+[frame 601] render done
+[frame 601] present
+[frame 601] poll
+[frame 601] complete
+[frame 602] calling VBlank $000A94
+[frame 602] VBlank returned
+[frame 602] rendering...
+[frame 602] render done
+[frame 602] present
+[frame 602] poll
+[frame 602] complete
+[frame 603] calling VBlank $000A94
+[frame 603] VBlank returned
+[frame 603] rendering...
+[frame 603] render done
+[frame 603] present
+[frame 603] poll
+[frame 603] complete
+[frame 604] calling VBlank $000A94
+[frame 604] VBlank returned
+[frame 604] rendering...
+[frame 604] render done
+[frame 604] present
+[frame 604] poll
