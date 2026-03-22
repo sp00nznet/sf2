@@ -1,4 +1,5 @@
 build/
+build_cmake/
 *.zip
 *.bin
 *.rom
@@ -7,3 +8,11 @@ src/recomp/recomp_*.c
 src/recomp/recomp_funcs.h
 __pycache__/
 .claude/
+sf2_log.txt
+sf2_stderr.txt
+*.obj
+*.lib
+*.exe
+*.dll
+*.pdb
+*.ilk
