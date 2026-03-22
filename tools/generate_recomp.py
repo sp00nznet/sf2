@@ -47,6 +47,9 @@ class M68KTranslator:
         self.labels = labels
         self.func_start = 0
         self.func_end = 0
+        self.prev_mnemonic = ''
+        self.prev_op_str = ''
+        self.prev_addr = 0
 
     def translate_instruction(self, addr, mnemonic, op_str, raw_bytes, func_start, func_end=0):
         self.func_start = func_start
@@ -72,6 +75,11 @@ class M68KTranslator:
         else:
             hex_str = ' '.join(f'{b:02X}' for b in raw_bytes)
             lines.append(f"    /* TODO ${addr:06X}: {mnemonic} {op_str}  [{hex_str}] */")
+
+        # Save for LEA+BRA pattern detection
+        self.prev_mnemonic = mnemonic
+        self.prev_op_str = op_str
+        self.prev_addr = addr
 
         return lines
 
@@ -588,6 +596,16 @@ class M68KTranslator:
 
     def _gen_bra(self, ops, addr):
         target = self._parse_branch_target(ops[0])
+
+        # Check for LEA+BRA call pattern:
+        # Previous instruction: LEA xxx(PC), An  (loads return address)
+        # This BRA: branch to subroutine that returns via JMP (An)
+        # We emit this as a func_table_call() and continue (not return).
+        if target is not None and self.prev_mnemonic.startswith('lea') and '(pc)' in self.prev_op_str.lower():
+            # This is a call, not a tail branch
+            label = self.labels.get(target, f'sub_{target:06X}')
+            return f'func_table_call(0x{target:06X}); /* LEA+BRA call to {label} */'
+
         if target is not None and self._is_local_target(target):
             return f'goto {self.labels.get(target, f"loc_{target:06X}")};'
         if target is not None:
@@ -605,6 +623,12 @@ class M68KTranslator:
             label = self.labels.get(target, f'sub_{target:06X}')
             if label.startswith('loc_'): return f'goto {label};'
             return f'{{ func_table_call(0x{target:06X}); return; }}'
+
+        # Check for JMP (An) — return from LEA+BRA calling convention
+        op = ops[0].strip().lower()
+        if op in ('(a4)', '(a5)', '(a6)', '(a3)'):
+            return f'return; /* JMP {ops[0]} = return from LEA+BRA call */'
+
         ea = self._ea_addr(ops[0])
         if 'UNHANDLED' not in ea:
             return f'{{ func_table_call({ea}); return; }}'

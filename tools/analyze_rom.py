@@ -358,7 +358,44 @@ class M68KAnalyzer:
                 target = self._extract_branch_target(insn, addr)
                 if target is not None:
                     self.xrefs_to[target].add(addr)
-                    targets.append((target, False))
+
+                    # Check for LEA+BRA call pattern:
+                    # If the previous instruction was LEA xxx(PC), An
+                    # then this BRA is a call (subroutine returns via JMP (An))
+                    # and execution continues at the LEA target address.
+                    prev_addr = addr - 2  # Check 2 and 4 bytes back
+                    lea_return_addr = None
+                    for check_addr in [addr - 4, addr - 6, addr - 2]:
+                        if check_addr in self.instructions:
+                            prev_mnem, prev_ops, _, _ = self.instructions[check_addr]
+                            if prev_mnem.startswith('lea') and '(pc)' in prev_ops.lower():
+                                # Extract the LEA target (return address)
+                                lea_target = self._parse_absolute_addr(prev_ops)
+                                if lea_target and lea_target == addr + insn.size:
+                                    # LEA loads address of next instruction = return addr
+                                    lea_return_addr = lea_target
+                                    break
+                                elif lea_target and 0x200 <= lea_target < self.rom.size:
+                                    lea_return_addr = lea_target
+                                    break
+
+                    if lea_return_addr:
+                        # Treat as a call: the BRA target is the subroutine,
+                        # and lea_return_addr is where we continue after it returns.
+                        targets.append((target, True))  # Mark as call
+                        if target not in self.labels:
+                            self.labels[target] = f"sub_{target:06X}"
+                        # Continue disassembly at the return address
+                        targets.append((lea_return_addr, False))
+                        if lea_return_addr not in self.labels:
+                            self.labels[lea_return_addr] = f"loc_{lea_return_addr:06X}"
+                        # Don't break -- continue at return address
+                        addr = lea_return_addr
+                        if addr in self.visited:
+                            break
+                        continue
+                    else:
+                        targets.append((target, False))
                 break
 
             elif mnemonic in ('rts', 'rte', 'rtr'):
