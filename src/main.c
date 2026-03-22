@@ -7,6 +7,7 @@
 
 #include <cps1recomp/cps1recomp.h>
 #include "recomp/recomp_funcs.h"
+#include "task_fiber.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -47,6 +48,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    /* Initialize fiber system for cooperative multitasking */
+    task_fiber_init();
+
     /* Register all recompiled functions */
     printf("[sf2] Registering functions...\n"); fflush(stdout);
     recomp_register_all();
@@ -65,6 +69,7 @@ int main(int argc, char *argv[]) {
     printf("[sf2] Entering main loop...\n"); fflush(stdout);
     cps1_run();
 
+    task_fiber_shutdown();
     cps1_shutdown();
     return 0;
 }

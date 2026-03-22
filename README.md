@@ -176,10 +176,31 @@ cmake --build build --config Release
 | **3** | Scroll layers + palette renderer | Done |
 | **4** | Sprite engine | Done |
 | **5** | Platform layer + input + first boot | Done |
-| **6** | Z80 sound CPU | Done |
+| **6** | Z80 sound CPU | Stub (no execution) |
 | **7** | YM2151 FM audio (via ymfm) | Done |
 | **8** | OKI MSM6295 ADPCM | Done |
-| **9** | Polish + verification vs MAME | In Progress |
+| **9** | Cooperative task system (Windows Fibers) | Done |
+| **10** | Attract mode state machine | In Progress |
+| **11** | GFX rendering pipeline integration | In Progress |
+
+### Current State (March 2026)
+
+The game boots, initializes, and runs its main loop at 60fps. The cooperative task system is fully operational using **Windows Fibers** -- each task gets its own C stack, and TRAP-based yield/sleep/terminate map to fiber switches.
+
+**What's working:**
+- TRAP #0 (task install), TRAP #3 (sleep N frames), TRAP #4 (yield), TRAP #7 (free-list install), TRAP #0xB (clear slots)
+- Two initial tasks running every frame:
+  - **$639E** -- Attract mode state machine (primary scheduler, slot 0). Progresses through states 0-6+, calling scene setup handlers.
+  - **$14F2** -- Secondary task scheduler (slot 6). Scans 16 secondary task slots each frame, manages async operations.
+- Attract mode state handlers ($63CA-$6464) hand-written and registered
+- GFX RAM receiving tile data (scroll2 tilemap populated, ~6% of GFX RAM non-zero)
+- VBlank ISR (`vec_irq2_vblank`) running each frame, updating task sleep counters
+- 300+ frames stable with no func_table misses
+
+**What's next:**
+- Palette data not yet written by attract mode (screen is black). The state machine is waiting for async GFX operations to complete -- need to trace what $21E2 and $DFC do to generate palette writes.
+- Secondary task spawning: the $14F2 scheduler needs to successfully install and run secondary tasks that handle palette loading, tile DMA, and scene composition.
+- More functions in the $6390-$6600 gap need recompilation as the state machine advances.
 
 ## Standing on Giants
 
