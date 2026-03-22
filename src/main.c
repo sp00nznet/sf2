@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    /* Redirect stdout to a log file for debugging */
+    /* Redirect output to log file (Windows GUI apps have no console) */
     freopen("sf2_log.txt", "w", stdout);
     freopen("sf2_log.txt", "a", stderr);
 
