@@ -2485,6 +2485,8 @@ void sub_006420(void);
 void sub_006432(void);
 void sub_006464(void);
 void sub_00237E(void);
+void sub_000B8A(void);
+void sub_006496(void);
 void trap_return_to_main(void);
 
 static inline void recomp_register_all(void) {
@@ -4963,6 +4965,8 @@ static inline void recomp_register_all(void) {
     func_table_register(0x006432, sub_006432);
     func_table_register(0x006464, sub_006464);
     func_table_register(0x00237E, sub_00237E);
+    func_table_register(0x000B8A, sub_000B8A);
+    func_table_register(0x006496, sub_006496);
 }
 
 #endif /* RECOMP_FUNCS_H */

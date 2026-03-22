@@ -530,11 +530,18 @@ loc_000A0C:
     /* Trigger vblank: reading the flag fires the hook (renders one frame).
        The ISR (vec_irq2_vblank) updates task sleep counters. */
     m68k_set_sr(0x2600);
-    (void)bus_read8(g_m68k.a[5] + (-0x7df2));
+    bus_vblank_hook_arm();  /* Arm the hook so the next read fires it */
+    (void)bus_read8(g_m68k.a[5] + (-0x7df2));  /* Fires hook, auto-disarms */
     /* The vblank hook renders a frame but does NOT call the 68k VBlank ISR.
        Call it explicitly — the ISR updates CPS registers, scans task slots
        to decrement sleep counters (status 1→4), and sets the vblank flag. */
     vec_irq2_vblank();
+
+    /* Clear vblank flag AFTER the ISR.  The ISR sets it to 0xFF; tasks that
+       check this flag (e.g., the secondary scheduler at $14F2) need to see
+       it clear during their execution, matching the original hardware where
+       the main loop clears the flag at the start of each frame. */
+    bus_write8(g_m68k.a[5] + (-0x7df2), 0);
 
     /* Set up task scan */
     g_m68k.a[0] = (g_m68k.a[5] + (-0x8000));

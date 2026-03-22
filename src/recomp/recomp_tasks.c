@@ -114,7 +114,11 @@ void sub_0014F2(void) {
         func_table_call(0x000CEC);
 
         /* $153E: After yield — check vblank flag */
-        M68K_TST8(bus_read8(g_m68k.a[5] + (-0x7df2)));
+        { uint8_t vf = bus_read8(g_m68k.a[5] + (-0x7df2));
+          static int vc = 0; if (vc < 5) {
+            printf("[14F2] after yield: vblank_flag=%u\n", vf);
+            fflush(stdout); vc++; }
+          M68K_TST8(vf); }
         if (M68K_CC_NE) continue;   /* vblank set → loop */
 
         /* $1544: Check free slot count */
@@ -129,7 +133,15 @@ void sub_0014F2(void) {
         g_m68k.d[0] = bus_read32(g_m68k.a[0] + 0
                      + (int16_t)(uint16_t)g_m68k.d[2]);
         M68K_TST32((uint32_t)g_m68k.d[0]);
+        { static int qc = 0; if (qc < 5) {
+            printf("[14F2] queue check: idx=%u entry=$%08X free=%u vbl=%u\n",
+                   (uint16_t)g_m68k.d[2], g_m68k.d[0],
+                   bus_read16(g_m68k.a[5] + (-0x7df4)),
+                   bus_read8(g_m68k.a[5] + (-0x7df2)));
+            fflush(stdout); qc++; } }
         if (M68K_CC_PL) {
+            printf("[14F2] INSTALLING from queue: entry=$%08X\n", g_m68k.d[0]);
+            fflush(stdout);
             func_table_call(0x0014CC);
         }
         /* $155A: BRA $14F2 — loop */
@@ -290,6 +302,100 @@ loc_0023AE:
     M68K_AND16(g_m68k.d[0], 0x770);
     if (M68K_CC_EQ) return;
     { uint8_t _mv = 1; bus_write8(g_m68k.a[5] + 0x2E1, _mv); M68K_TST8(_mv); }
+}
+
+/* ================================================================
+ * sub_000B8A — TRAP #1: Terminate current task.
+ * Clears the task slot and destroys the fiber.
+ * ================================================================ */
+void sub_000B8A(void) {
+    uint32_t task_addr = bus_read32(g_m68k.a[5] + (-0x7dfc));
+    g_m68k.d[0] = (uint32_t)(int32_t)(int8_t)(0x0); M68K_TST32(g_m68k.d[0]);
+    bus_write32(task_addr + 0x10, 0);
+    bus_write32(task_addr + 0x14, 0);
+    bus_write32(task_addr + 0x18, 0);
+    bus_write32(task_addr + 0x1c, 0);
+    bus_write8(task_addr + 0x0, 0);  /* Free the slot */
+    task_fiber_mark_terminated();
+    task_fiber_yield_to_main();
+}
+
+/* ================================================================
+ * sub_006496 — Reset attract mode state and install demo task.
+ *
+ * Clears state variables (A5+$0 through $12), then either installs
+ * a demo task ($653C at slot $20) or sleeps for 60 frames.
+ * ================================================================ */
+void sub_006496(void) {
+    /* $6496: MOVEQ #0,D0 */
+    g_m68k.d[0] = (uint32_t)(int32_t)(int8_t)(0x0); M68K_TST32(g_m68k.d[0]);
+
+    /* $6498-$64BC: Clear state words at A5+$0 through A5+$12 */
+    for (int off = 0; off <= 0x12; off += 2) {
+        bus_write16(g_m68k.a[5] + off, (uint16_t)g_m68k.d[0]);
+    }
+
+    /* $64C0: BTST #6,$76(A5) */
+    M68K_BTST(bus_read8(g_m68k.a[5] + 0x76), 0x6);
+    if (M68K_CC_NE) goto loc_0064FC;
+
+    /* $64C8: TST.B $323(A5) */
+    M68K_TST8(bus_read8(g_m68k.a[5] + 0x323));
+    if (M68K_CC_NE) goto loc_0064FC;
+
+    /* $64CE: Install task $653C at slot offset $20 */
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | 0x20;
+    M68K_TST16(0x20);
+    g_m68k.a[0] = 0x653C;
+    func_table_call(0x000B20);  /* TRAP #0: install task */
+
+    /* $64DC-$64EE: Set up parameters and check scroll value */
+    g_m68k.d[1] = (g_m68k.d[1] & 0xFFFF0000u) | 0x0407;
+    M68K_TST16(0x0407);
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | 0x3000;
+    M68K_TST16(0x3000);
+    g_m68k.d[2] = (uint32_t)(int32_t)(int8_t)(0x2);
+    M68K_TST32(g_m68k.d[2]);
+    /* DBRA D0,$64E4 — this is actually a brief delay loop, skip it */
+
+    g_m68k.d[2] = (g_m68k.d[2] & 0xFFFF0000u) | bus_read16(g_m68k.a[5] + 0x5e);
+    M68K_TST16((uint16_t)g_m68k.d[2]);
+    M68K_AND16(g_m68k.d[2], 0xFC3F);
+    M68K_CMP16(g_m68k.d[2], g_m68k.d[1]);
+    if (M68K_CC_NE) goto loc_00650E;
+
+    /* $64F8: JMP $B8A — terminate task */
+    func_table_call(0x000B8A);
+    return;
+
+loc_0064FC:
+    /* $64FC: Install task $84BE2 at slot offset $E0 */
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | 0xE0;
+    M68K_TST16(0xE0);
+    g_m68k.a[0] = 0x84BE2;
+    func_table_call(0x000B20);  /* TRAP #0: install task */
+    func_table_call(0x000B8A);  /* Terminate */
+    return;
+
+loc_00650E:
+    /* $650E: Sleep 60 frames then continue setup */
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | 0x3C;
+    M68K_TST16(0x3C);
+    func_table_call(0x000CB8);  /* TRAP #3: sleep 60 frames */
+
+    /* $6516-$652C: Set up state for attract mode */
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | 0xFFFF;
+    M68K_TST16(0xFFFF);
+    { uint16_t _mv = 1; bus_write16(g_m68k.a[5] + 0x0, _mv); M68K_TST16(_mv); }
+    { uint16_t _mv = 1; bus_write16(g_m68k.a[5] + 0x4, _mv); M68K_TST16(_mv); }
+    { uint16_t _mv = 1; bus_write16(g_m68k.a[5] + 0x8, _mv); M68K_TST16(_mv); }
+
+    /* Read from ROM table $2C2(A5) */
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | bus_read16(g_m68k.a[5] + 0x2C2);
+    M68K_TST16((uint16_t)g_m68k.d[0]);
+
+    /* Terminate */
+    func_table_call(0x000B8A);
 }
 
 /* ================================================================
