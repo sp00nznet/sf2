@@ -545,7 +545,7 @@ loc_000A3A:
     { uint32_t _mv = (uint32_t)(g_m68k.a[0]); bus_write32(g_m68k.a[5] + (-0x7dfc), _mv); M68K_TST32(_mv); }
     {
         uint32_t task_base = g_m68k.a[5] - 0x8000;
-        int slot = (int)(g_m68k.a[0] - task_base) / TASK_SLOT_SIZE;
+        int slot = (int)(g_m68k.a[0] - task_base) / 0x20;
         uint8_t status = (uint8_t)g_m68k.d[1];
         if (status >= 0x0C) {
             uint32_t code_addr = bus_read32(g_m68k.a[0] + 4);

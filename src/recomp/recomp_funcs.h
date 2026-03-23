@@ -1,4 +1,4 @@
-/* Auto-generated ï¿½ forward declarations + registration */
+/* Auto-generated — forward declarations + registration */
 #ifndef RECOMP_FUNCS_H
 #define RECOMP_FUNCS_H
 
@@ -124,6 +124,7 @@ void jt_00118A(void);
 void jt_001192(void);
 void jt_001198(void);
 void jt_00119A(void);
+void loc_0011EA(void);
 void sub_001220(void);
 void sub_001296(void);
 void loc_0012C0(void);
@@ -2618,6 +2619,7 @@ static inline void recomp_register_all(void) {
     func_table_register(0x001192, jt_001192);
     func_table_register(0x001198, jt_001198);
     func_table_register(0x00119A, jt_00119A);
+    func_table_register(0x0011EA, loc_0011EA);
     func_table_register(0x001220, sub_001220);
     func_table_register(0x001296, sub_001296);
     func_table_register(0x0012C0, loc_0012C0);
@@ -4998,7 +5000,7 @@ static inline void recomp_register_all(void) {
     func_table_register(0x0B8000, jt_0B8000);
     func_table_register(0x0B9A26, jt_0B9A26);
 
-    /* Fiber-aware overrides from tasks.c (last registration wins) */
+    /* Fiber-aware overrides from tasks.c */
     {
         extern void override_00639E(void);
         extern void override_0014F2(void);
@@ -5007,6 +5009,9 @@ static inline void recomp_register_all(void) {
         extern void override_000CB8(void);
         extern void override_000CEC(void);
         extern void override_000C5C(void);
+        extern void override_0010E0(void);
+        extern void override_000E4C(void);
+        extern void override_000E9E(void);
         extern void trap_return_to_main(void);
         func_table_register(0x00639E, override_00639E);
         func_table_register(0x0014F2, override_0014F2);
@@ -5015,13 +5020,10 @@ static inline void recomp_register_all(void) {
         func_table_register(0x000CB8, override_000CB8);
         func_table_register(0x000CEC, override_000CEC);
         func_table_register(0x000C5C, override_000C5C);
-        func_table_register(0x000A5E, trap_return_to_main);
-        extern void override_0010E0(void);
-        extern void override_000E4C(void);
-        extern void override_000E9E(void);
         func_table_register(0x0010E0, override_0010E0);
         func_table_register(0x000E4C, override_000E4C);
         func_table_register(0x000E9E, override_000E9E);
+        func_table_register(0x000A5E, trap_return_to_main);
     }
 }
 
