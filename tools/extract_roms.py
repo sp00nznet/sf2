@@ -98,7 +98,14 @@ def assemble_program(zf, file_list, output_dir):
 
 
 def decode_gfx(zf, file_list, output_dir):
-    """Decode interleaved CPS1 GFX ROMs."""
+    """Decode interleaved CPS1 GFX ROMs.
+
+    CPS1 GFX ROMs are loaded with ROM_GROUPWORD | ROM_SKIP(6):
+    each ROM provides 2 bytes per 8-byte stride.  Four ROMs
+    interleave into an 8-byte-per-tile-row format.  After loading,
+    MAME applies cps1_gfx_decode() which shuffles nibbles so that
+    the tile data is in GFX_RAW format.
+    """
     gfx_roms = []
     for filename, size in SF2_GFX_ROMS:
         data = extract_file(zf, filename, file_list)
@@ -108,7 +115,9 @@ def decode_gfx(zf, file_list, output_dir):
         gfx_roms.append(data)
         print(f"  {filename}: {len(data)} bytes")
 
-    # Deinterleave ROM pairs into continuous bitplane data
+    # MAME-compatible 4-way interleave (ROM_GROUPWORD | ROM_SKIP(6))
+    # Each group of 4 ROMs produces 4 * rom_size bytes.
+    # Stride = 8 bytes: 2 from ROM0, 2 from ROM1, 2 from ROM2, 2 from ROM3.
     deinterleaved = bytearray()
     for group in range(0, len(gfx_roms), 4):
         rom0 = gfx_roms[group + 0]
@@ -116,17 +125,20 @@ def decode_gfx(zf, file_list, output_dir):
         rom2 = gfx_roms[group + 2]
         rom3 = gfx_roms[group + 3]
         rom_size = len(rom0)
+        group_data = bytearray(rom_size * 4)
 
-        bp01 = bytearray(rom_size * 2)
-        bp23 = bytearray(rom_size * 2)
-        for i in range(rom_size):
-            bp01[i * 2 + 0] = rom0[i]
-            bp01[i * 2 + 1] = rom1[i]
-            bp23[i * 2 + 0] = rom2[i]
-            bp23[i * 2 + 1] = rom3[i]
+        for i in range(0, rom_size, 2):
+            base = i * 4  # 8 bytes per 2 source bytes
+            group_data[base + 0] = rom0[i + 0]
+            group_data[base + 1] = rom0[i + 1]
+            group_data[base + 2] = rom1[i + 0]
+            group_data[base + 3] = rom1[i + 1]
+            group_data[base + 4] = rom2[i + 0]
+            group_data[base + 5] = rom2[i + 1]
+            group_data[base + 6] = rom3[i + 0]
+            group_data[base + 7] = rom3[i + 1]
 
-        deinterleaved.extend(bp01)
-        deinterleaved.extend(bp23)
+        deinterleaved.extend(group_data)
 
     path = os.path.join(output_dir, "sf2_gfx.bin")
     with open(path, 'wb') as f:
