@@ -132,12 +132,6 @@ void override_000B8A(void) {
 
 /* TRAP #3: Sleep for D0.w frames */
 void override_000CB8(void) {
-    static int cb8_count = 0;
-    if (cb8_count < 5) {
-        FILE *df = fopen("sf2_diag.txt", "a");
-        if (df) { fprintf(df, "  CB8 called! d0=%u\n", (uint8_t)g_m68k.d[0]); fclose(df); }
-        cb8_count++;
-    }
     uint32_t task_addr = bus_read32(g_m68k.a[5] + (-0x7dfc));
     uint16_t status_word;
     if (((uint8_t)g_m68k.d[0]) == 0) {
@@ -162,6 +156,77 @@ void override_000C5C(void) {
     for (int i = 8; i < TASK_SLOT_COUNT; i++) {
         if (task_fiber_exists(i)) task_fiber_delete(i);
     }
+}
+
+/* ================================================================
+ * override_0010E0 — Complete GFX processing function.
+ *
+ * The auto-generated version was truncated by the code generator
+ * (only 1 of 6 BSR $1142 calls captured). This override has the
+ * full function: clears $5D3A, processes 6 GFX RAM regions via
+ * $1142, and accumulates the counter.
+ *
+ * Original 68k ($10E0-$1150):
+ *   CLR.L $5D3A(A5)
+ *   6× { LEA gfx_base,A0; LEA work_base,A1; MOVE.W count,D7; BSR $1142 }
+ *   (falls through to $1142 on the last block)
+ *   $1142: BSR $11EA; DBRA D7,$1142; MOVE.L (A1),D0; ADD.L D0,$5D3A(A5); RTS
+ * ================================================================ */
+void override_0010E0(void) {
+    /* Clear counter */
+    bus_write32(g_m68k.a[5] + 0x5d3a, 0);
+    g_m68k.flag_n = false; g_m68k.flag_z = true;
+    g_m68k.flag_v = false; g_m68k.flag_c = false;
+
+    /* Block 1: $900000, work at A5+$5D3E, 32 entries */
+    g_m68k.a[0] = 0x900000;
+    g_m68k.a[1] = (g_m68k.a[5] + 0x5d3e);
+    g_m68k.d[7] = (g_m68k.d[7] & 0xFFFF0000u) | 0x1f;
+    func_table_call(0x001142);
+
+    /* Block 2: $900400, work at A5+$5D42, 32 entries */
+    g_m68k.a[0] = 0x900400;
+    g_m68k.a[1] = (g_m68k.a[5] + 0x5d42);
+    g_m68k.d[7] = (g_m68k.d[7] & 0xFFFF0000u) | 0x1f;
+    func_table_call(0x001142);
+
+    /* Block 3: $900800, work at A5+$5D46, 32 entries */
+    g_m68k.a[0] = 0x900800;
+    g_m68k.a[1] = (g_m68k.a[5] + 0x5d46);
+    g_m68k.d[7] = (g_m68k.d[7] & 0xFFFF0000u) | 0x1f;
+    func_table_call(0x001142);
+
+    /* Block 4: $900C00, work at A5+$5D4A, 32 entries */
+    g_m68k.a[0] = 0x900c00;
+    g_m68k.a[1] = (g_m68k.a[5] + 0x5d4a);
+    g_m68k.d[7] = (g_m68k.d[7] & 0xFFFF0000u) | 0x1f;
+    func_table_call(0x001142);
+
+    /* Block 5: $901000, work at A5+$5D4E, 8 entries */
+    g_m68k.a[0] = 0x901000;
+    g_m68k.a[1] = (g_m68k.a[5] + 0x5d4e);
+    g_m68k.d[7] = (g_m68k.d[7] & 0xFFFF0000u) | 0x07;
+    func_table_call(0x001142);
+
+    /* Block 6: $901400, work at A5+$5D52, 8 entries */
+    g_m68k.a[0] = 0x901400;
+    g_m68k.a[1] = (g_m68k.a[5] + 0x5d52);
+    g_m68k.d[7] = (g_m68k.d[7] & 0xFFFF0000u) | 0x07;
+    func_table_call(0x001142);
+}
+
+/* $E4C: Clear $5D56 and fall through to $E50 (re-enter processing loop) */
+void override_000E4C(void) {
+    bus_write16(g_m68k.a[5] + 0x5d56, 0);
+    g_m68k.flag_n = false; g_m68k.flag_z = true;
+    g_m68k.flag_v = false; g_m68k.flag_c = false;
+    func_table_call(0x000E50);  /* fall through to state 0 handler */
+}
+
+/* $E9E: Set $5D56=1 and fall through to $EA4 (state 2 handler) */
+void override_000E9E(void) {
+    { uint16_t _mv = 1; bus_write16(g_m68k.a[5] + 0x5d56, _mv); M68K_TST16(_mv); }
+    func_table_call(0x000EA4);
 }
 
 /* Safety net for func_table_call(0x000A5E) */
