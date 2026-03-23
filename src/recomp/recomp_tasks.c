@@ -293,6 +293,34 @@ loc_0023AE:
 }
 
 /* ================================================================
+ * sub_000BAE — TRAP #9: Terminate task and return slot to free list.
+ * Same as TRAP #1 but also pushes the slot back onto the free pool.
+ * ================================================================ */
+void sub_000BAE(void) {
+    uint32_t task_addr = bus_read32(g_m68k.a[5] + (-0x7dfc));
+    /* Clear task slot fields */
+    g_m68k.d[0] = (uint32_t)(int32_t)(int8_t)(0x0); M68K_TST32(g_m68k.d[0]);
+    bus_write32(task_addr + 0x10, 0);
+    bus_write32(task_addr + 0x14, 0);
+    bus_write32(task_addr + 0x18, 0);
+    bus_write32(task_addr + 0x1c, 0);
+    bus_write8(task_addr + 0x0, 0);  /* Free the slot */
+    /* Push slot address back onto free list */
+    uint32_t free_ptr = bus_read32(g_m68k.a[5] + (-0x7df8));
+    free_ptr -= 4;
+    bus_write32(free_ptr, task_addr);
+    bus_write32(g_m68k.a[5] + (-0x7df8), free_ptr);
+    /* Increment free count */
+    { uint32_t _ea = g_m68k.a[5] + (-0x7df4);
+      uint16_t _tmp = bus_read16(_ea);
+      M68K_ADD16(_tmp, 0x1);
+      bus_write16(_ea, _tmp); }
+    /* Terminate fiber and yield */
+    task_fiber_mark_terminated();
+    task_fiber_yield_to_main();
+}
+
+/* ================================================================
  * sub_000B8A — TRAP #1: Terminate current task.
  * Clears the task slot and destroys the fiber.
  * ================================================================ */
