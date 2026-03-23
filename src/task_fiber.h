@@ -19,7 +19,9 @@
 
 #define TASK_SLOT_COUNT  16
 #define TASK_SLOT_SIZE   0x20
-#define FIBER_STACK_SIZE (64 * 1024)  /* 64 KB per task fiber */
+#define FIBER_STACK_SIZE (1024 * 1024)  /* 1 MB per task fiber — needs room for
+                                          deep recursion from recompiled branch-
+                                          as-func_table_call patterns */
 
 /* Initialize the fiber system.  Must be called once from the main thread
    before any task dispatch.  Converts the main thread to a fiber. */

@@ -1,4 +1,4 @@
-/* Auto-generated ï¿½ forward declarations + registration */
+/* Auto-generated — forward declarations + registration */
 #ifndef RECOMP_FUNCS_H
 #define RECOMP_FUNCS_H
 
@@ -62,6 +62,7 @@ void jt_000B2C(void);
 void sub_000B42(void);
 void sub_000B5E(void);
 void sub_000B62(void);
+void sub_000B8A(void);
 void sub_000BE4(void);
 void jt_000C00(void);
 void sub_000C08(void);
@@ -79,12 +80,20 @@ void sub_000DFC(void);
 void jt_000E00(void);
 void jt_000E12(void);
 void jt_000E28(void);
+void sub_000E50(void);
+void loc_000E8C(void);
+void sub_000EA4(void);
+void loc_000EDA(void);
 void jt_000F00(void);
 void jt_000FAC(void);
 void jt_001000(void);
 void jt_00100C(void);
 void jt_001018(void);
 void jt_001024(void);
+void loc_001030(void);
+void sub_00108E(void);
+void loc_001096(void);
+void loc_0010E0(void);
 void jt_001100(void);
 void jt_001104(void);
 void jt_001142(void);
@@ -117,6 +126,12 @@ void jt_001198(void);
 void jt_00119A(void);
 void sub_001220(void);
 void sub_001296(void);
+void loc_0012C0(void);
+void loc_0012EA(void);
+void loc_001314(void);
+void loc_001340(void);
+void loc_001368(void);
+void loc_001396(void);
 void jt_001400(void);
 void jt_001466(void);
 void jt_00146E(void);
@@ -128,6 +143,8 @@ void jt_001490(void);
 void jt_001492(void);
 void jt_001498(void);
 void jt_00149A(void);
+void loc_0014CC(void);
+void loc_0014F2(void);
 void jt_001500(void);
 void jt_00150A(void);
 void sub_00158C(void);
@@ -238,6 +255,7 @@ void jt_002048(void);
 void jt_0020CA(void);
 void jt_0020E4(void);
 void jt_0020F0(void);
+void sub_0020F8(void);
 void jt_002100(void);
 void sub_002138(void);
 void jt_002142(void);
@@ -249,7 +267,9 @@ void sub_0021E2(void);
 void sub_002224(void);
 void jt_002300(void);
 void sub_002320(void);
+void sub_00237E(void);
 void sub_002388(void);
+void loc_0023AE(void);
 void sub_0023BE(void);
 void sub_0023DA(void);
 void sub_0023EC(void);
@@ -419,6 +439,16 @@ void sub_0062FE(void);
 void sub_006300(void);
 void sub_00635A(void);
 void sub_006372(void);
+void sub_00639E(void);
+void sub_0063CA(void);
+void sub_0063DA(void);
+void sub_0063FE(void);
+void sub_00640A(void);
+void sub_006420(void);
+void sub_006432(void);
+void sub_006464(void);
+void sub_006496(void);
+void sub_00653C(void);
 void jt_006600(void);
 void jt_006602(void);
 void jt_00660A(void);
@@ -2306,6 +2336,7 @@ void jt_0832AC(void);
 void jt_083504(void);
 void sub_083716(void);
 void sub_083C3C(void);
+void sub_084BE2(void);
 void jt_084EF8(void);
 void jt_085E00(void);
 void jt_086104(void);
@@ -2473,23 +2504,6 @@ void jt_0B4EF8(void);
 void jt_0B8000(void);
 void jt_0B9A26(void);
 
-/* Hand-written task entry points and state handlers (recomp_tasks.c) */
-void sub_00639E(void);
-void sub_0014F2(void);
-void sub_0014CC(void);
-void sub_0063CA(void);
-void sub_0063DA(void);
-void sub_0063FE(void);
-void sub_00640A(void);
-void sub_006420(void);
-void sub_006432(void);
-void sub_006464(void);
-void sub_00237E(void);
-void sub_000BAE(void);
-void sub_000B8A(void);
-void sub_006496(void);
-void trap_return_to_main(void);
-
 static inline void recomp_register_all(void) {
     func_table_register(0x000400, vec_address_error);
     func_table_register(0x000402, vec_trace);
@@ -2542,6 +2556,7 @@ static inline void recomp_register_all(void) {
     func_table_register(0x000B42, sub_000B42);
     func_table_register(0x000B5E, sub_000B5E);
     func_table_register(0x000B62, sub_000B62);
+    func_table_register(0x000B8A, sub_000B8A);
     func_table_register(0x000BE4, sub_000BE4);
     func_table_register(0x000C00, jt_000C00);
     func_table_register(0x000C08, sub_000C08);
@@ -2559,12 +2574,20 @@ static inline void recomp_register_all(void) {
     func_table_register(0x000E00, jt_000E00);
     func_table_register(0x000E12, jt_000E12);
     func_table_register(0x000E28, jt_000E28);
+    func_table_register(0x000E50, sub_000E50);
+    func_table_register(0x000E8C, loc_000E8C);
+    func_table_register(0x000EA4, sub_000EA4);
+    func_table_register(0x000EDA, loc_000EDA);
     func_table_register(0x000F00, jt_000F00);
     func_table_register(0x000FAC, jt_000FAC);
     func_table_register(0x001000, jt_001000);
     func_table_register(0x00100C, jt_00100C);
     func_table_register(0x001018, jt_001018);
     func_table_register(0x001024, jt_001024);
+    func_table_register(0x001030, loc_001030);
+    func_table_register(0x00108E, sub_00108E);
+    func_table_register(0x001096, loc_001096);
+    func_table_register(0x0010E0, loc_0010E0);
     func_table_register(0x001100, jt_001100);
     func_table_register(0x001104, jt_001104);
     func_table_register(0x001142, jt_001142);
@@ -2597,6 +2620,12 @@ static inline void recomp_register_all(void) {
     func_table_register(0x00119A, jt_00119A);
     func_table_register(0x001220, sub_001220);
     func_table_register(0x001296, sub_001296);
+    func_table_register(0x0012C0, loc_0012C0);
+    func_table_register(0x0012EA, loc_0012EA);
+    func_table_register(0x001314, loc_001314);
+    func_table_register(0x001340, loc_001340);
+    func_table_register(0x001368, loc_001368);
+    func_table_register(0x001396, loc_001396);
     func_table_register(0x001400, jt_001400);
     func_table_register(0x001466, jt_001466);
     func_table_register(0x00146E, jt_00146E);
@@ -2608,6 +2637,8 @@ static inline void recomp_register_all(void) {
     func_table_register(0x001492, jt_001492);
     func_table_register(0x001498, jt_001498);
     func_table_register(0x00149A, jt_00149A);
+    func_table_register(0x0014CC, loc_0014CC);
+    func_table_register(0x0014F2, loc_0014F2);
     func_table_register(0x001500, jt_001500);
     func_table_register(0x00150A, jt_00150A);
     func_table_register(0x00158C, sub_00158C);
@@ -2718,6 +2749,7 @@ static inline void recomp_register_all(void) {
     func_table_register(0x0020CA, jt_0020CA);
     func_table_register(0x0020E4, jt_0020E4);
     func_table_register(0x0020F0, jt_0020F0);
+    func_table_register(0x0020F8, sub_0020F8);
     func_table_register(0x002100, jt_002100);
     func_table_register(0x002138, sub_002138);
     func_table_register(0x002142, jt_002142);
@@ -2729,7 +2761,9 @@ static inline void recomp_register_all(void) {
     func_table_register(0x002224, sub_002224);
     func_table_register(0x002300, jt_002300);
     func_table_register(0x002320, sub_002320);
+    func_table_register(0x00237E, sub_00237E);
     func_table_register(0x002388, sub_002388);
+    func_table_register(0x0023AE, loc_0023AE);
     func_table_register(0x0023BE, sub_0023BE);
     func_table_register(0x0023DA, sub_0023DA);
     func_table_register(0x0023EC, sub_0023EC);
@@ -2899,6 +2933,16 @@ static inline void recomp_register_all(void) {
     func_table_register(0x006300, sub_006300);
     func_table_register(0x00635A, sub_00635A);
     func_table_register(0x006372, sub_006372);
+    func_table_register(0x00639E, sub_00639E);
+    func_table_register(0x0063CA, sub_0063CA);
+    func_table_register(0x0063DA, sub_0063DA);
+    func_table_register(0x0063FE, sub_0063FE);
+    func_table_register(0x00640A, sub_00640A);
+    func_table_register(0x006420, sub_006420);
+    func_table_register(0x006432, sub_006432);
+    func_table_register(0x006464, sub_006464);
+    func_table_register(0x006496, sub_006496);
+    func_table_register(0x00653C, sub_00653C);
     func_table_register(0x006600, jt_006600);
     func_table_register(0x006602, jt_006602);
     func_table_register(0x00660A, jt_00660A);
@@ -4786,6 +4830,7 @@ static inline void recomp_register_all(void) {
     func_table_register(0x083504, jt_083504);
     func_table_register(0x083716, sub_083716);
     func_table_register(0x083C3C, sub_083C3C);
+    func_table_register(0x084BE2, sub_084BE2);
     func_table_register(0x084EF8, jt_084EF8);
     func_table_register(0x085E00, jt_085E00);
     func_table_register(0x086104, jt_086104);
@@ -4953,22 +4998,45 @@ static inline void recomp_register_all(void) {
     func_table_register(0x0B8000, jt_0B8000);
     func_table_register(0x0B9A26, jt_0B9A26);
 
-    /* Hand-written task entry points and state handlers */
-    func_table_register(0x00639E, sub_00639E);
-    func_table_register(0x0014F2, sub_0014F2);
-    func_table_register(0x0014CC, sub_0014CC);
-    func_table_register(0x000A5E, trap_return_to_main);
-    func_table_register(0x0063CA, sub_0063CA);
-    func_table_register(0x0063DA, sub_0063DA);
-    func_table_register(0x0063FE, sub_0063FE);
-    func_table_register(0x00640A, sub_00640A);
-    func_table_register(0x006420, sub_006420);
-    func_table_register(0x006432, sub_006432);
-    func_table_register(0x006464, sub_006464);
-    func_table_register(0x00237E, sub_00237E);
-    func_table_register(0x000BAE, sub_000BAE);
-    func_table_register(0x000B8A, sub_000B8A);
-    func_table_register(0x006496, sub_006496);
+    /* Fiber-aware overrides from tasks.c (last registration wins) */
+    {
+        extern void override_00639E(void);
+        extern void override_0014F2(void);
+        extern void override_000BAE(void);
+        extern void override_000B8A(void);
+        extern void override_000CB8(void);
+        extern void override_000CEC(void);
+        extern void override_000C5C(void);
+        extern void trap_return_to_main(void);
+        func_table_register(0x00639E, override_00639E);
+        func_table_register(0x0014F2, override_0014F2);
+        func_table_register(0x000BAE, override_000BAE);
+        func_table_register(0x000B8A, override_000B8A);
+        func_table_register(0x000CB8, override_000CB8);
+        func_table_register(0x000CEC, override_000CEC);
+        func_table_register(0x000C5C, override_000C5C);
+        func_table_register(0x000A5E, trap_return_to_main);
+    }
+
+    /* Fiber-aware overrides from tasks.c (last registration wins) */
+    {
+        extern void override_00639E(void);
+        extern void override_0014F2(void);
+        extern void override_000BAE(void);
+        extern void override_000B8A(void);
+        extern void override_000CB8(void);
+        extern void override_000CEC(void);
+        extern void override_000C5C(void);
+        extern void trap_return_to_main(void);
+        func_table_register(0x00639E, override_00639E);
+        func_table_register(0x0014F2, override_0014F2);
+        func_table_register(0x000BAE, override_000BAE);
+        func_table_register(0x000B8A, override_000B8A);
+        func_table_register(0x000CB8, override_000CB8);
+        func_table_register(0x000CEC, override_000CEC);
+        func_table_register(0x000C5C, override_000C5C);
+        func_table_register(0x000A5E, trap_return_to_main);
+    }
 }
 
 #endif /* RECOMP_FUNCS_H */

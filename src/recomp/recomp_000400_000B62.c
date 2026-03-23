@@ -5,7 +5,6 @@
 #include <cps1recomp/cps1recomp.h>
 #include "recomp_funcs.h"
 #include "../task_fiber.h"
-#include <stdio.h>
 
 /* $000400-$000402  (1 instructions, 2 bytes) */
 void vec_address_error(void) {
@@ -518,38 +517,18 @@ loc_0009D6:
     func_table_call(0x000B20);
     m68k_set_sr(0x2000);
 loc_000A0C:
-    /* --- Frame boundary ---
-       Original code polls the vblank flag to detect async interrupts.
-       In recompiled code, reading the flag triggers the vblank hook
-       synchronously (one frame render+present).  We fire it once at the
-       top, then scan all 16 task slots before the next frame. */
-    bus_write8(g_m68k.a[5] + (-0x7df2), 0);  /* clear vblank flag */
+    bus_write8(g_m68k.a[5] + (-0x7df2), 0);
     g_m68k.flag_n = false; g_m68k.flag_z = true;
     g_m68k.flag_v = false; g_m68k.flag_c = false;
-
-    /* Trigger vblank: reading the flag fires the hook (renders one frame).
-       The ISR (vec_irq2_vblank) updates task sleep counters. */
     m68k_set_sr(0x2600);
-    bus_vblank_hook_arm();  /* Arm the hook so the next read fires it */
-    (void)bus_read8(g_m68k.a[5] + (-0x7df2));  /* Fires hook, auto-disarms */
-    /* The vblank hook renders a frame but does NOT call the 68k VBlank ISR.
-       Call it explicitly — the ISR updates CPS registers, scans task slots
-       to decrement sleep counters (status 1→4), and sets the vblank flag. */
+    bus_vblank_hook_arm();
+    (void)bus_read8(g_m68k.a[5] + (-0x7df2));
     vec_irq2_vblank();
-
-    /* Clear vblank flag AFTER the ISR.  The ISR sets it to 0xFF; tasks that
-       check this flag (e.g., the secondary scheduler at $14F2) need to see
-       it clear during their execution, matching the original hardware where
-       the main loop clears the flag at the start of each frame. */
     bus_write8(g_m68k.a[5] + (-0x7df2), 0);
-
-    /* Set up task scan */
     g_m68k.a[0] = (g_m68k.a[5] + (-0x8000));
     g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | ((uint16_t)(0xf));
     M68K_TST16((uint16_t)g_m68k.d[0]);
-
 loc_000A18:
-    /* Scan task slots (no vblank check mid-scan) */
     g_m68k.d[1] = (g_m68k.d[1] & 0xFFFFFF00u) | ((uint8_t)(bus_read8(g_m68k.a[0] + 0x0)));
     M68K_TST8((uint8_t)g_m68k.d[1]);
     M68K_CMP8(g_m68k.d[1], 0x4);
@@ -559,40 +538,29 @@ loc_000A18:
     { int16_t _cnt = (int16_t)(uint16_t)g_m68k.d[0]; _cnt--; g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | (uint16_t)_cnt; if (_cnt != -1) { goto loc_000A18; } }
     goto loc_000A0C;
 loc_000A3A:
-    /* Save main loop context on 68k stack */
     g_m68k.a[7] -= 4; bus_write32(g_m68k.a[7], 0xa2c);
     { uint16_t _mv = (uint16_t)(g_m68k.d[0]); g_m68k.a[7] -= 2; bus_write16(g_m68k.a[7], _mv); M68K_TST16(_mv); }
     { uint32_t _mv = (uint32_t)(g_m68k.a[0]); g_m68k.a[7] -= 4; bus_write32(g_m68k.a[7], _mv); M68K_TST32(_mv); }
     { uint32_t _mv = (uint32_t)(g_m68k.a[7]); bus_write32(g_m68k.a[5] + (-0x7e00), _mv); M68K_TST32(_mv); }
     { uint32_t _mv = (uint32_t)(g_m68k.a[0]); bus_write32(g_m68k.a[5] + (-0x7dfc), _mv); M68K_TST32(_mv); }
-
-    /* --- Fiber-based task dispatch --- */
     {
         uint32_t task_base = g_m68k.a[5] - 0x8000;
         int slot = (int)(g_m68k.a[0] - task_base) / TASK_SLOT_SIZE;
         uint8_t status = (uint8_t)g_m68k.d[1];
-
         if (status >= 0x0C) {
-            /* New task (status 0x0C): create fiber, run from code address */
             uint32_t code_addr = bus_read32(g_m68k.a[0] + 4);
             task_fiber_create(slot, code_addr);
-            bus_write8(g_m68k.a[0] + 0x0, 0x08);  /* mark as running */
+            bus_write8(g_m68k.a[0] + 0x0, 0x08);
             task_fiber_switch_to(slot);
         } else if (task_fiber_exists(slot)) {
-            /* Resume existing fiber (status 0x04/0x08) */
-            bus_write8(g_m68k.a[0] + 0x0, 0x08);  /* mark as running */
+            bus_write8(g_m68k.a[0] + 0x0, 0x08);
             task_fiber_switch_to(slot);
         }
-        /* else: no fiber — skip (shouldn't normally happen) */
     }
-
-    /* loc_000A5E: Restore main loop context after fiber yields/terminates */
     g_m68k.a[7] = bus_read32(g_m68k.a[5] + (-0x7e00));
     g_m68k.a[0] = bus_read32(g_m68k.a[7]); g_m68k.a[7] += 4;
     g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | ((uint16_t)(bus_read16(g_m68k.a[7]))); g_m68k.a[7] += 2;
-    g_m68k.a[7] += 4;  /* pop pseudo return address (0xA2C) */
-
-    /* Continue scanning remaining task slots (replaces the `return;`) */
+    g_m68k.a[7] += 4;
     m68k_set_sr(0x2000);
     g_m68k.a[0] = (g_m68k.a[0] + 0x20);
     { int16_t _cnt = (int16_t)(uint16_t)g_m68k.d[0]; _cnt--; g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | (uint16_t)_cnt; if (_cnt != -1) { goto loc_000A18; } }
@@ -702,21 +670,15 @@ void jt_000B1A(void) {
 }
 
 /* $000B20-$000B24  (2 instructions, 4 bytes) */
-/* TRAP #0: Install task at slot offset D0.
-   Handler at $B24-$B40: LEA -$8000(A5),A1; TST.B (A1,D0); BNE skip;
-   MOVE.W #$C00,(A1,D0); MOVE.L A0,4(A1,D0); MOVE.W D1,$10(A1,D0);
-   MOVE.W D2,$12(A1,D0); RTE */
 void sub_000B20(void) {
     uint32_t task_base = g_m68k.a[5] - 0x8000;
     int16_t slot_off = (int16_t)(uint16_t)g_m68k.d[0];
-    /* Check if slot is free */
     M68K_TST8(bus_read8(task_base + slot_off));
-    if (M68K_CC_NE) return;  /* Slot occupied */
-    /* Install task */
-    bus_write16(task_base + slot_off + 0x00, 0x0C00);       /* status = new task */
-    bus_write32(task_base + slot_off + 0x04, g_m68k.a[0]);  /* code address */
-    bus_write16(task_base + slot_off + 0x10, (uint16_t)g_m68k.d[1]); /* param */
-    bus_write16(task_base + slot_off + 0x12, (uint16_t)g_m68k.d[2]); /* param */
+    if (M68K_CC_NE) return;
+    bus_write16(task_base + slot_off + 0x00, 0x0C00);
+    bus_write32(task_base + slot_off + 0x04, g_m68k.a[0]);
+    bus_write16(task_base + slot_off + 0x10, (uint16_t)g_m68k.d[1]);
+    bus_write16(task_base + slot_off + 0x12, (uint16_t)g_m68k.d[2]);
 }
 
 /* $000B24-$000B28  (1 instructions, 4 bytes) */
@@ -761,7 +723,6 @@ void sub_000B42(void) {
 }
 
 /* $000B5E-$000B62  (2 instructions, 4 bytes) */
-/* TRAP #7: Install task via free list (handler at $000B62 = sub_000B62) */
 void sub_000B5E(void) {
     sub_000B62();
 }

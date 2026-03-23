@@ -17,6 +17,7 @@ file(GLOB RECOMP_SOURCES "src/recomp/recomp_*.c")
 add_executable(sf2
     src/main.c
     src/task_fiber.c
+    src/tasks.c
     ${RECOMP_SOURCES}
 )
 
