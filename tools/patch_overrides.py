@@ -29,14 +29,20 @@ static inline void recomp_register_overrides(void) {
     func_table_register(0x000B20, override_000B20);
     func_table_register(0x00639E, override_00639E);
     func_table_register(0x0014F2, override_0014F2);
-    func_table_register(0x000B8A, override_000B8A);
-    func_table_register(0x000BAE, override_000BAE);
-    func_table_register(0x000CB8, override_000CB8);
-    func_table_register(0x000CEC, override_000CEC);
-    func_table_register(0x000C5C, override_000C5C);
     func_table_register(0x0010E0, override_0010E0);
     func_table_register(0x000E4C, override_000E4C);
     func_table_register(0x000E9E, override_000E9E);
+    /* Register at BOTH wrapper and TRAP vector target addresses */
+    func_table_register(0x000B8A, override_000B8A);
+    func_table_register(0x000B8C, override_000B8A);
+    func_table_register(0x000BAE, override_000BAE);
+    func_table_register(0x000BB0, override_000BAE);
+    func_table_register(0x000CB8, override_000CB8);
+    func_table_register(0x000CC4, override_000CB8);
+    func_table_register(0x000CEC, override_000CEC);
+    func_table_register(0x000CF0, override_000CEC);
+    func_table_register(0x000C5C, override_000C5C);
+    func_table_register(0x000C60, override_000C5C);
 }
 
 '''

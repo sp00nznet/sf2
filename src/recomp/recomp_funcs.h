@@ -1,4 +1,4 @@
-/* Auto-generated � forward declarations + registration */
+/* Auto-generated � forward declarations + registration */
 #ifndef RECOMP_FUNCS_H
 #define RECOMP_FUNCS_H
 
@@ -6239,6 +6239,8 @@ extern void override_000E9E(void);
 extern void override_000910(void);
 extern void override_000A94(void);
 extern void override_000B20(void);
+extern void override_000B5E(void);
+extern void override_000B42(void);
 extern void trap_return_to_main(void);
 
 static inline void recomp_register_overrides(void) {
@@ -6247,14 +6249,23 @@ static inline void recomp_register_overrides(void) {
     func_table_register(0x000B20, override_000B20);
     func_table_register(0x00639E, override_00639E);
     func_table_register(0x0014F2, override_0014F2);
-    func_table_register(0x000B8A, override_000B8A);
-    func_table_register(0x000BAE, override_000BAE);
-    func_table_register(0x000CB8, override_000CB8);
-    func_table_register(0x000CEC, override_000CEC);
-    func_table_register(0x000C5C, override_000C5C);
     func_table_register(0x0010E0, override_0010E0);
     func_table_register(0x000E4C, override_000E4C);
     func_table_register(0x000E9E, override_000E9E);
+    /* TRAP handler overrides — register at BOTH the wrapper and vector addresses */
+    func_table_register(0x000B8A, override_000B8A);  /* TRAP #1 wrapper */
+    func_table_register(0x000B8C, override_000B8A);  /* TRAP #1 vector target */
+    func_table_register(0x000BAE, override_000BAE);  /* TRAP #9 wrapper */
+    func_table_register(0x000BB0, override_000BAE);  /* TRAP #9 vector target */
+    func_table_register(0x000CB8, override_000CB8);  /* TRAP #3 wrapper */
+    func_table_register(0x000CC4, override_000CB8);  /* TRAP #3 vector target */
+    func_table_register(0x000CEC, override_000CEC);  /* TRAP #4 wrapper */
+    func_table_register(0x000CF0, override_000CEC);  /* TRAP #4 vector target */
+    func_table_register(0x000C5C, override_000C5C);  /* TRAP #11 wrapper */
+    func_table_register(0x000C60, override_000C5C);  /* TRAP #11 vector target */
+    /* TRAP wrapper overrides — recompiler skips TRAP instructions */
+    func_table_register(0x000B5E, override_000B5E);  /* TRAP #7 wrapper */
+    func_table_register(0x000B42, override_000B42);  /* TRAP #10 wrapper */
 }
 
 #endif /* RECOMP_FUNCS_H */

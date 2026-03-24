@@ -27,6 +27,14 @@ void override_00639E(void) {
             0x63B8 + (int16_t)(uint16_t)g_m68k.d[0]);
         g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | (uint16_t)disp;
         uint32_t handler = (uint32_t)((int32_t)0x63B8 + disp);
+        { static int ac = 0; ac++;
+          uint16_t widx = bus_read16(g_m68k.a[5] + 0x1e);
+          if (ac <= 15) {
+              fprintf(stderr, "[attract] #%d state=%u handler=$%06X widx=%u\n",
+                      ac, (uint16_t)bus_read16(g_m68k.a[5] + 0x0), handler, widx);
+              fflush(stderr);
+          }
+        }
         func_table_call(handler);
         g_m68k.d[0] = (g_m68k.d[0] & 0xFFFF0000u) | (uint16_t)(0x1);
         M68K_TST16((uint16_t)g_m68k.d[0]);
@@ -39,6 +47,8 @@ void override_00639E(void) {
  * Infinite loop: scan task slots, yield, check queue.
  * ================================================================ */
 void override_0014F2(void) {
+    { static int entered = 0; if (!entered) { entered = 1;
+      fprintf(stderr, "[sched] override_0014F2 entered\n"); fflush(stderr); } }
     for (;;) {
         bus_write16(g_m68k.a[5] + (-0x75d0), 0);
         g_m68k.flag_n = false; g_m68k.flag_z = true;
@@ -75,6 +85,16 @@ void override_0014F2(void) {
 
     do_yield:
         func_table_call(0x000CEC);  /* TRAP #4: yield */
+        { static int yc = 0; yc++;
+          uint8_t vb = bus_read8(g_m68k.a[5] + (-0x7df2));
+          uint16_t fc = bus_read16(g_m68k.a[5] + (-0x7df4));
+          uint16_t ridx = bus_read16(g_m68k.a[5] + 0x20);
+          uint16_t widx = bus_read16(g_m68k.a[5] + 0x1e);
+          if (yc <= 10) {
+              fprintf(stderr, "[sched] yield#%d vb=%u free=%u ridx=%u widx=%u\n",
+                      yc, vb, fc, ridx, widx); fflush(stderr);
+          }
+        }
         M68K_TST8(bus_read8(g_m68k.a[5] + (-0x7df2)));
         if (M68K_CC_NE) continue;
         M68K_TST16(bus_read16(g_m68k.a[5] + (-0x7df4)));
@@ -341,6 +361,11 @@ void override_000910(void) {
         bus_vblank_hook_arm();
         (void)bus_read8(0xFF020E);      /* Read triggers VBlank hook */
 
+        /* Clear VBlank flag before dispatching tasks.
+         * The VBlank handler sets this; tasks check it to know a VBlank occurred.
+         * In original hardware, the main loop clears it at $A0C. */
+        bus_write8(g_m68k.a[5] - 0x7DF2, 0);
+
         /* Scan all 16 task slots and dispatch ready ones */
         uint32_t a0 = slot_base;
         for (int i = 0; i < 16; i++) {
@@ -428,6 +453,26 @@ void override_000B20(void) {
         bus_write16(slot + 0x10, (uint16_t)g_m68k.d[1]);
         bus_write16(slot + 0x12, (uint16_t)g_m68k.d[2]);
     }
+}
+
+/* TRAP wrapper overrides — the recompiler skips TRAP instructions,
+ * so we need to manually dispatch to the vector handlers. */
+
+/* $B5E: TRAP #7 (install secondary task from free list) */
+void override_000B5E(void) {
+    func_table_call(0x000B62);  /* TRAP #7 handler */
+}
+
+/* $B5A: TRAP #1 (kill current task, no free list return) — wrapper */
+/* Actually $B8A: TRAP #1; ADDQ #6,A7; ... */
+/* Already handled by override_000B8A */
+
+/* $B20: TRAP #0 (install primary task) — wrapper */
+/* Already handled by override_000B20 */
+
+/* $B42: TRAP #10 (force install primary task) */
+void override_000B42(void) {
+    func_table_call(0x000B46);  /* TRAP #10 handler */
 }
 
 /* Safety net for func_table_call(0x000A5E) */

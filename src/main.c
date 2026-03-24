@@ -58,13 +58,19 @@ int main(int argc, char *argv[]) {
     printf("[sf2] Registered %u functions (%u overrides)\n", func_table_count(), 11u);
     fflush(stdout);
 
-    /* Install TRAP vectors (game init uses LEA+BRA which recompiler can't follow) */
-    bus_write32(0x000080, 0x000B24);  /* TRAP #0: install secondary task */
-    bus_write32(0x000084, 0x000B62);  /* TRAP #1: kill current task */
-    bus_write32(0x00008C, 0x000CB8);  /* TRAP #3: sleep for D0.w frames */
-    bus_write32(0x000090, 0x000CDA);  /* TRAP #4: conditional sleep */
-    bus_write32(0x00009C, 0x000D48);  /* TRAP #7: jump to secondary code */
-    bus_write32(0x0000A4, 0x000DAC);  /* TRAP #9: free-list termination */
+    /* Install TRAP vectors from ROM vector table (game init uses LEA+BRA) */
+    bus_write32(0x000080, 0x000B24);  /* TRAP #0: install primary task */
+    bus_write32(0x000084, 0x000B8C);  /* TRAP #1: kill current task */
+    bus_write32(0x000088, 0x000BE4);  /* TRAP #2 */
+    bus_write32(0x00008C, 0x000CC4);  /* TRAP #3: sleep for D0.w frames */
+    bus_write32(0x000090, 0x000CF0);  /* TRAP #4: conditional sleep */
+    bus_write32(0x000094, 0x000D18);  /* TRAP #5 */
+    bus_write32(0x000098, 0x000D34);  /* TRAP #6 */
+    bus_write32(0x00009C, 0x000B62);  /* TRAP #7: install secondary task (free list) */
+    bus_write32(0x0000A0, 0x000C12);  /* TRAP #8 */
+    bus_write32(0x0000A4, 0x000BB0);  /* TRAP #9: terminate + free list */
+    bus_write32(0x0000A8, 0x000B46);  /* TRAP #10: force install task */
+    bus_write32(0x0000AC, 0x000C60);  /* TRAP #11: clear secondary slots */
 
     /* Check if entry point has a function */
     if (func_table_lookup(g_m68k.pc)) {
