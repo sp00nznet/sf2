@@ -229,6 +229,207 @@ void override_000E9E(void) {
     func_table_call(0x000EA4);
 }
 
+/* ================================================================
+ * sub_000910 — Main game loop + task scheduler.
+ *
+ * The auto-generated version is split into non-chaining fragments
+ * because the recompiler can't handle the infinite dispatch loop.
+ * This override does all init then runs the fiber-based scheduler.
+ * ================================================================ */
+void override_000910(void) {
+    /* --- Init phase (replicated from $910-$A04) --- */
+
+    g_m68k.a[7] = 0x000000;  /* LEA $0.W,A7 */
+    g_m68k.a[5] = 0xFF8000;
+
+    /* Clear task queue indices */
+    g_m68k.d[0] = 0;
+    bus_write16(g_m68k.a[5] + 0x24, 0);
+    bus_write16(g_m68k.a[5] + 0x22, 0);
+    bus_write16(g_m68k.a[5] + 0x20, 0);
+    bus_write16(g_m68k.a[5] + 0x1e, 0);
+
+    /* Init secondary task queue ($A2) to $FFFFFFFF — 32 pairs */
+    g_m68k.a[0] = g_m68k.a[5] + 0xa2;
+    for (int _i = 0; _i < 32; _i++) {
+        bus_write32(g_m68k.a[0], 0xFFFFFFFF); g_m68k.a[0] += 4;
+        bus_write32(g_m68k.a[0], 0xFFFFFFFF); g_m68k.a[0] += 4;
+    }
+    /* Init secondary task data ($1A2) to 0 */
+    g_m68k.a[0] = g_m68k.a[5] + 0x1a2;
+    for (int _i = 0; _i < 32; _i++) {
+        bus_write32(g_m68k.a[0], 0); g_m68k.a[0] += 4;
+        bus_write32(g_m68k.a[0], 0); g_m68k.a[0] += 4;
+    }
+
+    /* Region/difficulty */
+    bus_write16(g_m68k.a[5] + 0x2c2, 2);
+
+    /* GFX data transfer init */
+    func_table_call(0x0015D4);
+    func_table_call(0x00162C);
+    func_table_call(0x001C4E);
+    func_table_call(0x001D8E);
+
+    /* DIP switch check */
+    bus_write8(g_m68k.a[5] + 0x322, 0);
+    g_m68k.d[0] = (g_m68k.d[0] & 0xFFFFFF00u) | (uint8_t)bus_read8(0x800000);
+    M68K_NOT8(g_m68k.d[0]);
+    if ((uint8_t)g_m68k.d[0] == 0x50) {
+        bus_write8(g_m68k.a[5] + 0x322, 1);
+    }
+
+    /* Copy default task USP from ROM table at $D44 to slot+$C */
+    g_m68k.a[0] = 0x000D44;
+    uint32_t slot_base = g_m68k.a[5] - 0x8000;
+    g_m68k.a[6] = slot_base;
+    for (int _i = 0; _i < 16; _i++) {
+        uint32_t usp_val = bus_read32(g_m68k.a[0]); g_m68k.a[0] += 4;
+        bus_write32(g_m68k.a[6] + 0xC, usp_val);
+        g_m68k.a[6] += 0x20;
+    }
+
+    /* Stage data pointers at A5+$52DA */
+    g_m68k.a[0] = g_m68k.a[5] + 0x528A;
+    g_m68k.a[1] = g_m68k.a[5] + 0x52DA;
+    for (int _i = 0; _i < 6; _i++) {
+        bus_write32(g_m68k.a[1], g_m68k.a[0]);
+        g_m68k.a[1] += 4;
+        g_m68k.a[0] += 8;
+    }
+    /* Copy stage data from ROM at $DA4 */
+    g_m68k.a[0] = g_m68k.a[5] + 0x528A;
+    g_m68k.a[1] = 0x000DA4;
+    bus_write32(g_m68k.a[5] + 0x5302, bus_read32(g_m68k.a[1]));
+    for (int _i = 0; _i < 6; _i++) {
+        uint32_t v1 = bus_read32(g_m68k.a[1]); g_m68k.a[1] += 4;
+        bus_write32(g_m68k.a[0], v1); g_m68k.a[0] += 4;
+        uint32_t v2 = bus_read32(g_m68k.a[1]); g_m68k.a[1] += 4;
+        bus_write32(g_m68k.a[0], v2); g_m68k.a[0] += 4;
+    }
+
+    /* Init free task list: 8 slot addresses stored below A5-$75D0 */
+    g_m68k.a[0] = 0x000D84;
+    g_m68k.a[6] = g_m68k.a[5] - 0x75D0;
+    for (int _i = 0; _i < 8; _i++) {
+        uint32_t val = bus_read32(g_m68k.a[0]); g_m68k.a[0] += 4;
+        g_m68k.a[6] -= 4;
+        bus_write32(g_m68k.a[6], val);
+    }
+    bus_write32(g_m68k.a[5] - 0x7DF8, g_m68k.a[6]);
+    bus_write16(g_m68k.a[5] - 0x7DF4, 8);
+
+    bus_write8(g_m68k.a[5] + 0x307, 0);
+
+    /* Install primary tasks via TRAP #0 handler logic ($B24):
+     * Set slot status to $0C00, code entry at slot+4 */
+    /* Slot 0: Attract mode ($639E) */
+    bus_write16(slot_base + 0x00, 0x0C00);
+    bus_write32(slot_base + 0x04, 0x0000639E);
+    /* Slot 6 ($C0): Secondary scheduler ($14F2) */
+    bus_write16(slot_base + 0xC0, 0x0C00);
+    bus_write32(slot_base + 0xC4, 0x000014F2);
+
+    /* --- Main dispatch loop (fiber-based) --- */
+    for (;;) {
+        /* Run VBlank handler logic: register copies, input, timer decrements.
+         * The original $A94 handler runs as an IRQ; we call it directly. */
+        func_table_call(0x000A94);
+
+        /* Trigger frame render/present/sync via the VBlank hook */
+        bus_wram_write8(0x020E, 0x00);  /* Clear flag so hook fires on read */
+        bus_vblank_hook_arm();
+        (void)bus_read8(0xFF020E);      /* Read triggers VBlank hook */
+
+        /* Scan all 16 task slots and dispatch ready ones */
+        uint32_t a0 = slot_base;
+        for (int i = 0; i < 16; i++) {
+            uint8_t status = bus_read8(a0);
+
+            if (status == 0x0C) {
+                /* New task: create fiber, set status to running, dispatch */
+                uint32_t code = bus_read32(a0 + 4);
+                bus_write8(a0, 0x08);
+                bus_write32(g_m68k.a[5] - 0x7DFC, a0);  /* current task ptr */
+                task_fiber_create(i, code);
+                task_fiber_switch_to(i);
+            } else if (status >= 0x04) {
+                /* Ready/running: resume fiber */
+                bus_write32(g_m68k.a[5] - 0x7DFC, a0);
+                if (task_fiber_exists(i)) {
+                    task_fiber_switch_to(i);
+                }
+            }
+
+            a0 += 0x20;
+        }
+    }
+}
+
+/* ================================================================
+ * vec_irq2_vblank ($A94) — VBlank IRQ handler override.
+ *
+ * Per-frame: copy shadow registers to hardware, process input,
+ * decrement sleeping task timers.  The auto-generated version
+ * can't handle RTE; we call the sub-functions directly.
+ * ================================================================ */
+void override_000A94(void) {
+    g_m68k.a[5] = 0xFF8000;
+
+    /* Copy shadow scroll/palette registers to hardware */
+    bus_write16(0x800100, bus_read16(g_m68k.a[5] + 0x2A));
+    bus_write16(0x800108, bus_read16(g_m68k.a[5] + 0x32));
+    bus_write16(g_m68k.a[5] + 0x5E, bus_read16(0x800148));
+
+    func_table_call(0x001BAA);  /* scroll register copy */
+    func_table_call(0x000B06);  /* priority/palette + delay */
+    func_table_call(0x001B14);  /* palette DMA */
+    func_table_call(0x00626C);  /* input processing */
+    func_table_call(0x001ED0);  /* per-frame processing 1 */
+    func_table_call(0x001FE2);  /* per-frame processing 2 */
+    func_table_call(0x001D72);  /* per-frame processing 3 */
+
+    /* Increment frame counter */
+    uint8_t fc = bus_read8(g_m68k.a[5] + 0x1C);
+    bus_write8(g_m68k.a[5] + 0x1C, fc + 1);
+
+    /* Set VBlank occurred flag */
+    bus_write8(g_m68k.a[5] - 0x7DF2, 0xFF);
+
+    /* Clear flag $2E2 */
+    bus_write8(g_m68k.a[5] + 0x2E2, 0);
+
+    /* Decrement sleeping task timers */
+    uint32_t a0 = g_m68k.a[5] - 0x8000;
+    for (int i = 0; i < 16; i++) {
+        if (bus_read8(a0) == 0x01) {
+            uint8_t timer = bus_read8(a0 + 1);
+            timer--;
+            bus_write8(a0 + 1, timer);
+            if (timer == 0) {
+                bus_write8(a0, 0x04);  /* Ready to run */
+            }
+        }
+        a0 += 0x20;
+    }
+}
+
+/* ================================================================
+ * sub_000B20 — Install primary task (TRAP #0 wrapper).
+ * D0.W = slot offset, A0 = handler address.
+ * The auto-generated version can't handle TRAP; we inline it.
+ * ================================================================ */
+void override_000B20(void) {
+    /* TRAP #0 handler at $B24: install at slot D0 if empty */
+    uint32_t slot = (g_m68k.a[5] - 0x8000) + (uint16_t)g_m68k.d[0];
+    if (bus_read8(slot) == 0) {
+        bus_write16(slot, 0x0C00);
+        bus_write32(slot + 4, g_m68k.a[0]);
+        bus_write16(slot + 0x10, (uint16_t)g_m68k.d[1]);
+        bus_write16(slot + 0x12, (uint16_t)g_m68k.d[2]);
+    }
+}
+
 /* Safety net for func_table_call(0x000A5E) */
 void trap_return_to_main(void) {
     task_fiber_yield_to_main();

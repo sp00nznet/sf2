@@ -25,9 +25,10 @@ SF2_PROG_PAIRS = [
     ("sf2u.30a", "sf2u.37a", 0x00000, 0x20000),  # $00000-$3FFFF
     ("sf2u.31a", "sf2u.35a", 0x40000, 0x20000),  # $40000-$7FFFF
     ("sf2_36a.bin", "sf2u.38a", 0x80000, 0x20000),  # $80000-$BFFFF
+    ("sf2_28a.bin", "sf2_29a.bin", 0xC0000, 0x20000),  # $C0000-$FFFFF
 ]
 
-TOTAL_PROG_SIZE = 0xC0000  # 768 KB (3 pairs × 128KB × 2)
+TOTAL_PROG_SIZE = 0x100000  # 1 MB (4 pairs × 128KB × 2)
 
 # GFX ROMs — CPS1 interleaving scheme
 SF2_GFX_ROMS = [
@@ -118,6 +119,8 @@ def decode_gfx(zf, file_list, output_dir):
     # MAME-compatible 4-way interleave (ROM_GROUPWORD | ROM_SKIP(6))
     # Each group of 4 ROMs produces 4 * rom_size bytes.
     # Stride = 8 bytes: 2 from ROM0, 2 from ROM1, 2 from ROM2, 2 from ROM3.
+    # CPS1 GFX ROMs store data inverted (active-low): blank tile = $FF.
+    # We invert during extraction so pixel 0 = transparent.
     deinterleaved = bytearray()
     for group in range(0, len(gfx_roms), 4):
         rom0 = gfx_roms[group + 0]
@@ -129,14 +132,14 @@ def decode_gfx(zf, file_list, output_dir):
 
         for i in range(0, rom_size, 2):
             base = i * 4  # 8 bytes per 2 source bytes
-            group_data[base + 0] = rom0[i + 0]
-            group_data[base + 1] = rom0[i + 1]
-            group_data[base + 2] = rom1[i + 0]
-            group_data[base + 3] = rom1[i + 1]
-            group_data[base + 4] = rom2[i + 0]
-            group_data[base + 5] = rom2[i + 1]
-            group_data[base + 6] = rom3[i + 0]
-            group_data[base + 7] = rom3[i + 1]
+            group_data[base + 0] = rom0[i + 0] ^ 0xFF
+            group_data[base + 1] = rom0[i + 1] ^ 0xFF
+            group_data[base + 2] = rom1[i + 0] ^ 0xFF
+            group_data[base + 3] = rom1[i + 1] ^ 0xFF
+            group_data[base + 4] = rom2[i + 0] ^ 0xFF
+            group_data[base + 5] = rom2[i + 1] ^ 0xFF
+            group_data[base + 6] = rom3[i + 0] ^ 0xFF
+            group_data[base + 7] = rom3[i + 1] ^ 0xFF
 
         deinterleaved.extend(group_data)
 
