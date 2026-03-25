@@ -185,16 +185,29 @@ cmake --build build --config Release
 
 ### Current State (March 2026)
 
-The game boots, initializes, and runs its main loop at 60fps. The cooperative task system is fully operational using **Windows Fibers** -- each task gets its own C stack, and TRAP-based yield/sleep/terminate map to fiber switches.
+The game boots, initializes, and runs its main loop at 60fps. The cooperative task system is fully operational using **Windows Fibers** -- each task gets its own C stack, and TRAP-based yield/sleep/terminate map to fiber switches. The attract mode state machine cycles through all states. Background tiles render with correct palette colors.
 
 **What's working:**
-- TRAP #0 (task install), TRAP #3 (sleep N frames), TRAP #4 (yield), TRAP #7 (free-list install), TRAP #0xB (clear slots)
-- Two initial tasks running every frame:
-  - **$639E** -- Attract mode state machine (primary scheduler, slot 0). Progresses through states 0-6+, calling scene setup handlers.
-  - **$14F2** -- Secondary task scheduler (slot 6). Scans 16 secondary task slots each frame, manages async operations.
-- Attract mode state handlers ($63CA-$6464) hand-written and registered
-- GFX RAM receiving tile data (scroll2 tilemap populated, ~6% of GFX RAM non-zero)
-- VBlank ISR (`vec_irq2_vblank`) running each frame, updating task sleep counters
+- Full main loop + task scheduler (`override_000910`) with fiber dispatch
+- VBlank handler (`override_000A94`) with per-frame register copies, input, sleep timer decrements
+- All 16 TRAP handlers dispatched correctly (code generator emits `func_table_call(bus_read32(vector))` for each TRAP instruction)
+- Secondary task queue: attract mode installs GFX processing ($E12) and stage loading ($597A) tasks via free-list allocation
+- Attract mode state machine cycling through all states (0→2→4→6→8→...→0)
+- GFX tile decode: CPS1 bitplane format (consecutive bytes 0,1,2,3 as 4 planes, data inverted, 2 subtiles per 64-byte block)
+- Palette rendering from CPS-A register $80010A
+- GFX RAM base addresses via modulo (192KB is not a power of 2)
+- 1MB 68K program ROM (4 byte-interleaved pairs)
+- 3100+ recompiled functions, zero critical MISSes
+
+**What's rendering:**
+- Scroll 2 (playfield): stage floor background tile pattern with correct colors (14 unique colors visible)
+- Background tile $4020 correctly decoded as rocky ground texture
+
+**What's next:**
+- Scroll 1 (HUD/text) empty: text enable flag `$2D7` stays 0, "INSERT COIN" not rendering
+- Scroll 3 (background parallax) empty
+- Sprites not visible: character demo tasks not populating sprite table
+- 221 code references to scroll 1 GFX RAM exist -- text rendering functions present but not triggered
 - 300+ frames stable with no func_table misses
 
 **What's next:**
