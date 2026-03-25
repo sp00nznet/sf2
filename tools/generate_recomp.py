@@ -172,7 +172,9 @@ class M68KTranslator:
         if base == 'sf' or mnemonic == 'sf': return self._gen_scc('M68K_CC_F', ops)
         if mnemonic == 'nop': return '/* nop */'
         if base == 'trap':
-            return f'/* TRAP #{self._imm(ops[0])} */'
+            trap_n = int(self._imm(ops[0]), 0)
+            vec_addr = 0x80 + trap_n * 4
+            return f'func_table_call(bus_read32(0x{vec_addr:04X})); /* TRAP #{trap_n} */'
 
         return None
 

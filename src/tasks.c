@@ -29,7 +29,7 @@ void override_00639E(void) {
         uint32_t handler = (uint32_t)((int32_t)0x63B8 + disp);
         { static int ac = 0; ac++;
           uint16_t widx = bus_read16(g_m68k.a[5] + 0x1e);
-          if (ac <= 15) {
+          if (ac <= 40) {
               fprintf(stderr, "[attract] #%d state=%u handler=$%06X widx=%u\n",
                       ac, (uint16_t)bus_read16(g_m68k.a[5] + 0x0), handler, widx);
               fflush(stderr);
@@ -473,6 +473,36 @@ void override_000B5E(void) {
 /* $B42: TRAP #10 (force install primary task) */
 void override_000B42(void) {
     func_table_call(0x000B46);  /* TRAP #10 handler */
+}
+
+/* $BE0: TRAP #2 */
+void override_000BE0(void) {
+    func_table_call(0x000BE4);  /* TRAP #2 handler */
+}
+
+/* $C0E: TRAP #8 */
+void override_000C0E(void) {
+    func_table_call(0x000C12);  /* TRAP #8 handler */
+}
+
+/* $C9E: TRAP #12 */
+void override_000C9E(void) {
+    func_table_call(0x000CA2);  /* TRAP #12 handler */
+}
+
+/* $D10: TRAP #5 */
+void override_000D10(void) {
+    func_table_call(0x000D18);  /* TRAP #5 handler */
+}
+
+/* $D2C: TRAP #6 */
+void override_000D2C(void) {
+    func_table_call(0x000D34);  /* TRAP #6 handler */
+}
+
+/* $DA8: TRAP #9 (alternate terminate entry) */
+void override_000DA8(void) {
+    func_table_call(0x000BB0);  /* TRAP #9 handler (same as $BAE but different entry) */
 }
 
 /* Safety net for func_table_call(0x000A5E) */
