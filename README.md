@@ -176,7 +176,7 @@ cmake --build build --config Release
 | **3** | Scroll layers + palette renderer | Done |
 | **4** | Sprite engine | Done |
 | **5** | Platform layer + input + first boot | Done |
-| **6** | Z80 sound CPU | Stub (no execution) |
+| **6** | Z80 sound CPU | Done (interpreter, ported from z80recomp) |
 | **7** | YM2151 FM audio (via ymfm) | Done |
 | **8** | OKI MSM6295 ADPCM | Done |
 | **9** | Cooperative task system (Windows Fibers) | Done |
@@ -186,6 +186,8 @@ cmake --build build --config Release
 ### Current State (March 2026)
 
 The game boots, initializes, and runs its main loop at 60fps. The cooperative task system is fully operational using **Windows Fibers** -- each task gets its own C stack, and TRAP-based yield/sleep/terminate map to fiber switches. The attract mode state machine cycles through all states. Background tiles render with correct palette colors.
+
+The **Z80 sound CPU is live**: a single-step Z80 interpreter (ported from the sp00nznet `z80recomp` runtime used by pacrecomp/zxrecomp) executes the original sound program against the CPS1 sound memory map (banked ROM, 2 KB RAM, YM2151 at `$F000`, OKI at `$F002`, sound latch at `$F008`). It is paced by the YM2151 timer interrupt (IM 1 -> `$0038`, ~250 Hz), which now drives the ymfm engine's IRQ. The Z80 boots, services the 68k sound latch, and sequences the YM2151/OKI -- verified end-to-end with audible FM output when a music command is dispatched.
 
 **What's working:**
 - Full main loop + task scheduler (`override_000910`) with fiber dispatch
