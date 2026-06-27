@@ -85,6 +85,9 @@ class M68KTranslator:
 
     def _translate(self, addr, base, mnemonic, op_str, size, raw_bytes):
         ops = self._split_operands(op_str) if op_str else []
+        # Address of the next sequential instruction (used to resume the
+        # LEA+BRA continuation-passing convention after a helper returns).
+        self._cur_next = addr + len(raw_bytes)
 
         # SR/CCR moves
         if base == 'move' and any(o.strip().lower() in ('sr', 'ccr') for o in ops):
@@ -632,9 +635,17 @@ class M68KTranslator:
         # This BRA: branch to subroutine that returns via JMP (An)
         # We emit this as a func_table_call() and continue (not return).
         if target is not None and self.prev_mnemonic.startswith('lea') and '(pc)' in self.prev_op_str.lower():
-            # This is a call, not a tail branch
+            # Continuation-passing call: the preceding LEA put the address of the
+            # NEXT instruction in An; the helper does its work and resumes there
+            # via JMP (An). Emit the helper call, then resume at the continuation.
             label = self.labels.get(target, f'sub_{target:06X}')
-            return f'func_table_call(0x{target:06X}); /* LEA+BRA call to {label} */'
+            cont = self._cur_next
+            if self._is_local_target(cont):
+                # Continuation is the next instruction in this function: fall through.
+                return f'func_table_call(0x{target:06X}); /* LEA+BRA call to {label}; resumes inline */'
+            cont_label = self.labels.get(cont, f'sub_{cont:06X}')
+            return (f'func_table_call(0x{target:06X}); /* LEA+BRA call to {label} */ '
+                    f'func_table_call(0x{cont:06X}); return; /* resume {cont_label} */')
 
         if target is not None and self._is_local_target(target):
             return f'goto {self.labels.get(target, f"loc_{target:06X}")};'
@@ -777,7 +788,15 @@ class CodeGenerator:
             lines.extend(c_lines)
 
         if not func['has_return']:
-            lines.append('    /* WARNING: function did not end with RTS */')
+            # If control falls off the end into the next function (no RTS/BRA/JMP
+            # terminator), emit the implicit transfer so fall-through and the
+            # continuation chains (e.g. SF2's init sequence) don't silently break.
+            last = next((l for l in reversed(lines) if l.strip() and not l.strip().startswith('/*')), '')
+            terminates = ('return;' in last) or last.strip().startswith('goto ')
+            if not terminates and end in self.analyzer.functions:
+                lines.append(f'    func_table_call(0x{end:06X}); return; /* fall through to ${end:06X} */')
+            else:
+                lines.append('    /* WARNING: function did not end with RTS */')
 
         lines.append('}')
 

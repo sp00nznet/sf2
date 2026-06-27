@@ -125,31 +125,54 @@ class M68KAnalyzer:
             entry_points.update(extra_entries)
             print(f"Added {len(extra_entries)} extra entry points")
 
-        # Scan for jump tables
-        jt_targets = self._scan_jump_tables()
-        entry_points.update(jt_targets)
+        print(f"\nStarting analysis from {len(entry_points)} TRUSTED entry points "
+              f"(vectors + extra_entries); jump tables scanned afterwards...")
 
-        print(f"\nStarting analysis from {len(entry_points)} entry points "
-              f"(vectors + {len(jt_targets)} jump table targets)...")
-
-        # Multi-pass disassembly
+        # Multi-pass disassembly.
         all_func_entries = set(entry_points)
-        work = list(entry_points)
 
-        while work:
-            new_work = []
-            for addr in work:
-                if addr in self.visited or addr >= self.rom.size or addr < 0x200:
-                    continue
-                if addr & 1:
-                    continue
-                new_targets = self._disassemble_block(addr)
-                for target, is_call in new_targets:
-                    if target not in self.visited and 0x200 <= target < self.rom.size and not (target & 1):
-                        new_work.append(target)
-                        if is_call:
-                            all_func_entries.add(target)
-            work = new_work
+        def _descend(seed_work):
+            work = list(seed_work)
+            while work:
+                new_work = []
+                for addr in work:
+                    if addr in self.visited or addr >= self.rom.size or addr < 0x200:
+                        continue
+                    if addr & 1:
+                        continue
+                    new_targets = self._disassemble_block(addr)
+                    for target, is_call in new_targets:
+                        if target not in self.visited and 0x200 <= target < self.rom.size and not (target & 1):
+                            new_work.append(target)
+                            if is_call:
+                                all_func_entries.add(target)
+                work = new_work
+
+        # Pass 0: recursive descent from TRUSTED seeds first, so their instruction
+        # grid is authoritative before the heuristic jump-table scan runs.
+        _descend(entry_points)
+
+        # Scan for jump tables, then reject any target that lands INSIDE an already
+        # decoded (trusted) instruction. The table scan is a heuristic that flags any
+        # run of >=3 plausible 32-bit addresses, so it produces false positives that
+        # fall mid-instruction (e.g. the byte after a LEA's opcode word) and would
+        # strand the real instruction in an unreferenced phantom function.
+        jt_targets = self._scan_jump_tables()
+        interior = set()
+        for a, info in self.instructions.items():
+            sz = info[2]
+            for b in range(a + 2, a + sz, 2):
+                interior.add(b)
+        bad = jt_targets & interior
+        jt_clean = jt_targets - interior
+        if bad:
+            print(f"  Rejected {len(bad)} jump-table target(s) interior to decoded instructions")
+            for t in bad:
+                if self.labels.get(t, '').startswith('jt_'):
+                    del self.labels[t]
+        entry_points.update(jt_clean)
+        all_func_entries.update(jt_clean)
+        _descend(t for t in jt_clean if t not in self.visited)
 
         # Scan for address-loading instructions
         more_targets = self._scan_address_loads()
