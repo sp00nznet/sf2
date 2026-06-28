@@ -174,6 +174,14 @@ class M68KAnalyzer:
         all_func_entries.update(jt_clean)
         _descend(t for t in jt_clean if t not in self.visited)
 
+        # Scan for PC-relative word-offset jump tables (SF2 script dispatch).
+        # Run after the trusted descent so BASE(pc,Dn.w) operands are decoded;
+        # the final phantom-rejection pass validates the recovered handlers.
+        pcrel_targets = self._scan_pcrel_word_tables()
+        if pcrel_targets:
+            all_func_entries.update(pcrel_targets)
+            _descend(t for t in pcrel_targets if t not in self.visited)
+
         # Scan for address-loading instructions
         more_targets = self._scan_address_loads()
         if more_targets:
@@ -214,15 +222,29 @@ class M68KAnalyzer:
                                 all_func_entries.add(target)
                 work = new_work
 
-        # Pass 4: Look for call targets that weren't in any discovered function
-        call_targets = set()
-        for func_entry in list(all_func_entries):
-            for call_addr in self.call_graph.get(func_entry, set()):
-                if call_addr not in self.visited and 0x200 <= call_addr < self.rom.size and not (call_addr & 1):
-                    call_targets.add(call_addr)
+        # Pass 4: Every jsr/bsr target is an authoritative function entry, even
+        # if it was already 'visited' as interior of an adjacent function's linear
+        # sweep. SF2 reuses shared code via absolute JSRs into the middle of a
+        # fall-through region (e.g. $083E12 is called via jsr but also lies in the
+        # straight-line decode of the block above it). Such a target is visited yet
+        # never registered as an entry, so func_table_call(0x083E12) misses at
+        # runtime. Register ALL in-range, word-aligned call targets here; descend
+        # only the ones not yet visited. The phantom pass still drops any that fall
+        # mid-instruction.
+        # call_graph is keyed by BASIC-BLOCK start, not function entry: a jsr in a
+        # function's second-or-later block is recorded under that block's address,
+        # which is not itself a func_entry. Iterate every call_graph key so those
+        # interior-block call targets (e.g. the jsr $083E12 deep inside the attract
+        # script function) are harvested too.
+        all_call_targets = set()
+        for blk in list(self.call_graph):
+            for call_addr in self.call_graph[blk]:
+                if 0x200 <= call_addr < self.rom.size and not (call_addr & 1):
+                    all_call_targets.add(call_addr)
+        all_func_entries.update(all_call_targets)
+        call_targets = {a for a in all_call_targets if a not in self.visited}
         if call_targets:
             print(f"  Found {len(call_targets)} unreached call targets")
-            all_func_entries.update(call_targets)
             work = list(call_targets)
             while work:
                 new_work = []
@@ -236,6 +258,39 @@ class M68KAnalyzer:
                             if is_call:
                                 all_func_entries.add(target)
                 work = new_work
+
+        # Authoritative-boundary split: an absolute jsr/bsr target is a real
+        # function entry even when an adjacent function's linear sweep decoded a
+        # longer instruction that straddles it (overlapping/shared code — e.g. the
+        # attract script jsr's to $083E12, but the block above decodes a 4-byte op
+        # at $083E10 that swallows it). The straddling decode would mark $083E12
+        # interior and the phantom pass would drop it, stranding func_table_call
+        # ($083E12) as a permanent MISS. Trust the call target: re-decode the
+        # straddling instruction so a clean boundary lands on the target.
+        auth_targets = sorted(s for s in all_call_targets
+                              if 0x200 <= s < self.rom.size and not (s & 1))
+        n_split = 0
+        for s in auth_targets:
+            # A target may be decoded yet ALSO overlapped by a longer instruction
+            # decoded just above it (the two decodes coexist in self.instructions).
+            # Find any instruction whose body straddles s and re-decode [a, s) so a
+            # clean boundary lands on s; keep/establish the decode at s itself.
+            for back in (2, 4, 6, 8):
+                a = s - back
+                info = self.instructions.get(a)
+                if info and a < s < a + info[2]:
+                    del self.instructions[a]
+                    for ins in self.cs.disasm(bytes(self.rom.data[a:s]), a):
+                        self.instructions[ins.address] = (
+                            ins.mnemonic, ins.op_str, ins.size, ins.bytes)
+                    if s not in self.instructions:
+                        for ins in self.cs.disasm(bytes(self.rom.data[s:s + 16]), s, count=1):
+                            self.instructions[ins.address] = (
+                                ins.mnemonic, ins.op_str, ins.size, ins.bytes)
+                    n_split += 1
+                    break
+        if n_split:
+            print(f"  Split {n_split} straddling instruction(s) at call targets")
 
         # Final phantom rejection: an entry that lands INSIDE a prior entry's
         # decoded instruction stream is a mis-aligned phantom (typically a
@@ -351,6 +406,61 @@ class M68KAnalyzer:
         print(f"Found {len(self.jump_tables)} jump tables with {len(targets)} unique targets")
         return targets
 
+    def _scan_pcrel_word_tables(self):
+        """Scan decoded code for PC-relative word-offset jump tables.
+
+        SF2's script/animation dispatch uses the 68k computed-goto idiom:
+            move.w  $BASE(pc, Dn.w), Dn   ; load a SIGNED word delta from a table
+            jmp     $BASE(pc, Dn.w)       ; jump to BASE + delta
+        The table sits at $BASE and holds 16-bit signed offsets; each handler is
+        at BASE + signext(word). These targets are computed at runtime, so the
+        longword-table scan and the static call-graph never see them, and every
+        dispatched handler shows up as a func_table_call MISS. Recover them by
+        reading the offset table until it runs into the first handler.
+
+        Capstone renders the (already PC-resolved) effective base as the literal
+        address, e.g. "$83ef4(pc, d0.w)", so BASE is parsed directly from the
+        operand. Targets are validated downstream by the phantom-rejection pass,
+        so a few stray table-as-data words decoded here are harmless.
+        """
+        import re as _re
+        pat = _re.compile(r'^\$([0-9a-fA-F]+)\(pc,\s*d[0-7]\.w\)', _re.I)
+        targets = set()
+        n_tables = 0
+        for addr, (mnemonic, op_str, size, raw) in self.instructions.items():
+            if mnemonic not in ('jmp', 'jsr'):
+                continue
+            m = pat.match(op_str.strip())
+            if not m:
+                continue
+            base = int(m.group(1), 16)
+            if base + 2 > self.rom.size:
+                continue
+            n_tables += 1
+            min_t = 1 << 30
+            k = 0
+            tbl = []
+            while True:
+                pos = base + 2 * k
+                if pos + 2 > self.rom.size or pos >= min_t:
+                    break  # reached the first handler => end of offset table
+                word = struct.unpack('>h', self.rom.data[pos:pos + 2])[0]
+                t = base + word
+                if 0x200 <= t < self.rom.size:
+                    tbl.append(t)
+                    if t > base and t < min_t:
+                        min_t = t
+                k += 1
+                if k > 256:
+                    break
+            for t in tbl:
+                if t >= min_t and not (t & 1):  # real code, word-aligned
+                    targets.add(t)
+        if n_tables:
+            print(f"Found {n_tables} PC-relative word tables with "
+                  f"{len(targets)} unique targets")
+        return targets - self.visited
+
     def _scan_address_loads(self):
         """Scan disassembled code for LEA/MOVE.L #addr patterns."""
         targets = set()
@@ -403,7 +513,12 @@ class M68KAnalyzer:
 
             self.instructions[addr] = (mnemonic, op_str, insn.size, code[:insn.size])
 
-            if mnemonic in self.CALL_MNEMONICS:
+            # Capstone emits size suffixes (bsr.w, bra.s, bcc.w); strip for the
+            # control-flow classification below so 'bsr.w' is recognised as a call
+            # (not a conditional branch) and 'bra.w' as an unconditional block end.
+            base_mnem = mnemonic.split('.', 1)[0]
+
+            if base_mnem in self.CALL_MNEMONICS:
                 target = self._extract_branch_target(insn, addr)
                 if target is not None:
                     self.xrefs_to[target].add(addr)
@@ -414,7 +529,7 @@ class M68KAnalyzer:
                 addr += insn.size
                 continue
 
-            elif mnemonic in ('bra', 'jmp'):
+            elif base_mnem in ('bra', 'jmp'):
                 target = self._extract_branch_target(insn, addr)
                 if target is not None:
                     self.xrefs_to[target].add(addr)
@@ -461,7 +576,7 @@ class M68KAnalyzer:
             elif mnemonic in ('rts', 'rte', 'rtr'):
                 break
 
-            elif mnemonic.startswith('b') and mnemonic not in self.BIT_MNEMONICS:
+            elif base_mnem.startswith('b') and base_mnem not in self.BIT_MNEMONICS:
                 target = self._extract_branch_target(insn, addr)
                 if target is not None:
                     self.xrefs_to[target].add(addr)
