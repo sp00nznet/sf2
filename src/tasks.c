@@ -381,9 +381,16 @@ void override_000910(void) {
 void override_000A94(void) {
     g_m68k.a[5] = 0xFF8000;
 
-    /* Copy shadow scroll/palette registers to hardware */
-    bus_write16(0x800100, bus_read16(g_m68k.a[5] + 0x2A));
-    bus_write16(0x800108, bus_read16(g_m68k.a[5] + 0x32));
+    /* Copy shadow scroll/palette registers to hardware. The native vblank
+     * (sub_0007CC) and $001BAA only push scroll1/palette/other; the scroll2 and
+     * scroll3 base registers ($800102/$800104) and the object base ($800106) are
+     * never written, so those layers default to base $0000 and read the wrong
+     * GFX region (empty/garbage). Push them from their WRAM shadows here. */
+    bus_write16(0x800100, bus_read16(g_m68k.a[5] + 0x2A));  /* scroll1 base  */
+    bus_write16(0x800102, bus_read16(g_m68k.a[5] + 0x2C));  /* scroll2 base  */
+    bus_write16(0x800104, bus_read16(g_m68k.a[5] + 0x2E));  /* scroll3 base  */
+    bus_write16(0x800106, bus_read16(g_m68k.a[5] + 0x30));  /* object base   */
+    bus_write16(0x800108, bus_read16(g_m68k.a[5] + 0x32));  /* palette base  */
     bus_write16(g_m68k.a[5] + 0x5E, bus_read16(0x800148));
 
     func_table_call(0x001BAA);  /* scroll register copy */
