@@ -570,7 +570,18 @@ class M68KAnalyzer:
                             break
                         continue
                     else:
-                        targets.append((target, False))
+                        # A simple-absolute `jmp $addr.w/.l` is a tail call to a
+                        # function start (SF2 dispatches scene routines this way,
+                        # e.g. `jmp $207e` into the task-install routine). Register
+                        # the target as a function entry so func_table_call can
+                        # reach it; without this the routine is stranded as dead
+                        # code after the rts above it and never runs. Plain `bra`
+                        # and pc-relative/indexed jmp (handled by the word-table
+                        # scan) stay local branches.
+                        is_tailcall = (base_mnem == 'jmp' and '(' not in op_str)
+                        targets.append((target, is_tailcall))
+                        if is_tailcall and target not in self.labels:
+                            self.labels[target] = f"sub_{target:06X}"
                 break
 
             elif mnemonic in ('rts', 'rte', 'rtr'):
