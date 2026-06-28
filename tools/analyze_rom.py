@@ -237,6 +237,43 @@ class M68KAnalyzer:
                                 all_func_entries.add(target)
                 work = new_work
 
+        # Final phantom rejection: an entry that lands INSIDE a prior entry's
+        # decoded instruction stream is a mis-aligned phantom (typically a
+        # jump-table false target at a mid-instruction byte). Such phantoms
+        # truncate the real function and strand its remaining instructions
+        # (e.g. $B7A inside the MOVE.W at $B76 split sub_000B62 before its
+        # MOVE.L A0,$4(A1) task-code write). Walk entries in address order and
+        # drop any that fall before the running coverage watermark.
+        starts = set()       # canonical instruction-start addresses
+        interior = set()     # bytes strictly inside a decoded instruction
+        for e in sorted(a for a in all_func_entries if a in self.instructions):
+            if e in interior:
+                continue     # phantom: a mid-instruction byte of a prior function
+            a = e
+            while a in self.instructions and a not in starts:
+                mnem, _o, sz, _b = self.instructions[a]
+                if sz <= 0:
+                    break
+                starts.add(a)
+                for b in range(a + 2, a + sz, 2):
+                    interior.add(b)
+                if mnem in self.UNCONDITIONAL_ENDS:
+                    break
+                a += sz
+        keep = set(a for a in all_func_entries if a not in interior)
+        dropped = len(all_func_entries) - len(keep)
+        # Also delete the phantom INSTRUCTIONS that start at interior bytes — they
+        # overlap the real instruction grid and, if left in self.instructions, get
+        # interleaved into the containing function (e.g. spurious ORI.B that clobber
+        # a register before a real MOVE), corrupting it.
+        phantom_insns = [a for a in interior if a in self.instructions]
+        for a in phantom_insns:
+            del self.instructions[a]
+        if dropped or phantom_insns:
+            print(f"  Rejected {dropped} phantom entrie(s), removed "
+                  f"{len(phantom_insns)} overlapping phantom instruction(s)")
+        all_func_entries = keep
+
         self._build_functions(all_func_entries)
 
         print(f"Disassembled {len(self.instructions)} instructions")
