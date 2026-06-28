@@ -514,8 +514,26 @@ class M68KTranslator:
         src = self._ea_read(ops[0], size)
         dst_r = self._reg(ops[1])
         if dst_r: return f'M68K_{op}{size}({dst_r}, {src});'
-        ea = self._ea_addr(ops[1])
-        return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_{op}{size}(_tmp, {src}); bus_write{size}(_ea, _tmp); }}'
+        # Memory destination: read-modify-write. (An)+ / -(An) auto-inc/dec must
+        # be applied around the access (e.g. ADD.W Dn,(An)+ in stream/copy loops).
+        return self._rmw(ops[1], size, lambda ea, tmp: f'M68K_{op}{size}({tmp}, {src});')
+
+    def _rmw(self, dst, size, op_stmt):
+        """Emit a read-modify-write on EA `dst`, honouring (An)+/-(An).
+        op_stmt(ea_expr, tmp_name) returns the C statement that mutates `_tmp`."""
+        dst = dst.strip()
+        inc = size // 8
+        body = lambda: (f'uint{size}_t _tmp = bus_read{size}(_ea); '
+                        f'{op_stmt("_ea", "_tmp")} bus_write{size}(_ea, _tmp);')
+        m = re.match(r'^\(a([0-7])\)\+$', dst, re.I)
+        if m:
+            n = m.group(1)
+            return f'{{ uint32_t _ea = g_m68k.a[{n}]; {body()} g_m68k.a[{n}] += {inc}; }}'
+        m = re.match(r'^-\(a([0-7])\)$', dst, re.I)
+        if m:
+            n = m.group(1)
+            return f'{{ g_m68k.a[{n}] -= {inc}; uint32_t _ea = g_m68k.a[{n}]; {body()} }}'
+        return f'{{ uint32_t _ea = {self._ea_addr(dst)}; {body()} }}'
 
     def _gen_adda(self, ops, size):
         src = self._ea_read(ops[0], size)
@@ -536,8 +554,7 @@ class M68KTranslator:
         if dst_r:
             if ops[1].strip().lower().startswith('a'): return f'{dst_r} += {imm};'
             return f'M68K_ADD{size}({dst_r}, {imm});'
-        ea = self._ea_addr(ops[1])
-        return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_ADD{size}(_tmp, {imm}); bus_write{size}(_ea, _tmp); }}'
+        return self._rmw(ops[1], size, lambda ea, tmp: f'M68K_ADD{size}({tmp}, {imm});')
 
     def _gen_subq(self, ops, size):
         imm = self._imm(ops[0])
@@ -546,8 +563,7 @@ class M68KTranslator:
         if dst_r:
             if ops[1].strip().lower().startswith('a'): return f'{dst_r} -= {imm};'
             return f'M68K_SUB{size}({dst_r}, {imm});'
-        ea = self._ea_addr(ops[1])
-        return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_SUB{size}(_tmp, {imm}); bus_write{size}(_ea, _tmp); }}'
+        return self._rmw(ops[1], size, lambda ea, tmp: f'M68K_SUB{size}({tmp}, {imm});')
 
     def _gen_cmp(self, ops, size):
         return f'M68K_CMP{size}({self._ea_read(ops[1], size)}, {self._ea_read(ops[0], size)});'
@@ -562,8 +578,7 @@ class M68KTranslator:
     def _gen_neg(self, op, ops, size):
         r = self._reg(ops[0])
         if r: return f'M68K_{op}{size}({r});'
-        ea = self._ea_addr(ops[0])
-        return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_{op}{size}(_tmp); bus_write{size}(_ea, _tmp); }}'
+        return self._rmw(ops[0], size, lambda ea, tmp: f'M68K_{op}{size}({tmp});')
 
     def _gen_mul(self, op, ops):
         r = self._reg(ops[1])
@@ -577,14 +592,12 @@ class M68KTranslator:
         src = self._ea_read(ops[0], size)
         dst_r = self._reg(ops[1])
         if dst_r: return f'M68K_{op}{size}({dst_r}, {src});'
-        ea = self._ea_addr(ops[1])
-        return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_{op}{size}(_tmp, {src}); bus_write{size}(_ea, _tmp); }}'
+        return self._rmw(ops[1], size, lambda ea, tmp: f'M68K_{op}{size}({tmp}, {src});')
 
     def _gen_unary_logic(self, op, ops, size):
         r = self._reg(ops[0])
         if r: return f'M68K_{op}{size}({r});'
-        ea = self._ea_addr(ops[0])
-        return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_{op}{size}(_tmp); bus_write{size}(_ea, _tmp); }}'
+        return self._rmw(ops[0], size, lambda ea, tmp: f'M68K_{op}{size}({tmp});')
 
     def _gen_tst(self, ops, size):
         return f'M68K_TST{size}({self._ea_read(ops[0], size)});'
@@ -604,11 +617,9 @@ class M68KTranslator:
             cnt = self._ea_read(ops[0], 8)
             r = self._reg(ops[1])
             if r: return f'M68K_{op}{size}({r}, {cnt});'
-            ea = self._ea_addr(ops[1])
-            return f'{{ uint32_t _ea = {ea}; uint{size}_t _tmp = bus_read{size}(_ea); M68K_{op}{size}(_tmp, {cnt}); bus_write{size}(_ea, _tmp); }}'
+            return self._rmw(ops[1], size, lambda ea, tmp: f'M68K_{op}{size}({tmp}, {cnt});')
         elif len(ops) == 1:
-            ea = self._ea_addr(ops[0])
-            return f'{{ uint32_t _ea = {ea}; uint16_t _tmp = bus_read16(_ea); M68K_{op}16(_tmp, 1); bus_write16(_ea, _tmp); }}'
+            return self._rmw(ops[0], 16, lambda ea, tmp: f'M68K_{op}16({tmp}, 1);')
         return None
 
     def _is_local_target(self, target):
