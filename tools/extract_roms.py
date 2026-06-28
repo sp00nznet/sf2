@@ -22,13 +22,16 @@ import hashlib
 # 68K program ROM pairs: (even_rom, odd_rom, base_address, rom_size)
 # MAME: ROM_LOAD16_BYTE layout
 SF2_PROG_PAIRS = [
+    # sf2ua/sf2ub 68k program layout (ROM_LOAD16_BYTE: even ROM = high byte).
+    # Only $00000-$3FFFF was correct before; $40000+ was scrambled (data, not
+    # code), which hung the attract scene the moment it JSR'd into $80000+.
+    # Correct pairing: 30a/37a, 31a/38a, 28a/35a — 768KB total ($0-$BFFFF).
     ("sf2u.30a", "sf2u.37a", 0x00000, 0x20000),  # $00000-$3FFFF
-    ("sf2u.31a", "sf2u.35a", 0x40000, 0x20000),  # $40000-$7FFFF
-    ("sf2_36a.bin", "sf2u.38a", 0x80000, 0x20000),  # $80000-$BFFFF
-    ("sf2_28a.bin", "sf2_29a.bin", 0xC0000, 0x20000),  # $C0000-$FFFFF
+    ("sf2u.31a", "sf2u.38a", 0x40000, 0x20000),  # $40000-$7FFFF
+    ("sf2u.28a", "sf2u.35a", 0x80000, 0x20000),  # $80000-$BFFFF
 ]
 
-TOTAL_PROG_SIZE = 0x100000  # 1 MB (4 pairs × 128KB × 2)
+TOTAL_PROG_SIZE = 0xC0000  # 768 KB (3 pairs × 128KB × 2) — SF2 has no $C0000+ program
 
 # GFX ROMs — CPS1 interleaving scheme
 SF2_GFX_ROMS = [
