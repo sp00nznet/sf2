@@ -19,9 +19,13 @@
 
 #define TASK_SLOT_COUNT  16
 #define TASK_SLOT_SIZE   0x20
-#define FIBER_STACK_SIZE (1024 * 1024)  /* 1 MB per task fiber — needs room for
-                                          deep recursion from recompiled branch-
-                                          as-func_table_call patterns */
+#define FIBER_STACK_SIZE (16 * 1024 * 1024)  /* 16 MB per task fiber. The
+                                          recompiled tail calls (`func_table_call(next);
+                                          return;` for bra/jmp/fall-through) nest C
+                                          frames instead of being TCO'd, so a long
+                                          linear code chain accumulates deep stack
+                                          (the cross-function split makes such chains
+                                          longer). Reserved; committed on demand. */
 
 /* Initialize the fiber system.  Must be called once from the main thread
    before any task dispatch.  Converts the main thread to a fiber. */
@@ -55,5 +59,10 @@ bool task_fiber_terminated(int slot);
 
 /* Mark the current task fiber as terminated (called from TRAP #1/#9). */
 void task_fiber_mark_terminated(void);
+
+/* Register the hand-written task/TRAP overrides (defined in tasks.c) over the
+   recompiled stubs. Call once after recomp_register_all(). Declared here rather
+   than in the auto-generated recomp_funcs.h so regen can't drop it. */
+void recomp_register_overrides(void);
 
 #endif /* TASK_FIBER_H */

@@ -19,6 +19,18 @@ static uint32_t s_fiber_handler[TASK_SLOT_COUNT] = {0};
 static bool s_fiber_terminated[TASK_SLOT_COUNT] = {0};
 static int s_current_slot = -1;  /* -1 = main fiber */
 
+/* Per-fiber 68k register snapshots. The recompiled code shares the single
+ * global g_m68k register file, but the original game's tasks are coroutines
+ * that keep their own register state across a yield (the TRAP wrapper pushes
+ * d0-d7/a0-a6 to the task's stack). A bare SwitchToFiber preserves only the C
+ * stack, so a task that holds a 68k register across a sleep (e.g. the GFX-DMA
+ * wait loop at $1220 keeps A6 = task control block while it sleeps A6+$13
+ * frames) would resume with whatever the last task left in g_m68k.a[6], read a
+ * garbage sleep count of 0, and park forever at status $02. Snapshot g_m68k on
+ * every fiber boundary so each task sees its own registers on resume. */
+static m68k_context_t s_fiber_regs[TASK_SLOT_COUNT];
+static m68k_context_t s_main_regs;
+
 /* ---- Fiber entry point ---- */
 
 #ifdef _WIN32
@@ -103,6 +115,10 @@ void task_fiber_create(int slot, uint32_t handler_addr) {
 
     s_fiber_handler[slot] = handler_addr;
     s_fiber_terminated[slot] = false;
+    /* Seed the new task's register file from the current (main) state so it
+     * inherits a valid A5 (work-RAM base $FF8000) etc.; the task sets up its
+     * own registers from there at entry. */
+    s_fiber_regs[slot] = g_m68k;
 
 #ifdef _WIN32
     s_task_fibers[slot] = CreateFiber(
@@ -123,11 +139,24 @@ void task_fiber_switch_to(int slot) {
 
     s_current_slot = slot;
 
+    /* Save the main fiber's registers, load this task's, then switch. */
+    s_main_regs = g_m68k;
+    g_m68k = s_fiber_regs[slot];
+
+    /*TEMP: verify a5 of the game-start task (slot 2, handler $6B52). */
+    if (slot == 2 && s_fiber_handler[2] == 0x006B52) {
+        static int n; if (n++ < 5) { FILE*f=fopen("a5.txt","a");
+            if(f){ fprintf(f,"slot2 $6B52 a5=$%08X (5d56 read addr=$%08X)\n",
+                (unsigned)g_m68k.a[5], (unsigned)(g_m68k.a[5]+0x5d56)); fclose(f);} }
+    }
+
 #ifdef _WIN32
     SwitchToFiber(s_task_fibers[slot]);
 #endif
 
-    /* Execution resumes here when the task fiber yields or terminates */
+    /* Execution resumes here when the task fiber yields or terminates.
+     * Restore the main fiber's registers (the task saved its own on yield). */
+    g_m68k = s_main_regs;
     s_current_slot = -1;
 
     /* Clean up terminated fibers */
@@ -141,12 +170,18 @@ void task_fiber_switch_to(int slot) {
 }
 
 void task_fiber_yield_to_main(void) {
+    /* Save this task's registers so they survive while other tasks run; they
+     * are reloaded by task_fiber_switch_to before this fiber is resumed. */
+    if (s_current_slot >= 0 && s_current_slot < TASK_SLOT_COUNT) {
+        s_fiber_regs[s_current_slot] = g_m68k;
+    }
 #ifdef _WIN32
     if (s_main_fiber) {
         SwitchToFiber(s_main_fiber);
     }
 #endif
-    /* Execution resumes here when the main loop dispatches this task again */
+    /* Execution resumes here when the main loop dispatches this task again;
+     * g_m68k has been restored to this task's snapshot by switch_to. */
 }
 
 bool task_fiber_exists(int slot) {
@@ -156,6 +191,16 @@ bool task_fiber_exists(int slot) {
 
 void task_fiber_delete(int slot) {
     if (slot < 0 || slot >= TASK_SLOT_COUNT) return;
+    /* Never delete the currently-running fiber from within itself — DeleteFiber
+     * on the running fiber terminates the whole thread. SF2's TRAP #11 cleanup
+     * ($C5C) bulk-deletes the secondary-task slots (8-15); when the caller is
+     * itself one of those slots (e.g. the credit-mode task that runs the
+     * start/auto-start sequence), it must survive to finish and terminate
+     * normally. Mark it terminated so the main loop reaps it after it yields. */
+    if (slot == s_current_slot) {
+        s_fiber_terminated[slot] = true;
+        return;
+    }
     if (s_task_fibers[slot]) {
 #ifdef _WIN32
         DeleteFiber(s_task_fibers[slot]);

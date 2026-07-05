@@ -15,6 +15,7 @@ import struct
 import json
 import sys
 import os
+import bisect
 from collections import defaultdict
 from capstone import Cs, CS_ARCH_M68K, CS_MODE_M68K_000
 
@@ -329,6 +330,39 @@ class M68KAnalyzer:
                   f"{len(phantom_insns)} overlapping phantom instruction(s)")
         all_func_entries = keep
 
+        # Cross-function control-flow split: a jmp/bra/bcc whose target lands inside
+        # a DIFFERENT function than its source means the generator will emit a
+        # func_table_call(target) from that other function — so the target must be
+        # its own registered entry, not code stranded interior to some function.
+        # Only jsr/bsr and absolute `jmp $addr` targets are registered earlier;
+        # a `bra`/`bcc` that crosses a function boundary (e.g. SF2's
+        # `$006600 bra.w $006CC8`, which strands the START+credit check inside
+        # sub_006CB6) is missed and its func_table_call resolves to nothing.
+        # Functions partition the address space by sorted entries, so an
+        # instruction start that is reached from outside its containing partition
+        # is the split point. Iterate to a fixpoint since each split shifts ranges.
+        valid_starts = set(self.instructions.keys())
+        for _ in range(8):
+            entries_sorted = sorted(all_func_entries)
+            def _func_of(a):
+                i = bisect.bisect_right(entries_sorted, a) - 1
+                return entries_sorted[i] if i >= 0 else None
+            new_entries = set()
+            for tgt, srcs in self.xrefs_to.items():
+                if tgt in all_func_entries or tgt not in valid_starts:
+                    continue
+                ft = _func_of(tgt)
+                for s in srcs:
+                    if _func_of(s) != ft:
+                        new_entries.add(tgt)
+                        if tgt not in self.labels or self.labels[tgt].startswith('loc_'):
+                            self.labels[tgt] = f"sub_{tgt:06X}"
+                        break
+            if not new_entries:
+                break
+            all_func_entries |= new_entries
+            print(f"  Split {len(new_entries)} cross-function jump target(s) into entries")
+
         self._build_functions(all_func_entries)
 
         print(f"Disassembled {len(self.instructions)} instructions")
@@ -469,7 +503,12 @@ class M68KAnalyzer:
                 target = self._parse_absolute_addr(op_str)
                 if target and 0x200 <= target < self.rom.size and not (target & 1):
                     targets.add(target)
-            elif mnemonic == 'move.l' and '#$' in op_str:
+            elif mnemonic in ('move.l', 'movea.l', 'movea.w') and '#$' in op_str:
+                # `movea.l #$6b52, a0` loads a CODE address (a task handler passed
+                # to the TRAP#0/#7/#10 install routines) — capstone reports it as
+                # movea, not move, so it was previously missed and the handler
+                # never became a function entry (func_table_call(handler) MISSED
+                # at runtime, so e.g. SF2's game-start task $6B52 never ran).
                 try:
                     imm_str = op_str.split('#$')[1].split(',')[0].strip()
                     val = int(imm_str, 16)

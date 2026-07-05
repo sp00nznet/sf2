@@ -180,42 +180,39 @@ cmake --build build --config Release
 | **7** | YM2151 FM audio (via ymfm) | Done |
 | **8** | OKI MSM6295 ADPCM | Done |
 | **9** | Cooperative task system (Windows Fibers) | Done |
-| **10** | Attract mode state machine | In Progress |
-| **11** | GFX rendering pipeline integration | In Progress |
+| **10** | Attract mode state machine | Done |
+| **11** | Coin / credit / START input flow | Done |
+| **12** | Game-start sequence + **character select reached** | Done |
+| **13** | GFX rendering pipeline (sprites, scroll layers) | Playable text/screens; portraits WIP |
 
-### Current State (March 2026)
+### Current State (July 2026)
 
-The game boots, initializes, and runs its main loop at 60fps. The cooperative task system is fully operational using **Windows Fibers** -- each task gets its own C stack, and TRAP-based yield/sleep/terminate map to fiber switches. The attract mode state machine cycles through all states. Background tiles render with correct palette colors.
+**The game now runs end to end from boot to the character-select screen.** Boot -> attract demo -> insert coin -> press START -> game-start sequence -> **PLAYER SELECT screen**, all driven by real 68000 game logic on the cooperative fiber task system. The attract "warning / disclaimer" screen and the player-select screen both render with **legible text on a clean background**.
 
-The **Z80 sound CPU is live**: a single-step Z80 interpreter (ported from the sp00nznet `z80recomp` runtime used by pacrecomp/zxrecomp) executes the original sound program against the CPS1 sound memory map (banked ROM, 2 KB RAM, YM2151 at `$F000`, OKI at `$F002`, sound latch at `$F008`). It is paced by the YM2151 timer interrupt (IM 1 -> `$0038`, ~250 Hz), which now drives the ymfm engine's IRQ. The Z80 boots, services the 68k sound latch, and sequences the YM2151/OKI -- verified end-to-end with audible FM output when a music command is dispatched.
+Getting here meant fixing a chain of deep bugs, each of which blocked everything downstream. In order:
+
+- **Fiber register preservation** -- task fibers shared the single global `g_m68k` register file; a bare `SwitchToFiber` preserved the C stack but not the 68k registers, so any task holding a register across a sleep resumed corrupted. Snapshotting `g_m68k` per fiber un-froze the entire task system (attract had been stuck at state 12 forever).
+- **Missing 68k instructions** -- implemented `roxl`/`roxr` (rotate-through-extend) and `abcd`/`sbcd`/`nbcd` (BCD math), needed by the coin/credit debounce and counter.
+- **Code-generator control-flow fixes** -- a conditional `if(cc){...return;}` as a function's last statement wrongly suppressed fall-through to the next function; a `dbra`-to-own-entry compiled to recursive `func_table_call` (stack overflow) instead of a loop; a cross-function `bra`/`jmp` target was left unregistered.
+- **Analyzer: `movea.l` task handlers** -- SF2 installs tasks via `movea.l #addr,a0` then a TRAP, but the address-load scan only matched `move.l`, so the game-start handler (`$6B52`) was never registered and its task never ran. Matching `movea.l` was the single fix that unlocked the whole game-start sequence.
+- **TRAP #11 infinite recursion** -- a wrapper override called its own registered handler address through the function table, re-entering itself.
+- **Renderer fixes** (in `cps1recomp`): CPS1 object/sprite field order was scrambled (X/Y/tile/attr) + no multi-tile sprites; scroll3 was drawn as 16x16 when it is a **32x32-tile layer**; the backdrop was filled with palette entry 0 (red) instead of black. Fixing these turned garbage into legible screens.
+
+The **Z80 sound CPU is live**: a single-step Z80 interpreter (ported from the sp00nznet `z80recomp` runtime) executes the original sound program against the CPS1 sound memory map, paced by the YM2151 timer IRQ driving the ymfm engine -- verified with audible FM output.
 
 **What's working:**
-- Full main loop + task scheduler (`override_000910`) with fiber dispatch
-- VBlank handler (`override_000A94`) with per-frame register copies, input, sleep timer decrements
-- All 16 TRAP handlers dispatched correctly (code generator emits `func_table_call(bus_read32(vector))` for each TRAP instruction)
-- Secondary task queue: attract mode installs GFX processing ($E12) and stage loading ($597A) tasks via free-list allocation
-- Attract mode state machine cycling through all states (0→2→4→6→8→...→0)
-- GFX tile decode: CPS1 bitplane format (consecutive bytes 0,1,2,3 as 4 planes, data inverted, 2 subtiles per 64-byte block)
-- Palette rendering from CPS-A register $80010A
-- GFX RAM base addresses via modulo (192KB is not a power of 2)
-- 1MB 68K program ROM (4 byte-interleaved pairs)
-- 3100+ recompiled functions, zero critical MISSes
+- Full attract -> coin -> credit -> START -> game-start -> character-select flow on real game logic
+- Cooperative fiber task system with per-fiber register state; main loop, VBlank handler, all 16 TRAP handlers
+- Coin/credit counting and START handling reach the game via the correct CPS1 input map
+- ~4900 recompiled functions; only a handful of func_table misses (recovered via `extra_entries`)
+- Renderer: 8x8 scroll1 text, 16x16 scroll2 + sprites (incl. multi-tile), 32x32 scroll3, layer-enable, black backdrop
+- Legible attract/warning text and PLAYER SELECT screen
 
-**What's rendering:**
-- Scroll 2 (playfield): stage floor background tile pattern with correct colors (14 unique colors visible)
-- Background tile $4020 correctly decoded as rocky ground texture
-
-**What's next:**
-- Scroll 1 (HUD/text) empty: text enable flag `$2D7` stays 0, "INSERT COIN" not rendering
-- Scroll 3 (background parallax) empty
-- Sprites not visible: character demo tasks not populating sprite table
-- 221 code references to scroll 1 GFX RAM exist -- text rendering functions present but not triggered
-- 300+ frames stable with no func_table misses
-
-**What's next:**
-- Palette data not yet written by attract mode (screen is black). The state machine is waiting for async GFX operations to complete -- need to trace what $21E2 and $DFC do to generate palette writes.
-- Secondary task spawning: the $14F2 scheduler needs to successfully install and run secondary tasks that handle palette loading, tile DMA, and scene composition.
-- More functions in the $6390-$6600 gap need recompilation as the state machine advances.
+**Known gaps / next up:**
+- Character-select **portraits and world-map not yet rendering** (additional sprites/graphics loaded later in the select sequence -- needs tracing)
+- CPS-B register `$800148` uses a provisional readback value (`0x0407`) to pass SF2's attract-terminate check -- the real hardware value should be sourced
+- Palette brightness (4-bit intensity scale) is approximated; exact 32x32 tile arrangement unverified against a reference
+- The remaining func-table misses in the game-start subtree are patched via `extra_entries.txt`; the analyzer could recover them automatically
 
 ## Standing on Giants
 

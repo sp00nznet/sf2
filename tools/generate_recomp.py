@@ -148,13 +148,18 @@ class M68KTranslator:
         if base == 'bclr': return self._gen_bit('BCLR', ops)
         if base == 'bchg': return self._gen_bit('BCHG', ops)
 
-        # Shifts
-        for shift_op in ('lsl', 'lsr', 'asr', 'rol', 'ror'):
+        # Shifts and rotates (incl. rotate-through-extend roxl/roxr)
+        for shift_op in ('lsl', 'lsr', 'asr', 'rol', 'ror', 'roxl', 'roxr'):
             if base == shift_op:
                 macro = shift_op.upper()
                 if macro == 'ASL': macro = 'LSL'  # ASL == LSL
                 return self._gen_shift(macro, ops, size)
         if base == 'asl': return self._gen_shift('LSL', ops, size)
+
+        # BCD arithmetic (byte only)
+        if base == 'abcd': return self._gen_bcd('ABCD', ops)
+        if base == 'sbcd': return self._gen_bcd('SBCD', ops)
+        if base == 'nbcd': return self._gen_neg('NBCD', ops, 8)
 
         # Branch/control
         if base == 'bra': return self._gen_bra(ops, addr)
@@ -622,6 +627,26 @@ class M68KTranslator:
             return self._rmw(ops[0], 16, lambda ea, tmp: f'M68K_{op}16({tmp}, 1);')
         return None
 
+    def _gen_bcd(self, op, ops):
+        """ABCD/SBCD (byte): dst = dst (+/-) src (+/-) X, in packed BCD.
+        Two forms: data-register direct (Dy,Dx) and memory predecrement
+        (-(Ay),-(Ax)). src=ops[0], dst=ops[1]."""
+        ops = [o for o in ops if o.strip()]
+        if len(ops) != 2: return None
+        src_r = self._reg(ops[0])
+        dst_r = self._reg(ops[1])
+        if src_r and dst_r:
+            return f'M68K_{op}8({dst_r}, {src_r});'
+        ms = re.match(r'^-\(a([0-7])\)$', ops[0].strip(), re.I)
+        md = re.match(r'^-\(a([0-7])\)$', ops[1].strip(), re.I)
+        if ms and md:
+            y, x = ms.group(1), md.group(1)
+            return (f'{{ g_m68k.a[{y}] -= 1; uint8_t _s = bus_read8(g_m68k.a[{y}]); '
+                    f'g_m68k.a[{x}] -= 1; uint32_t _ea = g_m68k.a[{x}]; '
+                    f'uint8_t _tmp = bus_read8(_ea); M68K_{op}8(_tmp, _s); '
+                    f'bus_write8(_ea, _tmp); }}')
+        return None
+
     def _is_local_target(self, target):
         return self.func_start <= target < self.func_end
 
@@ -803,7 +828,14 @@ class CodeGenerator:
             # terminator), emit the implicit transfer so fall-through and the
             # continuation chains (e.g. SF2's init sequence) don't silently break.
             last = next((l for l in reversed(lines) if l.strip() and not l.strip().startswith('/*')), '')
-            terminates = ('return;' in last) or last.strip().startswith('goto ')
+            laststrip = last.strip()
+            # Only an UNCONDITIONAL transfer terminates the function. A conditional
+            # like `if (cc) { ...; return; }` or `if (cc) goto loc;` still falls
+            # through when the condition is false, so it must NOT suppress the
+            # implicit fall-through to the next function. (Matching the substring
+            # 'return;' here previously broke SF2's coin/credit chain at $001ED4.)
+            terminates = (not laststrip.startswith('if ')) and \
+                         (('return;' in laststrip) or laststrip.startswith('goto '))
             if not terminates and end in self.analyzer.functions:
                 lines.append(f'    func_table_call(0x{end:06X}); return; /* fall through to ${end:06X} */')
             else:
@@ -819,12 +851,26 @@ class CodeGenerator:
                 defined_labels.add(stripped[:-1])
 
         fixed = []
+        entry_label = None   # label name for a goto that loops back to func start
         for line in lines:
             m = re.search(r'goto ((?:loc|sub|jt|vec)_([0-9A-Fa-f]+));', line)
             if m and m.group(1) not in defined_labels:
                 addr_val = int(m.group(2), 16)
-                line = line.replace(f'goto {m.group(1)};', f'{{ func_table_call(0x{addr_val:06X}); return; }}')
+                if addr_val == start:
+                    # Self-loop back to the function's own entry (e.g. a `dbra Dn,self`
+                    # countdown loop compiled as its own function). The entry label is
+                    # suppressed at func start, so DON'T turn the loop into a recursive
+                    # func_table_call (that overflows the stack); emit the entry label
+                    # and keep the goto. (SF2: $004C76 `dbra d0,$4c76` blit loop.)
+                    entry_label = m.group(1)
+                else:
+                    line = line.replace(f'goto {m.group(1)};', f'{{ func_table_call(0x{addr_val:06X}); return; }}')
             fixed.append(line)
+        if entry_label:
+            for idx, l in enumerate(fixed):
+                if l.rstrip().endswith('{') and l.lstrip().startswith('void '):
+                    fixed.insert(idx + 1, f'{entry_label}: ;')
+                    break
 
         # Fix labels at end of function: C requires a statement after a label
         # If a label line is followed by a comment or closing brace, add a no-op

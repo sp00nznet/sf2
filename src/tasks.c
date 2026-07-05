@@ -152,7 +152,12 @@ void override_000CEC(void) {
 
 /* TRAP #0xB: Clear secondary task slots */
 void override_000C5C(void) {
-    func_table_call(0x000C60);  /* original cleanup */
+    /* Call the original $C60 handler DIRECTLY (by C name), not via
+     * func_table_call(0x000C60): $C60 is also registered to THIS override (both
+     * the TRAP #11 wrapper $C5C and its handler target $C60 route here), so going
+     * through the function table would re-enter override_000C5C → infinite
+     * recursion → stack overflow. */
+    sub_000C60();  /* original secondary-task cleanup loop */
     for (int i = 8; i < TASK_SLOT_COUNT; i++) {
         if (task_fiber_exists(i)) task_fiber_delete(i);
     }
@@ -495,4 +500,32 @@ void override_000DA8(void) {
 /* Safety net for func_table_call(0x000A5E) */
 void trap_return_to_main(void) {
     task_fiber_yield_to_main();
+}
+
+/* ================================================================
+ * Manual override registration — replaces recompiled stubs with the
+ * hand-written C above. Lives here (not in the auto-generated
+ * recomp_funcs.h) so a regen of the recompiler output cannot clobber it.
+ * Called from main() after recomp_register_all().
+ * ================================================================ */
+void recomp_register_overrides(void) {
+    func_table_register(0x000910, override_000910);
+    func_table_register(0x000A94, override_000A94);
+    func_table_register(0x000B20, override_000B20);
+    func_table_register(0x00639E, override_00639E);
+    func_table_register(0x0014F2, override_0014F2);
+    func_table_register(0x0010E0, override_0010E0);
+    func_table_register(0x000E4C, override_000E4C);
+    func_table_register(0x000E9E, override_000E9E);
+    /* Register at BOTH wrapper and TRAP vector target addresses */
+    func_table_register(0x000B8A, override_000B8A);
+    func_table_register(0x000B8C, override_000B8A);
+    func_table_register(0x000BAE, override_000BAE);
+    func_table_register(0x000BB0, override_000BAE);
+    func_table_register(0x000CB8, override_000CB8);
+    func_table_register(0x000CC4, override_000CB8);
+    func_table_register(0x000CEC, override_000CEC);
+    func_table_register(0x000CF0, override_000CEC);
+    func_table_register(0x000C5C, override_000C5C);
+    func_table_register(0x000C60, override_000C5C);
 }
