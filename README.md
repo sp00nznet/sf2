@@ -1,6 +1,6 @@
 # Street Fighter II Recompiled
 
-**The legendary 1991 arcade fighter, ripped from the CPS1 board and rebuilt as a native PC executable.**
+**The legendary 1991 arcade fighter, lifted from the CPS1 board and rebuilt as a native PC executable.**
 
 No emulator. No interpreter. No JIT. Just Ryu's `SHORYUKEN` compiled to x86-64 and running at full native speed.
 
