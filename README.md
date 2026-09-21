@@ -75,7 +75,7 @@ The original Street Fighter II ran on Capcom's **CPS1** (Capcom Play System 1) a
 ## Project Structure
 
 ```
-D:\recomp\cps1\
+$RECOMP_ROOT\cps1\
 ├── cps1recomp/                    # CPS1 hardware runtime library
 │   ├── include/cps1recomp/
 │   │   ├── cps1recomp.h           # Top-level API
